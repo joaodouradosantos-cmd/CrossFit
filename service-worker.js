@@ -1,5 +1,4 @@
-const CACHE_NAME = "crossfit-cache-v7"; 
-// Sempre que fizeres uma alteração MUITO grande, podes subir para v8, v9... (opcional)
+const CACHE_NAME = "crossfit-cache-v7";
 
 const URLS_TO_CACHE = [
   "./",
@@ -13,7 +12,7 @@ self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => cache.addAll(URLS_TO_CACHE))
   );
-  self.skipWaiting(); // novo SW entra logo sem esperar
+  self.skipWaiting();
 });
 
 // ATIVAÇÃO — limpa caches antigos e assume controlo das páginas abertas
@@ -27,29 +26,24 @@ self.addEventListener("activate", (event) => {
       );
     })
   );
-  self.clients.claim(); // passa a controlar imediatamente todas as abas / apps
+  self.clients.claim();
 });
 
-// FETCH —
-// 1) Para navegação (index / app): NETWORK-FIRST (vai primeiro à net)
-// 2) Para restantes ficheiros: cache primeiro, depois rede
+// FETCH
 self.addEventListener("fetch", (event) => {
   const req = event.request;
 
-  // Pedidos de navegação (quando abres a app, mudas de dia, etc.)
-  if (req.mode === "navigate" || (req.destination === "document")) {
+  // Navegação (abrir app, mudar de dia, etc.) — NETWORK FIRST
+  if (req.mode === "navigate" || req.destination === "document") {
     event.respondWith(
       fetch(req)
         .then(response => {
-          // Se vier da net, guarda no cache a versão nova
           const resClone = response.clone();
           caches.open(CACHE_NAME).then(cache => cache.put(req, resClone));
           return response;
         })
         .catch(() => {
-          // Sem net? Usa o que estiver no cache
           return caches.match(req).then(cached => {
-            // Se não houver essa navegação em cache, tenta pelo menos o index
             return cached || caches.match("./index.html");
           });
         })
@@ -57,18 +51,16 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Outros pedidos (imagens, manifest, etc.) — cache-first simples
+  // Outros recursos — CACHE FIRST com atualização em fundo
   event.respondWith(
     caches.match(req).then(cached => {
       if (cached) {
-        // atualiza em fundo
         fetch(req).then(response => {
           caches.open(CACHE_NAME).then(cache => cache.put(req, response));
         }).catch(() => {});
         return cached;
       }
 
-      // se não estiver em cache, vai à net e guarda
       return fetch(req)
         .then(response => {
           const resClone = response.clone();
@@ -76,7 +68,6 @@ self.addEventListener("fetch", (event) => {
           return response;
         })
         .catch(() => {
-          // último recurso: nada
           return new Response("Offline e sem cache disponível.", {
             status: 503,
             statusText: "Offline"
