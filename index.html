@@ -202,13 +202,6 @@
     <div class="subtitle">Registo pessoal de treinos de força</div>
   </header>
 
-  <!-- RESUMO -->
-  <section class="card" id="resumo">
-    <div class="helper-text"><strong>Resumo de força</strong></div>
-    <div id="resumoPr" class="helper-text"></div>
-    <div id="resumoTreinos" class="helper-text"></div>
-  </section>
-
   <!-- PERFIL -->
   <section class="card" id="perfil">
     <div id="perfilForm">
@@ -293,25 +286,6 @@
             </tr>
           </thead>
           <tbody id="tableBody"></tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="helper-text">Histórico de 1RM (últimos registos)</div>
-      <div class="scroll">
-        <table>
-          <thead>
-            <tr>
-              <th>Data</th>
-              <th>Exercício</th>
-              <th>1RM</th>
-              <th>Origem</th>
-              <th>PR</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody id="rmLogBody"></tbody>
         </table>
       </div>
     </div>
@@ -512,11 +486,6 @@ const PERC = [
 const STORAGE_RM = "crossfit_1rm";
 let dataRm = JSON.parse(localStorage.getItem(STORAGE_RM) || "{}");
 
-/* Histórico de 1RM */
-const STORAGE_RM_LOG = "crossfit_1rm_log";
-let rmLog = JSON.parse(localStorage.getItem(STORAGE_RM_LOG) || "[]");
-const rmLogBody = document.getElementById("rmLogBody");
-
 const sel = document.getElementById("exercise");
 const rm = document.getElementById("oneRm");
 const bodyTable = document.getElementById("tableBody");
@@ -536,10 +505,6 @@ const treinoAddBtn = document.getElementById("treinoAdd");
 const treinoBody = document.getElementById("treinoBody");
 const treinoResumoEl = document.getElementById("treinoResumo");
 const treinoSugestaoEl = document.getElementById("treinoSugestao");
-
-/* RESUMO */
-const resumoPrEl = document.getElementById("resumoPr");
-const resumoTreinosEl = document.getElementById("resumoTreinos");
 
 /* Helpers */
 function initSelect() {
@@ -568,81 +533,6 @@ function formatKg(v) {
   return v.toFixed(1).replace(".", ",") + " kg";
 }
 
-/* === Histórico de 1RM === */
-function saveRmLog() {
-  localStorage.setItem(STORAGE_RM_LOG, JSON.stringify(rmLog));
-}
-
-function addRmLog(ex, val, source) {
-  const entry = {
-    ex,
-    val,
-    source, // "manual" ou "estimado"
-    date: new Date().toISOString().slice(0, 10)
-  };
-  rmLog.unshift(entry);
-  if (rmLog.length > 100) rmLog.length = 100;
-  saveRmLog();
-  renderRmLog();
-  updateResumo();
-}
-
-function deleteRmLog(index) {
-  if (index < 0 || index >= rmLog.length) return;
-  if (!confirm("Apagar este registo do histórico de 1RM?")) return;
-  rmLog.splice(index, 1);
-  saveRmLog();
-  renderRmLog();
-  updateResumo();
-}
-
-function renderRmLog() {
-  if (!rmLogBody) return;
-  rmLogBody.innerHTML = "";
-  if (!rmLog.length) return;
-
-  const maxByEx = {};
-  rmLog.forEach(e => {
-    if (!maxByEx[e.ex] || e.val > maxByEx[e.ex]) {
-      maxByEx[e.ex] = e.val;
-    }
-  });
-
-  rmLog.slice(0, 50).forEach((e, index) => {
-    const tr = document.createElement("tr");
-
-    const tdDate = document.createElement("td");
-    tdDate.textContent = e.date || "";
-    tr.appendChild(tdDate);
-
-    const tdEx = document.createElement("td");
-    tdEx.textContent = e.ex;
-    tr.appendChild(tdEx);
-
-    const tdVal = document.createElement("td");
-    tdVal.textContent = formatKg(e.val);
-    tr.appendChild(tdVal);
-
-    const tdSrc = document.createElement("td");
-    tdSrc.textContent = e.source === "estimado" ? "Estimado" : "Direto";
-    tr.appendChild(tdSrc);
-
-    const tdPr = document.createElement("td");
-    tdPr.textContent = (e.val >= maxByEx[e.ex] - 0.0001) ? "PR" : "";
-    tr.appendChild(tdPr);
-
-    const tdDel = document.createElement("td");
-    const btn = document.createElement("button");
-    btn.textContent = "🗑";
-    btn.className = "btn-delete";
-    btn.addEventListener("click", () => deleteRmLog(index));
-    tdDel.appendChild(btn);
-    tr.appendChild(tdDel);
-
-    rmLogBody.appendChild(tr);
-  });
-}
-
 /* === Tabela 1RM === */
 function deleteEx(name) {
   if (!name) return;
@@ -650,7 +540,6 @@ function deleteEx(name) {
   delete dataRm[name];
   localStorage.setItem(STORAGE_RM, JSON.stringify(dataRm));
   renderRm();
-  updateResumo();
 }
 
 function renderRm() {
@@ -699,7 +588,6 @@ document.getElementById("addBtn").addEventListener("click", () => {
   if (!ex || !val || val <= 0) return;
   dataRm[ex] = val;
   localStorage.setItem(STORAGE_RM, JSON.stringify(dataRm));
-  addRmLog(ex, val, "manual");
   rm.value = "";
   renderRm();
 });
@@ -771,7 +659,7 @@ function renderTreinos() {
   const lista = treinos.filter(t => t.date === dia);
 
   if (!lista.length) {
-    treinoResumoEl.textContent = "Sem treino registado para esta data.";
+    treinoResumoEl.textContent = "Sem treino registado para " + dia + ".";
     treinoSugestaoEl.textContent = "";
     return;
   }
@@ -851,9 +739,9 @@ function renderTreinos() {
     }
   });
 
+  // RESUMO APENAS NA PÁGINA DE TREINO: data + carga total
   treinoResumoEl.textContent =
-    "Carga total do treino: " + formatKg(totalCarga) +
-    " · Séries totais: " + totalSeries;
+    "Resumo do dia " + dia + ": carga total do treino = " + formatKg(totalCarga);
 
   // Sugestão de melhoria (objetivo: crescer e ganhar força)
   let sugestao = "";
@@ -879,49 +767,6 @@ if (treinoAddBtn) {
   treinoAddBtn.addEventListener("click", addTreinoEntry);
 }
 
-/* === RESUMO (PR e nº de registos) === */
-function updateResumo() {
-  if (!resumoPrEl || !resumoTreinosEl) return;
-
-  // PR
-  if (!rmLog.length && !Object.keys(dataRm).length) {
-    resumoPrEl.textContent = "Ainda não tens PR registados.";
-  } else {
-    const maxByEx = {};
-
-    if (rmLog.length) {
-      rmLog.forEach(e => {
-        if (!maxByEx[e.ex] || e.val > maxByEx[e.ex]) {
-          maxByEx[e.ex] = e.val;
-        }
-      });
-    } else {
-      Object.keys(dataRm).forEach(ex => {
-        maxByEx[ex] = dataRm[ex];
-      });
-    }
-
-    const lista = Object.entries(maxByEx)
-      .map(([ex, val]) => ({ ex, val }))
-      .sort((a, b) => b.val - a.val)
-      .slice(0, 3);
-
-    if (!lista.length) {
-      resumoPrEl.textContent = "Ainda não tens PR registados.";
-    } else {
-      const parts = lista.map((item, idx) =>
-        (idx + 1) + ") " + item.ex + " – " + formatKg(item.val)
-      );
-      resumoPrEl.textContent = "Top PR de força: " + parts.join(" · ");
-    }
-  }
-
-  const nEx = Object.keys(dataRm).length;
-  const nReg = rmLog.length;
-  resumoTreinosEl.textContent =
-    "Exercícios com 1RM registado: " + nEx + " · Registos de 1RM no histórico: " + nReg + ".";
-}
-
 /* TABS */
 document.querySelectorAll(".tab-btn").forEach(btn => {
   btn.addEventListener("click", () => {
@@ -938,8 +783,6 @@ document.querySelectorAll(".tab-btn").forEach(btn => {
 initSelect();
 loadProfile();
 renderRm();
-renderRmLog();
-updateResumo();
 
 /* Data do treino = hoje por defeito */
 if (treinoDataEl && !treinoDataEl.value) {
