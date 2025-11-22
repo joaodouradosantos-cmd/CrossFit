@@ -1,10 +1,10 @@
 {
-  "name": "Cross Moita - 1RM & Diário",
-  "short_name": "CrossMoita",
+  "name": "Cross Moita – 1RM",
+  "short_name": "Cross Moita",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#111827",
-  "theme_color": "#111827",
+  "background_color": "#f2f2f2",
+  "theme_color": "#f2f2f2",
   "icons": [
     {
       "src": "imagens/crossmoita_logo.png",
