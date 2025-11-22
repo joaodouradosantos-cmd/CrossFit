@@ -9,6 +9,11 @@
   <meta name="theme-color" content="#f2f2f2" />
   <link rel="manifest" href="manifest.json" />
 
+  <!-- Ícone para iPhone (Apple Touch Icon) -->
+  <link rel="apple-touch-icon" sizes="180x180" href="imagens/crossmoita_logo.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+
   <style>
     :root {
       font-family: system-ui, sans-serif;
@@ -292,10 +297,10 @@
 
   </section>
 
-  <!-- WOD (TREINO) -->
+  <!-- WOD -->
   <section id="sec-treino" class="section">
 
-    <!-- REGISTO DO TREINO DO DIA -->
+    <!-- REGISTO DO WOD DO DIA -->
     <div class="card">
       <div class="form-row">
         <div class="field">
@@ -349,7 +354,7 @@
       </div>
     </div>
 
-    <!-- TABELA DO TREINO E RESUMO -->
+    <!-- TABELA DO WOD, RESUMO, SUGESTÃO, HISTÓRICO SEMANAL -->
     <div class="card">
       <div class="scroll">
         <table>
@@ -372,7 +377,6 @@
       </div>
       <div class="helper-text" id="treinoResumo"></div>
       <div class="helper-text" id="treinoSugestao" style="margin-top:4px; font-weight:500;"></div>
-      <!-- HISTÓRICO SEMANAL -->
       <div class="helper-text" id="weeklyHistory" style="margin-top:6px;"></div>
     </div>
 
@@ -411,7 +415,6 @@ function updateProfileInfo() {
 
   profileInfo.textContent = txt;
 
-  // Esconde o formulário para ganhar espaço quando já está definido
   if (perfilForm) perfilForm.style.display = "none";
 }
 
@@ -478,7 +481,6 @@ const MOVES = [
   "Kettlebell Lunges"
 ];
 
-/* percentagens 25–40% + 50–95% */
 const PERC = [
   0.25, 0.30, 0.35, 0.40,
   0.50, 0.60, 0.70, 0.75,
@@ -492,7 +494,7 @@ const sel = document.getElementById("exercise");
 const rm = document.getElementById("oneRm");
 const bodyTable = document.getElementById("tableBody");
 
-/* TREINO (WOD) */
+/* WOD */
 const STORAGE_TREINO = "crossfit_treinos";
 let treinos = JSON.parse(localStorage.getItem(STORAGE_TREINO) || "[]");
 
@@ -595,7 +597,7 @@ document.getElementById("addBtn").addEventListener("click", () => {
   renderRm();
 });
 
-/* === TREINO: WOD / CARGA === */
+/* === WOD: CARGA E REGISTO === */
 function saveTreinos() {
   localStorage.setItem(STORAGE_TREINO, JSON.stringify(treinos));
 }
@@ -648,13 +650,13 @@ function addTreinoEntry() {
 
 function deleteTreinoEntry(index) {
   if (index < 0 || index >= treinos.length) return;
-  if (!confirm("Apagar este registo de treino?")) return;
+  if (!confirm("Apagar este registo de WOD?")) return;
   treinos.splice(index, 1);
   saveTreinos();
   renderTreinos();
 }
 
-/* === SUGESTÃO MOTIVADORA PERSONALIZADA === */
+/* === SUGESTÃO MOTIVADORA === */
 function buildSugestao(lista, totalCarga, totalSeries, blocosForca, blocosHipertrofia, blocosLeve, dia) {
   let partes = [];
 
@@ -721,8 +723,8 @@ function buildSugestao(lista, totalCarga, totalSeries, blocosForca, blocosHipert
 function getMonday(dateStr) {
   const d = new Date(dateStr);
   if (isNaN(d.getTime())) return null;
-  const day = d.getDay(); // 0 = dom, 1 = seg, ...
-  const diff = (day + 6) % 7; // 0 se segunda, 1 se terça, ...
+  const day = d.getDay();
+  const diff = (day + 6) % 7;
   d.setDate(d.getDate() - diff);
   d.setHours(0, 0, 0, 0);
   return d;
@@ -741,12 +743,12 @@ function renderWeeklyHistory() {
     if (!t.date) return;
     const mon = getMonday(t.date);
     if (!mon) return;
-    const key = mon.toISOString().slice(0,10); // YYYY-MM-DD da segunda-feira
+    const key = mon.toISOString().slice(0,10);
     if (!semanas[key]) semanas[key] = 0;
     semanas[key] += t.carga || 0;
   });
 
-  const keys = Object.keys(semanas).sort((a, b) => b.localeCompare(a)); // mais recente primeiro
+  const keys = Object.keys(semanas).sort((a, b) => b.localeCompare(a));
 
   if (!keys.length) {
     weeklyHistoryEl.textContent = "Ainda não há histórico semanal registado.";
@@ -772,7 +774,7 @@ function renderWeeklyHistory() {
     lines.join("<br>");
 }
 
-/* === RENDER WOD (DIA + SUGESTÃO + HISTÓRICO SEMANAL) === */
+/* === RENDER WOD === */
 function renderTreinos() {
   if (!treinoBody) return;
   treinoBody.innerHTML = "";
@@ -879,8 +881,14 @@ function renderTreinos() {
   renderWeeklyHistory();
 }
 
+/* Eventos WOD */
 if (treinoAddBtn) {
   treinoAddBtn.addEventListener("click", addTreinoEntry);
+}
+
+/* Atualiza automaticamente quando mudas a data */
+if (treinoDataEl) {
+  treinoDataEl.addEventListener("change", renderTreinos);
 }
 
 /* TABS */
@@ -904,15 +912,17 @@ initSelect();
 loadProfile();
 renderRm();
 
-/* Data do WOD = hoje por defeito + atualização automática quando mudas a data */
 if (treinoDataEl && !treinoDataEl.value) {
   treinoDataEl.value = new Date().toISOString().slice(0, 10);
 }
-if (treinoDataEl) {
-  treinoDataEl.addEventListener("change", renderTreinos);
-}
-
 renderTreinos();
+
+/* REGISTO DO SERVICE WORKER */
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("service-worker.js");
+  });
+}
 </script>
 
 </body>
