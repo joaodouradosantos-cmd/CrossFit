@@ -213,6 +213,13 @@
     <div class="subtitle">Registo pessoal de treinos</div>
   </header>
 
+  <!-- RESUMO -->
+  <section class="card" id="resumo">
+    <div class="helper-text"><strong>Resumo</strong></div>
+    <div id="resumoPr" class="helper-text"></div>
+    <div id="resumoTreinos" class="helper-text"></div>
+  </section>
+
   <!-- PERFIL -->
   <section class="card" id="perfil">
     <div class="form-row">
@@ -560,6 +567,10 @@ const btnApply1RM = document.getElementById("btnApply1RM");
 
 let lastEst1RM = null; // guarda última estimativa para poder aplicar
 
+/* RESUMO DOM */
+const resumoPrEl = document.getElementById("resumoPr");
+const resumoTreinosEl = document.getElementById("resumoTreinos");
+
 /* preencher select com exercícios (1RM e base) */
 function initSelect() {
   sel.innerHTML = "";
@@ -592,6 +603,7 @@ function addRmLog(ex, val, source) {
   if (rmLog.length > 100) rmLog.length = 100; // limite de 100 entradas
   saveRmLog();
   renderRmLog();
+  updateResumo();
 }
 
 function renderRmLog() {
@@ -642,6 +654,7 @@ function deleteEx(name) {
     localStorage.setItem(STORAGE_RM, JSON.stringify(dataRm));
     renderRm();
     updateLoadSelect();
+    updateResumo();
   }
 }
 
@@ -834,7 +847,7 @@ if (btnApply1RM) {
       const peso = parseFloat(calcPesoEl.value);
       const reps = parseInt(calcRepsEl.value, 10);
       if (!peso || peso <= 0 || !reps || reps <= 0) {
-        alert("Introduz carga e repetições válidos para calcular o 1RM.");
+        alert("Introduz carga e repetições válidos para calcular o 1RM.";
         return;
       }
       estVal = peso * (1 + reps / 30);
@@ -898,6 +911,8 @@ function renderDiary() {
 
     diaryBody.appendChild(tr);
   });
+
+  updateResumo();
 }
 
 function deleteDiary(index) {
@@ -930,6 +945,66 @@ document.getElementById("saveDiary").addEventListener("click", () => {
   notasEl.value = "";
 });
 
+/* ===== RESUMO (PR + treinos) ===== */
+function updateResumo() {
+  if (!resumoPrEl || !resumoTreinosEl) return;
+
+  // --- PRs ---
+  if (!rmLog.length && !Object.keys(dataRm).length) {
+    resumoPrEl.textContent = "Ainda não tens PR registados.";
+  } else {
+    // usar rmLog se existir, senão dataRm
+    let maxByEx = {};
+    if (rmLog.length) {
+      rmLog.forEach(e => {
+        if (!maxByEx[e.ex] || e.val > maxByEx[e.ex]) {
+          maxByEx[e.ex] = e.val;
+        }
+      });
+    } else {
+      Object.keys(dataRm).forEach(ex => {
+        maxByEx[ex] = dataRm[ex];
+      });
+    }
+
+    const lista = Object.entries(maxByEx)
+      .map(([ex, val]) => ({ ex, val }))
+      .sort((a, b) => b.val - a.val)
+      .slice(0, 3);
+
+    if (!lista.length) {
+      resumoPrEl.textContent = "Ainda não tens PR registados.";
+    } else {
+      const parts = lista.map((item, idx) =>
+        (idx + 1) + ") " + item.ex + " – " + formatKg(item.val)
+      );
+      resumoPrEl.textContent = "Top PR de força: " + parts.join(" · ");
+    }
+  }
+
+  // --- Treinos ---
+  if (!diary.length) {
+    resumoTreinosEl.textContent = "Ainda não tens treinos registados no diário.";
+  } else {
+    const total = diary.length;
+    const now = new Date();
+    const y = now.getFullYear();
+    const m = now.getMonth();
+    let mesCount = 0;
+
+    diary.forEach(d => {
+      if (!d.date) return;
+      const dt = new Date(d.date);
+      if (!isNaN(dt) && dt.getFullYear() === y && dt.getMonth() === m) {
+        mesCount++;
+      }
+    });
+
+    resumoTreinosEl.textContent =
+      "Treinos registados: " + total + " no total (" + mesCount + " este mês).";
+  }
+}
+
 /* ===== TABS ===== */
 document.querySelectorAll(".tab-btn").forEach(btn => {
   btn.addEventListener("click", () => {
@@ -949,6 +1024,7 @@ renderRm();
 renderRmLog();
 renderDiary();
 updateLoadSelect();
+updateResumo();
 
 /* preenche data de hoje por defeito */
 if (!dateEl.value) {
