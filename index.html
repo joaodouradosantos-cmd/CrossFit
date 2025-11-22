@@ -182,7 +182,7 @@
     .section { display: none; }
     .section.active { display: block; }
 
-    /* Botão de apagar nas tabelas (1RM e Diário) */
+    /* Botão de apagar na tabela 1RM (pequeno) */
     .btn-delete {
       padding: 4px 8px;
       border-radius: 999px;
@@ -196,6 +196,13 @@
     .btn-delete:hover {
       background: #ef4444;
     }
+
+    .helper-text {
+      margin-top: 8px;
+      font-size: 0.8rem;
+      color: #444;
+    }
+
   </style>
 </head>
 
@@ -206,6 +213,38 @@
     <img id="appLogo" src="imagens/crossmoita_logo.png" alt="Cross Moita Logo">
     <div class="subtitle">Registo pessoal de treinos</div>
   </header>
+
+  <!-- PERFIL -->
+  <section class="card" id="perfil">
+    <div class="form-row">
+      <div class="field">
+        <label>Sexo</label>
+        <select id="sexo">
+          <option value="">Selecionar</option>
+          <option value="homem">Homem</option>
+          <option value="mulher">Mulher</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Idade</label>
+        <input id="idade" type="number" min="10" max="100" />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="field">
+        <label>Altura (cm)</label>
+        <input id="altura" type="number" min="100" max="230" />
+      </div>
+      <div class="field">
+        <label>Peso (kg)</label>
+        <input id="peso" type="number" step="0.1" min="30" max="250" />
+      </div>
+    </div>
+
+    <button class="btn-primary" id="saveProfile">Guardar perfil</button>
+    <div class="helper-text" id="profileInfo"></div>
+  </section>
 
   <div class="tabs">
     <button class="tab-btn active" data-target="sec-1rm">1RM</button>
@@ -238,7 +277,6 @@
             <tr>
               <th>Exercício</th>
               <th>1RM</th>
-              <th>25%</th>
               <th>50%</th>
               <th>60%</th>
               <th>70%</th>
@@ -292,6 +330,7 @@
 
       <div style="margin-top:8px;">
         <button class="btn-primary" id="saveDiary">Guardar</button>
+        <button class="btn-danger" id="clearDiary">Apagar tudo</button>
       </div>
 
     </div>
@@ -306,7 +345,6 @@
               <th>Tipo</th>
               <th>Resultado</th>
               <th>Notas</th>
-              <th></th> <!-- coluna do lixo individual -->
             </tr>
           </thead>
           <tbody id="diaryBody"></tbody>
@@ -319,6 +357,55 @@
 </div>
 
 <script>
+/* ===== PERFIL ===== */
+const STORAGE_PROFILE = "crossfit_profile";
+let profile = JSON.parse(localStorage.getItem(STORAGE_PROFILE) || "{}");
+
+const sexoEl = document.getElementById("sexo");
+const idadeEl = document.getElementById("idade");
+const alturaEl = document.getElementById("altura");
+const pesoEl = document.getElementById("peso");
+const profileInfo = document.getElementById("profileInfo");
+
+function updateProfileInfo() {
+  if (!profileInfo) return;
+  if (!profile || !profile.peso) {
+    profileInfo.textContent = "Preenche o perfil para calcular força relativa (1RM em função do peso corporal).";
+    return;
+  }
+  let txt = "Peso atual: " + profile.peso + " kg";
+  if (profile.idade) txt += " · Idade: " + profile.idade + " anos";
+  if (profile.sexo) {
+    const sx = profile.sexo === "homem" ? "Homem" : "Mulher";
+    txt += " · Sexo: " + sx;
+  }
+  profileInfo.textContent = txt;
+}
+
+function loadProfile() {
+  if (!sexoEl) return;
+  if (profile.sexo) sexoEl.value = profile.sexo;
+  if (profile.idade) idadeEl.value = profile.idade;
+  if (profile.altura) alturaEl.value = profile.altura;
+  if (profile.peso) pesoEl.value = profile.peso;
+  updateProfileInfo();
+}
+
+const saveProfileBtn = document.getElementById("saveProfile");
+if (saveProfileBtn) {
+  saveProfileBtn.addEventListener("click", () => {
+    profile = {
+      sexo: sexoEl.value || "",
+      idade: idadeEl.value ? parseInt(idadeEl.value, 10) : "",
+      altura: alturaEl.value ? parseInt(alturaEl.value, 10) : "",
+      peso: pesoEl.value ? parseFloat(pesoEl.value) : ""
+    };
+    localStorage.setItem(STORAGE_PROFILE, JSON.stringify(profile));
+    updateProfileInfo();
+    alert("Perfil atualizado.");
+  });
+}
+
 /* ===== 1RM ===== */
 const MOVES = [
   "Chest Press",
@@ -403,7 +490,12 @@ function renderRm() {
     tr.appendChild(tdName);
 
     const td1rm = document.createElement("td");
-    td1rm.textContent = formatKg(dataRm[name]);
+    let oneRmText = formatKg(dataRm[name]);
+    if (profile && profile.peso) {
+      const rel = dataRm[name] / profile.peso;
+      oneRmText += " (" + rel.toFixed(2) + "x peso corporal)";
+    }
+    td1rm.textContent = oneRmText;
     tr.appendChild(td1rm);
 
     PERC.forEach(p => {
@@ -449,19 +541,9 @@ const resEl = document.getElementById("resultado");
 const notasEl = document.getElementById("notas");
 const diaryBody = document.getElementById("diaryBody");
 
-/* apagar um registo específico do diário */
-function deleteDiary(index) {
-  if (index < 0 || index >= diary.length) return;
-  if (!confirm("Apagar este registo do diário?")) return;
-  diary.splice(index, 1);
-  localStorage.setItem(STORAGE_DIARY, JSON.stringify(diary));
-  renderDiary();
-}
-
-/* desenhar tabela do diário */
 function renderDiary() {
   diaryBody.innerHTML = "";
-  diary.forEach((d, index) => {
+  diary.forEach(d => {
     const tr = document.createElement("tr");
 
     const tdDate = document.createElement("td");
@@ -483,14 +565,6 @@ function renderDiary() {
     const tdNotas = document.createElement("td");
     tdNotas.textContent = d.notas || "";
     tr.appendChild(tdNotas);
-
-    const tdDelete = document.createElement("td");
-    const btn = document.createElement("button");
-    btn.textContent = "🗑";
-    btn.className = "btn-delete";
-    btn.addEventListener("click", () => deleteDiary(index));
-    tdDelete.appendChild(btn);
-    tr.appendChild(tdDelete);
 
     diaryBody.appendChild(tr);
   });
@@ -518,6 +592,15 @@ document.getElementById("saveDiary").addEventListener("click", () => {
   notasEl.value = "";
 });
 
+/* apagar TODO o diário */
+document.getElementById("clearDiary").addEventListener("click", () => {
+  if (!diary.length) return;
+  if (!confirm("Apagar todos os registos do diário?")) return;
+  diary = [];
+  localStorage.setItem(STORAGE_DIARY, JSON.stringify(diary));
+  renderDiary();
+});
+
 /* ===== TABS ===== */
 document.querySelectorAll(".tab-btn").forEach(btn => {
   btn.addEventListener("click", () => {
@@ -532,6 +615,7 @@ document.querySelectorAll(".tab-btn").forEach(btn => {
 
 /* INIT */
 initSelect();
+loadProfile();
 renderRm();
 renderDiary();
 
