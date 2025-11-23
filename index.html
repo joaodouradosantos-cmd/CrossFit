@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CrossFit Moita</title>
+  <title>Cross Moita – 1RM</title>
 
   <!-- Cor da barra de topo nos telemóveis -->
   <meta name="theme-color" content="#f2f2f2" />
@@ -234,7 +234,7 @@
 
   <header>
     <img id="appLogo" src="imagens/crossmoita_logo.png" alt="Cross Moita Logo">
-    <div class="subtitle">Registo pessoal de treinos</div>
+    <div class="subtitle">Registo pessoal de treinos de força</div>
   </header>
 
   <!-- PERFIL -->
@@ -562,7 +562,11 @@ const PERC = [
 ];
 
 const STORAGE_RM = "crossfit_1rm";
+/* NOVO: histórico de 1RM para comparação */
+const STORAGE_RM_HISTORY = "crossfit_1rm_history";
+
 let dataRm = JSON.parse(localStorage.getItem(STORAGE_RM) || "{}");
+let rmHistory = JSON.parse(localStorage.getItem(STORAGE_RM_HISTORY) || "{}");
 
 const sel = document.getElementById("exercise");
 const rm = document.getElementById("oneRm");
@@ -648,7 +652,9 @@ function deleteEx(name) {
   if (!name) return;
   if (!confirm(`Apagar o exercício "${name}"?`)) return;
   delete dataRm[name];
+  delete rmHistory[name];
   localStorage.setItem(STORAGE_RM, JSON.stringify(dataRm));
+  localStorage.setItem(STORAGE_RM_HISTORY, JSON.stringify(rmHistory));
   renderRm();
 }
 
@@ -663,10 +669,25 @@ function renderRm() {
 
     const td1rm = document.createElement("td");
     let oneRmText = formatKg(dataRm[name]);
+
     if (profile && profile.peso) {
       const rel = dataRm[name] / profile.peso;
       oneRmText += " (" + rel.toFixed(2) + "x peso corporal)";
     }
+
+    /* NOVO: comparação com 1RM anterior */
+    const histList = rmHistory[name] || [];
+    if (histList.length) {
+      const prev = histList[histList.length - 1];
+      const prevVal = prev.value;
+      const diff = dataRm[name] - prevVal;
+      if (Math.abs(diff) >= 0.5) { // só mostrar se diferença mínima de 0,5 kg
+        const seta = diff > 0 ? "↑" : "↓";
+        const diffAbs = Math.abs(diff).toFixed(1).replace(".", ",");
+        oneRmText += ` · ${seta} ${diffAbs} kg vs anterior`;
+      }
+    }
+
     td1rm.textContent = oneRmText;
     tr.appendChild(td1rm);
 
@@ -693,13 +714,27 @@ function renderRm() {
   refreshCalcExOptions();
 }
 
-/* Guardar / atualizar 1RM manual */
+/* Guardar / atualizar 1RM manual (com histórico) */
 document.getElementById("addBtn").addEventListener("click", () => {
   const ex = sel.value;
   const val = parseFloat(rm.value);
   if (!ex || !val || val <= 0) return;
+
+  const old = dataRm[ex];
+
+  // Se já existia valor e mudou, guardar como histórico
+  if (typeof old === "number" && !isNaN(old) && old !== val) {
+    if (!rmHistory[ex]) rmHistory[ex] = [];
+    rmHistory[ex].push({
+      date: new Date().toISOString().slice(0, 10),
+      value: old
+    });
+  }
+
   dataRm[ex] = val;
   localStorage.setItem(STORAGE_RM, JSON.stringify(dataRm));
+  localStorage.setItem(STORAGE_RM_HISTORY, JSON.stringify(rmHistory));
+
   rm.value = "";
   renderRm();
 });
@@ -1098,4 +1133,3 @@ if ("serviceWorker" in navigator) {
 
 </body>
 </html>
-
