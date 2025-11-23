@@ -23,18 +23,16 @@
       color-scheme: light;
     }
 
-    /* FUNDO CLARO */
     body {
-      /* Gradiente vertical: mais claro em cima, mais escuro em baixo */
-  background: linear-gradient(
-    to bottom,
-    #e0e0e0 70%,
-    #d4d4d4 100%
-  );
-  color: #111111;
-  display: flex;
-  justify-content: center;
-  min-height: 100vh;
+      background: linear-gradient(
+        to bottom,
+        #e0e0e0 70%,
+        #d4d4d4 100%
+      );
+      color: #111111;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
     }
 
     .app {
@@ -47,6 +45,7 @@
     header {
       text-align: center;
       margin-bottom: 12px;
+      position: relative;
     }
 
     #appLogo {
@@ -59,6 +58,117 @@
     .subtitle {
       font-size: 0.85rem;
       color: #555;
+    }
+
+    /* BOTÃO MENU */
+    .menu-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid #cccccc;
+      background: #ffffff;
+      color: #222;
+      font-size: 0.8rem;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+
+    .menu-btn:active {
+      transform: scale(0.97);
+    }
+
+    .menu-panel {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .menu-panel.open {
+      display: flex;
+    }
+
+    .menu-card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 16px;
+      width: 100%;
+      max-width: 420px;
+      max-height: 90vh;
+      overflow: auto;
+      box-sizing: border-box;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+
+    .menu-card h2 {
+      margin-top: 0;
+      font-size: 1.1rem;
+    }
+
+    .menu-section {
+      margin-top: 10px;
+      border-top: 1px solid #eeeeee;
+      padding-top: 10px;
+    }
+
+    .reuse-block {
+      border-radius: 10px;
+      border: 1px solid #e5e5e5;
+      padding: 8px;
+      margin-bottom: 8px;
+      font-size: 0.8rem;
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+      background: #fafafa;
+    }
+
+    .reuse-block-main {
+      flex: 1;
+    }
+
+    .reuse-block button {
+      white-space: nowrap;
+    }
+
+    /* GALERIA DE “IMAGENS” DE EQUIPAMENTO */
+    .equipment-gallery {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin: 10px 0 18px 0;
+    }
+
+    .equipment-gallery.bottom-gallery {
+      margin-top: 18px;
+      margin-bottom: 4px;
+    }
+
+    .equip-card {
+      flex: 1 1 120px;
+      max-width: 150px;
+      min-height: 70px;
+      border-radius: 16px;
+      padding: 10px;
+      background: linear-gradient(135deg, #ffffff, #e5e5e5);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      font-size: 0.8rem;
+    }
+
+    .equip-emoji {
+      font-size: 1.8rem;
+      margin-bottom: 4px;
     }
 
     /* CARDS */
@@ -198,7 +308,6 @@
       border: 1px solid #e5e5e5;
     }
 
-    /* BOTÃO APAGAR */
     .btn-delete {
       padding: 2px 4px;
       border-radius: 999px;
@@ -234,22 +343,21 @@
       flex: 1;
     }
 
-   .btn-edit-profile {
-  padding: 2px 6px;            /* menor altura e largura */
-  border-radius: 999px;
-  border: 1px solid #cccccc;
-  background: #e5e5e5;
-  color: #222;
-  font-size: 0.6rem;           /* letra mais pequena */
-  cursor: pointer;
-  white-space: nowrap;
-  transform: scale(0.95);      /* ligeiramente mais pequeno */
-}
+    .btn-edit-profile {
+      padding: 2px 6px;
+      border-radius: 999px;
+      border: 1px solid #cccccc;
+      background: #e5e5e5;
+      color: #222;
+      font-size: 0.6rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transform: scale(0.95);
+    }
 
-.btn-edit-profile:active {
-  transform: scale(0.90);      /* feedback ao clicar */
-}
-
+    .btn-edit-profile:active {
+      transform: scale(0.90);
+    }
   </style>
 </head>
 
@@ -257,9 +365,80 @@
 <div class="app">
 
   <header>
+    <button id="menuBtn" class="menu-btn">☰ Menu</button>
     <img id="appLogo" src="imagens/crossmoita_logo.png" alt="Cross Moita Logo">
     <div class="subtitle">Registo pessoal de treinos de força</div>
   </header>
+
+  <!-- GALERIA SUPERIOR DE EQUIPAMENTO -->
+  <section class="equipment-gallery">
+    <div class="equip-card">
+      <div class="equip-emoji">🏋️‍♂️</div>
+      <div>Barras e levantamentos olímpicos</div>
+    </div>
+    <div class="equip-card">
+      <div class="equip-emoji">🧱</div>
+      <div>Caixas para saltos e step-ups</div>
+    </div>
+    <div class="equip-card">
+      <div class="equip-emoji">🏐</div>
+      <div>Bolas medicinais e lançamentos</div>
+    </div>
+    <div class="equip-card">
+      <div class="equip-emoji">🏋️</div>
+      <div>Kettlebells e halteres</div>
+    </div>
+  </section>
+
+  <!-- MENU OVERLAY -->
+  <div id="menuPanel" class="menu-panel">
+    <div class="menu-card">
+      <h2>Menu</h2>
+      <p style="font-size:0.85rem; color:#444; margin-bottom:8px;">
+        Reutiliza blocos de WOD já registados ou cria um novo bloco com o nome dos exercícios em português.
+      </p>
+
+      <div class="form-row" style="margin-bottom:8px;">
+        <button id="btnReuseBlocks" class="btn-secondary" style="flex:1;">
+          Inserir blocos já existentes
+        </button>
+        <button id="btnNewBlockPt" class="btn-secondary" style="flex:1;">
+          Novo bloco (PT)
+        </button>
+      </div>
+
+      <div id="reuseBlocksSection" class="menu-section" style="display:none;">
+        <div id="reuseBlocksList" style="font-size:0.8rem;"></div>
+      </div>
+
+      <div id="newBlockPtSection" class="menu-section" style="display:none;">
+        <div class="field">
+          <label>Exercício</label>
+          <select id="newBlockExercise"></select>
+        </div>
+        <div class="field" style="margin-top:6px;">
+          <label>Tipo de bloco</label>
+          <select id="newBlockTipo">
+            <option value="">Sem tipo definido</option>
+            <option value="força">Força</option>
+            <option value="hipertrofia">Hipertrofia</option>
+            <option value="técnica">Técnica</option>
+            <option value="metcon">Metcon</option>
+          </select>
+        </div>
+        <p class="helper-text" style="margin-top:6px;">
+          Ao aplicar, o formulário do WOD é preenchido com este exercício em português; depois defines rondas, repetições, peso e tempo.
+        </p>
+        <button id="newBlockApply" class="btn-primary" style="margin-top:8px;">
+          Aplicar no WOD
+        </button>
+      </div>
+
+      <button id="closeMenu" class="btn-secondary" style="margin-top:12px; width:100%;">
+        Fechar
+      </button>
+    </div>
+  </div>
 
   <!-- PERFIL -->
   <section class="card" id="perfil">
@@ -293,7 +472,6 @@
       <button class="btn-primary" id="saveProfile">Guardar perfil</button>
     </div>
 
-    <!-- Linha de resumo do perfil + botão EDITAR -->
     <div id="profileInfoWrapper">
       <span id="profileInfo"></span>
       <button id="editProfileBtn" class="btn-edit-profile">Editar</button>
@@ -407,7 +585,6 @@
   <!-- WOD -->
   <section id="sec-treino" class="section">
 
-    <!-- REGISTO DO WOD DO DIA -->
     <div class="card">
       <div class="form-row">
         <div class="field">
@@ -461,7 +638,6 @@
       </div>
     </div>
 
-    <!-- TABELA DO WOD, RESUMO, SUGESTÃO, HISTÓRICO SEMANAL + HISTÓRICO DIÁRIO -->
     <div class="card">
       <div class="scroll">
         <table>
@@ -486,12 +662,10 @@
       <div class="helper-text" id="treinoSugestao" style="margin-top:4px; font-weight:500;"></div>
       <div class="helper-text" id="weeklyHistory" style="margin-top:6px;"></div>
 
-      <!-- BOTÃO HISTÓRICO DIÁRIO -->
       <button class="btn-secondary" id="toggleDailyHistory" style="margin-top:8px;">
         Histórico diário
       </button>
 
-      <!-- SECÇÃO ESCONDIDA: HISTÓRICO DIÁRIO COMPLETO -->
       <div id="dailyHistorySection" style="display:none; margin-top:8px;">
         <div class="scroll">
           <table>
@@ -515,6 +689,22 @@
       </div>
     </div>
 
+  </section>
+
+  <!-- GALERIA INFERIOR DE EQUIPAMENTO -->
+  <section class="equipment-gallery bottom-gallery">
+    <div class="equip-card">
+      <div class="equip-emoji">🏃‍♂️</div>
+      <div>Metcon, corrida e cardio</div>
+    </div>
+    <div class="equip-card">
+      <div class="equip-emoji">🧗‍♂️</div>
+      <div>Ginástica, barras e puxadas</div>
+    </div>
+    <div class="equip-card">
+      <div class="equip-emoji">🧎‍♂️</div>
+      <div>Core, estabilidade e mobilidade</div>
+    </div>
   </section>
 
 </div>
@@ -578,7 +768,6 @@ if (saveProfileBtn) {
   });
 }
 
-/* Botão pequeno "Editar" ao lado da linha de perfil */
 if (editProfileBtn) {
   editProfileBtn.addEventListener("click", () => {
     if (perfilForm) {
@@ -626,6 +815,45 @@ const MOVES = [
   "Kettlebell Lunges"
 ];
 
+/* Tradução para PT para usar no layout/menu */
+const MOVES_PT = {
+  "Chest Press": "Supino com barra",
+  "Back Squat": "Agachamento com barra nas costas",
+  "Front Squat": "Agachamento frontal",
+  "Overhead Squat": "Agachamento overhead",
+  "Deadlift": "Peso morto",
+  "Sumo Deadlift": "Peso morto sumo",
+  "Romanian Deadlift (RDL)": "Peso morto romeno",
+  "Power Clean": "Power clean",
+  "Squat Clean": "Squat clean",
+  "Clean & Jerk": "Clean & jerk",
+  "Power Snatch": "Power snatch",
+  "Squat Snatch": "Squat snatch",
+  "Push Press": "Push press",
+  "Push Jerk": "Push jerk",
+  "Split Jerk": "Split jerk",
+  "Strict Press": "Press militar estrito",
+  "Thruster": "Thruster",
+  "Barbell Row": "Remada com barra",
+  "Bent Over Row": "Remada dobrado",
+  "Good Morning": "Good morning",
+  "Lunges com barra": "Lunges com barra",
+  "Hip Thrust com barra": "Hip thrust com barra",
+  "Dumbbell Press": "Press com halteres",
+  "Dumbbell Bench Press": "Supino com halteres",
+  "Dumbbell Snatch": "Snatch com halteres",
+  "Dumbbell Clean": "Clean com halteres",
+  "Dumbbell Clean & Jerk": "Clean & jerk com halteres",
+  "Dumbbell Thruster": "Thruster com halteres",
+  "Dumbbell Row": "Remada com halteres",
+  "Dumbbell Lunges": "Lunges com halteres",
+  "Kettlebell Swing": "Swing com kettlebell",
+  "Kettlebell Clean": "Clean com kettlebell",
+  "Kettlebell Snatch": "Snatch com kettlebell",
+  "Goblet Squat": "Agachamento goblet",
+  "Kettlebell Lunges": "Lunges com kettlebell"
+};
+
 const PERC = [
   0.25, 0.30, 0.35, 0.40,
   0.50, 0.60, 0.70, 0.75,
@@ -633,7 +861,6 @@ const PERC = [
 ];
 
 const STORAGE_RM = "crossfit_1rm";
-/* histórico de 1RM para comparação e gráfico */
 const STORAGE_RM_HISTORY = "crossfit_1rm_history";
 
 let dataRm = JSON.parse(localStorage.getItem(STORAGE_RM) || "{}");
@@ -643,14 +870,14 @@ const sel = document.getElementById("exercise");
 const rm = document.getElementById("oneRm");
 const bodyTable = document.getElementById("tableBody");
 
-/* MÓDULO CALCULADORA DE CARGA */
+/* CALCULADORA DE CARGA */
 const calcExEl = document.getElementById("calcExercicio");
 const calcRepsEl = document.getElementById("calcReps");
 const calcObjEl = document.getElementById("calcObjetivo");
 const calcResEl = document.getElementById("calcResultado");
 const calcBtn = document.getElementById("calcBtn");
 
-/* Botões de toggle das secções */
+/* Botões toggle */
 const toggleCalcBtn = document.getElementById("toggleCalc");
 const toggleGraphBtn = document.getElementById("toggleGraph");
 const calcSection = document.getElementById("calcSection");
@@ -683,14 +910,32 @@ const toggleDailyHistoryBtn = document.getElementById("toggleDailyHistory");
 const dailyHistorySection = document.getElementById("dailyHistorySection");
 const dailyHistoryBody = document.getElementById("dailyHistoryBody");
 
+/* MENU DOM */
+const menuBtn = document.getElementById("menuBtn");
+const menuPanel = document.getElementById("menuPanel");
+const closeMenuBtn = document.getElementById("closeMenu");
+const btnReuseBlocks = document.getElementById("btnReuseBlocks");
+const btnNewBlockPt = document.getElementById("btnNewBlockPt");
+const reuseBlocksSection = document.getElementById("reuseBlocksSection");
+const newBlockPtSection = document.getElementById("newBlockPtSection");
+const reuseBlocksList = document.getElementById("reuseBlocksList");
+const newBlockExerciseSelect = document.getElementById("newBlockExercise");
+const newBlockTipoSelect = document.getElementById("newBlockTipo");
+const newBlockApplyBtn = document.getElementById("newBlockApply");
+
 /* Helpers */
+function formatKg(v) {
+  return v.toFixed(1).replace(".", ",") + " kg";
+}
+
 function initSelect() {
   if (sel) {
     sel.innerHTML = "";
     MOVES.forEach(m => {
       const opt = document.createElement("option");
       opt.value = m;
-      opt.textContent = m;
+      const label = MOVES_PT[m] ? `${m} – ${MOVES_PT[m]}` : m;
+      opt.textContent = label;
       sel.appendChild(opt);
     });
   }
@@ -700,7 +945,8 @@ function initSelect() {
     MOVES.forEach(m => {
       const opt = document.createElement("option");
       opt.value = m;
-      opt.textContent = m;
+      const label = MOVES_PT[m] ? `${m} – ${MOVES_PT[m]}` : m;
+      opt.textContent = label;
       treinoExEl.appendChild(opt);
     });
   }
@@ -725,7 +971,8 @@ function refreshCalcExOptions() {
   names.forEach(n => {
     const opt = document.createElement("option");
     opt.value = n;
-    opt.textContent = n;
+    const label = MOVES_PT[n] ? `${n} – ${MOVES_PT[n]}` : n;
+    opt.textContent = label;
     calcExEl.appendChild(opt);
   });
 }
@@ -754,15 +1001,12 @@ function refreshGraphExerciseOptions() {
   names.forEach(n => {
     const opt = document.createElement("option");
     opt.value = n;
-    opt.textContent = n;
+    const label = MOVES_PT[n] ? `${n} – ${MOVES_PT[n]}` : n;
+    opt.textContent = label;
     graphExerciseEl.appendChild(opt);
   });
 
   updateRmChart();
-}
-
-function formatKg(v) {
-  return v.toFixed(1).replace(".", ",") + " kg";
 }
 
 /* === Tabela 1RM === */
@@ -782,7 +1026,8 @@ function renderRm() {
     const tr = document.createElement("tr");
 
     const tdName = document.createElement("td");
-    tdName.textContent = name;
+    const label = MOVES_PT[name] ? `${name} – ${MOVES_PT[name]}` : name;
+    tdName.textContent = label;
     tr.appendChild(tdName);
 
     const td1rm = document.createElement("td");
@@ -793,7 +1038,6 @@ function renderRm() {
       oneRmText += " (" + rel.toFixed(2) + "x peso corporal)";
     }
 
-    /* comparação com 1RM anterior */
     const histList = rmHistory[name] || [];
     if (histList.length) {
       const prev = histList[histList.length - 1];
@@ -921,7 +1165,7 @@ if (calcBtn) {
   });
 }
 
-/* === TOGGLE DAS SECÇÕES CARGA / GRÁFICO === */
+/* === TOGGLE CARGA / GRÁFICO === */
 if (toggleCalcBtn && calcSection) {
   toggleCalcBtn.addEventListener("click", () => {
     const visible = calcSection.style.display === "block";
@@ -995,12 +1239,14 @@ function updateRmChart() {
     return;
   }
 
+  const datasetLabel = MOVES_PT[ex] ? `${ex} – ${MOVES_PT[ex]} – 1RM (kg)` : ex + " – 1RM (kg)";
+
   rmChart = new Chart(ctx, {
     type: "line",
     data: {
       labels,
       datasets: [{
-        label: ex + " – 1RM (kg)",
+        label: datasetLabel,
         data: values,
         tension: 0.25
       }]
@@ -1069,7 +1315,6 @@ function addTreinoEntry() {
   renderTreinos();
 }
 
-/* apagar registo específico do WOD */
 function deleteTreinoEntry(index) {
   if (index < 0 || index >= treinos.length) return;
   if (!confirm("Apagar este registo de WOD?")) return;
@@ -1099,7 +1344,8 @@ function renderDailyHistory() {
     tr.appendChild(tdDate);
 
     const tdEx = document.createElement("td");
-    tdEx.textContent = t.ex || "";
+    const label = MOVES_PT[t.ex] ? `${t.ex} – ${MOVES_PT[t.ex]}` : t.ex;
+    tdEx.textContent = label || "";
     tr.appendChild(tdEx);
 
     const tdTipo = document.createElement("td");
@@ -1296,7 +1542,8 @@ function renderTreinos() {
     tr.appendChild(tdDate);
 
     const tdEx = document.createElement("td");
-    tdEx.textContent = e.ex;
+    const label = MOVES_PT[e.ex] ? `${e.ex} – ${MOVES_PT[e.ex]}` : e.ex;
+    tdEx.textContent = label || "";
     tr.appendChild(tdEx);
 
     const tdTipo = document.createElement("td");
@@ -1380,7 +1627,6 @@ if (treinoAddBtn) {
   treinoAddBtn.addEventListener("click", addTreinoEntry);
 }
 
-/* Atualiza automaticamente quando mudas a data */
 if (treinoDataEl) {
   treinoDataEl.addEventListener("change", renderTreinos);
 }
@@ -1412,6 +1658,140 @@ document.querySelectorAll(".tab-btn").forEach(btn => {
   });
 });
 
+/* ===== MENU: REUTILIZAR BLOCOS E NOVO BLOCO PT ===== */
+function openMenu() {
+  if (!menuPanel) return;
+  menuPanel.classList.add("open");
+  populateReuseBlocks();
+  populateNewBlockSelect();
+}
+
+function closeMenu() {
+  if (!menuPanel) return;
+  menuPanel.classList.remove("open");
+}
+
+function populateReuseBlocks() {
+  if (!reuseBlocksList) return;
+  reuseBlocksList.innerHTML = "";
+
+  if (!treinos.length) {
+    reuseBlocksList.textContent = "Ainda não tens blocos registados no WOD.";
+    return;
+  }
+
+  const seen = new Set();
+  const blocks = [];
+  treinos.forEach(t => {
+    const key = [t.ex, t.tipo || "", t.rondas || 0, t.reps || 0, t.peso || 0].join("|");
+    if (seen.has(key)) return;
+    seen.add(key);
+    blocks.push(t);
+  });
+
+  const today = new Date().toISOString().slice(0,10);
+
+  blocks.slice(0, 12).forEach(t => {
+    const div = document.createElement("div");
+    div.className = "reuse-block";
+
+    const main = document.createElement("div");
+    main.className = "reuse-block-main";
+    const label = MOVES_PT[t.ex] ? `${t.ex} – ${MOVES_PT[t.ex]}` : t.ex;
+    const tipo = t.tipo ? ` (${t.tipo})` : "";
+    const cargaTxt = t.peso ? `${formatKg(t.peso)} · ${t.rondas || 0}x${t.reps || 0}` : `${t.rondas || 0}x${t.reps || 0}`;
+    main.textContent = `${label}${tipo} – ${cargaTxt}`;
+    div.appendChild(main);
+
+    const btn = document.createElement("button");
+    btn.className = "btn-secondary";
+    btn.textContent = "Usar hoje";
+    btn.addEventListener("click", () => {
+      if (treinoDataEl) treinoDataEl.value = today;
+      if (treinoExEl) treinoExEl.value = t.ex;
+      if (treinoTipoEl) treinoTipoEl.value = t.tipo || "";
+      if (treinoRondasEl) treinoRondasEl.value = t.rondas || "";
+      if (treinoRepsEl) treinoRepsEl.value = t.reps || "";
+      if (treinoPesoEl) treinoPesoEl.value = t.peso || "";
+      if (treinoTempoEl) treinoTempoEl.value = t.tempo || "";
+      closeMenu();
+      document.getElementById("sec-treino").scrollIntoView({ behavior: "smooth" });
+    });
+    div.appendChild(btn);
+
+    reuseBlocksList.appendChild(div);
+  });
+}
+
+function populateNewBlockSelect() {
+  if (!newBlockExerciseSelect) return;
+  newBlockExerciseSelect.innerHTML = "";
+
+  MOVES.forEach(m => {
+    const opt = document.createElement("option");
+    opt.value = m;
+    const label = MOVES_PT[m] ? `${m} – ${MOVES_PT[m]}` : m;
+    opt.textContent = label;
+    newBlockExerciseSelect.appendChild(opt);
+  });
+}
+
+if (menuBtn) {
+  menuBtn.addEventListener("click", openMenu);
+}
+if (closeMenuBtn) {
+  closeMenuBtn.addEventListener("click", closeMenu);
+}
+if (menuPanel) {
+  menuPanel.addEventListener("click", (e) => {
+    if (e.target === menuPanel) closeMenu();
+  });
+}
+
+if (btnReuseBlocks && reuseBlocksSection) {
+  btnReuseBlocks.addEventListener("click", () => {
+    const visible = reuseBlocksSection.style.display === "block";
+    reuseBlocksSection.style.display = visible ? "none" : "block";
+    if (!visible) {
+      newBlockPtSection.style.display = "none";
+      populateReuseBlocks();
+    }
+  });
+}
+
+if (btnNewBlockPt && newBlockPtSection) {
+  btnNewBlockPt.addEventListener("click", () => {
+    const visible = newBlockPtSection.style.display === "block";
+    newBlockPtSection.style.display = visible ? "none" : "block";
+    if (!visible) {
+      reuseBlocksSection.style.display = "none";
+      populateNewBlockSelect();
+    }
+  });
+}
+
+if (newBlockApplyBtn) {
+  newBlockApplyBtn.addEventListener("click", () => {
+    const ex = newBlockExerciseSelect ? newBlockExerciseSelect.value : "";
+    const tipo = newBlockTipoSelect ? newBlockTipoSelect.value : "";
+
+    if (!ex) return;
+
+    const today = new Date().toISOString().slice(0,10);
+    if (treinoDataEl) treinoDataEl.value = today;
+    if (treinoExEl) treinoExEl.value = ex;
+    if (treinoTipoEl) treinoTipoEl.value = tipo;
+
+    if (treinoRondasEl) treinoRondasEl.value = "";
+    if (treinoRepsEl) treinoRepsEl.value = "";
+    if (treinoPesoEl) treinoPesoEl.value = "";
+    if (treinoTempoEl) treinoTempoEl.value = "";
+
+    closeMenu();
+    document.getElementById("sec-treino").scrollIntoView({ behavior: "smooth" });
+  });
+}
+
 /* INIT */
 initSelect();
 loadProfile();
@@ -1427,7 +1807,7 @@ if (graphExerciseEl) {
   graphExerciseEl.addEventListener("change", updateRmChart);
 }
 
-/* REGISTO DO SERVICE WORKER */
+/* SERVICE WORKER */
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", function () {
     navigator.serviceWorker.register("service-worker.js");
@@ -1437,7 +1817,3 @@ if ("serviceWorker" in navigator) {
 
 </body>
 </html>
-
-
-
-
