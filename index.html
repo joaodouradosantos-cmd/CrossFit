@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cross Moita – 1RM</title>
+  <title>CrossFit Moita</title>
 
   <!-- Cor da barra de topo nos telemóveis -->
   <meta name="theme-color" content="#f2f2f2" />
@@ -118,6 +118,22 @@
       margin-left: 8px;
     }
 
+    .btn-secondary {
+      background: #e5e5e5;
+      border-color: #cccccc;
+      color: #222;
+      font-weight: 500;
+      cursor: pointer;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      white-space: nowrap;
+    }
+
+    .btn-secondary:active {
+      transform: scale(0.97);
+    }
+
     /* TABS */
     .tabs {
       display: flex;
@@ -226,6 +242,31 @@
     .btn-edit-profile:active {
       transform: scale(0.97);
     }
+
+    /* Botões Carga / Gráfico */
+    .inline-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+    /* SVG do gráfico */
+    #rmChart {
+      width: 100%;
+      max-width: 100%;
+      height: 180px;
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+      background: #fafafa;
+    }
+
+    #graficoInfo {
+      margin-top: 6px;
+      font-size: 0.8rem;
+      color: #444;
+    }
   </style>
 </head>
 
@@ -234,7 +275,7 @@
 
   <header>
     <img id="appLogo" src="imagens/crossmoita_logo.png" alt="Cross Moita Logo">
-    <div class="subtitle">Registo pessoal de treinos de força</div>
+    <div class="subtitle">Registo pessoal de treinos</div>
   </header>
 
   <!-- PERFIL -->
@@ -328,8 +369,16 @@
       </div>
     </div>
 
-    <!-- MÓDULO: CÁLCULO DE CARGA SUGERIDA -->
+    <!-- BOTÕES: CARGA SUGERIDA + GRÁFICO -->
     <div class="card">
+      <div class="inline-actions">
+        <button class="btn-secondary" id="toggleCalc">Carga sugerida</button>
+        <button class="btn-secondary" id="toggleGrafico">Gráfico 1RM</button>
+      </div>
+    </div>
+
+    <!-- MÓDULO: CÁLCULO DE CARGA SUGERIDA (ESCONDIDO ATÉ CLICAR) -->
+    <div class="card" id="calcCard" style="display:none;">
       <div class="form-row">
         <div class="field">
           <label>Exercício (com 1RM registado)</label>
@@ -357,6 +406,18 @@
       <div class="helper-text" id="calcResultado">
         Escolhe um exercício com 1RM registado, indica o nº de repetições e, se quiseres, o objetivo (força / hipertrofia / técnica).
       </div>
+    </div>
+
+    <!-- NOVO CARD: GRÁFICO 1RM (ESCONDIDO ATÉ CLICAR) -->
+    <div class="card" id="graficoCard" style="display:none;">
+      <div class="form-row">
+        <div class="field">
+          <label>Exercício para ver gráfico 1RM</label>
+          <select id="graficoExercicio"></select>
+        </div>
+      </div>
+      <svg id="rmChart" viewBox="0 0 320 180" preserveAspectRatio="none"></svg>
+      <div id="graficoInfo"></div>
     </div>
 
   </section>
@@ -562,7 +623,6 @@ const PERC = [
 ];
 
 const STORAGE_RM = "crossfit_1rm";
-/* NOVO: histórico de 1RM para comparação */
 const STORAGE_RM_HISTORY = "crossfit_1rm_history";
 
 let dataRm = JSON.parse(localStorage.getItem(STORAGE_RM) || "{}");
@@ -573,11 +633,20 @@ const rm = document.getElementById("oneRm");
 const bodyTable = document.getElementById("tableBody");
 
 /* MÓDULO CALCULADORA DE CARGA */
+const calcCard = document.getElementById("calcCard");
 const calcExEl = document.getElementById("calcExercicio");
 const calcRepsEl = document.getElementById("calcReps");
 const calcObjEl = document.getElementById("calcObjetivo");
 const calcResEl = document.getElementById("calcResultado");
 const calcBtn = document.getElementById("calcBtn");
+const toggleCalcBtn = document.getElementById("toggleCalc");
+
+/* GRÁFICO 1RM */
+const graficoCard = document.getElementById("graficoCard");
+const toggleGraficoBtn = document.getElementById("toggleGrafico");
+const graficoExEl = document.getElementById("graficoExercicio");
+const rmChart = document.getElementById("rmChart");
+const graficoInfo = document.getElementById("graficoInfo");
 
 /* WOD */
 const STORAGE_TREINO = "crossfit_treinos";
@@ -643,6 +712,40 @@ function refreshCalcExOptions() {
   });
 }
 
+/* opções do gráfico: qualquer exercício com 1RM ou histórico */
+function refreshGraficoOptions() {
+  if (!graficoExEl) return;
+  graficoExEl.innerHTML = "";
+
+  const setEx = new Set();
+  Object.keys(dataRm).forEach(e => setEx.add(e));
+  Object.keys(rmHistory).forEach(e => setEx.add(e));
+
+  const names = Array.from(setEx).sort();
+  if (!names.length) {
+    const opt = document.createElement("option");
+    opt.value = "";
+    opt.textContent = "Sem dados de 1RM para gráfico";
+    graficoExEl.appendChild(opt);
+    graficoExEl.disabled = true;
+    graficoInfo.textContent = "Regista primeiro alguns 1RM para poderes ver a evolução.";
+    if (rmChart) rmChart.innerHTML = "";
+    return;
+  }
+
+  graficoExEl.disabled = false;
+  names.forEach(n => {
+    const opt = document.createElement("option");
+    opt.value = n;
+    opt.textContent = n;
+    graficoExEl.appendChild(opt);
+  });
+
+  // desenhar logo o primeiro
+  renderRmChart(names[0]);
+}
+
+/* formata kg */
 function formatKg(v) {
   return v.toFixed(1).replace(".", ",") + " kg";
 }
@@ -675,13 +778,12 @@ function renderRm() {
       oneRmText += " (" + rel.toFixed(2) + "x peso corporal)";
     }
 
-    /* NOVO: comparação com 1RM anterior */
     const histList = rmHistory[name] || [];
     if (histList.length) {
       const prev = histList[histList.length - 1];
       const prevVal = prev.value;
       const diff = dataRm[name] - prevVal;
-      if (Math.abs(diff) >= 0.5) { // só mostrar se diferença mínima de 0,5 kg
+      if (Math.abs(diff) >= 0.5) {
         const seta = diff > 0 ? "↑" : "↓";
         const diffAbs = Math.abs(diff).toFixed(1).replace(".", ",");
         oneRmText += ` · ${seta} ${diffAbs} kg vs anterior`;
@@ -722,7 +824,6 @@ document.getElementById("addBtn").addEventListener("click", () => {
 
   const old = dataRm[ex];
 
-  // Se já existia valor e mudou, guardar como histórico
   if (typeof old === "number" && !isNaN(old) && old !== val) {
     if (!rmHistory[ex]) rmHistory[ex] = [];
     rmHistory[ex].push({
@@ -738,6 +839,27 @@ document.getElementById("addBtn").addEventListener("click", () => {
   rm.value = "";
   renderRm();
 });
+
+/* === BOTÕES CARGA SUGERIDA / GRÁFICO === */
+if (toggleCalcBtn && calcCard) {
+  toggleCalcBtn.addEventListener("click", () => {
+    const visible = calcCard.style.display !== "none";
+    calcCard.style.display = visible ? "none" : "block";
+    if (!visible) {
+      refreshCalcExOptions();
+    }
+  });
+}
+
+if (toggleGraficoBtn && graficoCard) {
+  toggleGraficoBtn.addEventListener("click", () => {
+    const visible = graficoCard.style.display !== "none";
+    graficoCard.style.display = visible ? "none" : "block";
+    if (!visible) {
+      refreshGraficoOptions();
+    }
+  });
+}
 
 /* === CALCULADORA DE CARGA SUGERIDA === */
 function getPercentRange(reps, objetivo) {
@@ -800,6 +922,101 @@ if (calcBtn) {
       `Para ${reps} repetições em ${ex}, com objetivo ${objetivoTexto}, ` +
       `a carga sugerida é entre ${(minP*100).toFixed(0)}% e ${(maxP*100).toFixed(0)}% do 1RM: ` +
       `${formatKg(minLoad)} – ${formatKg(maxLoad)}. Ajusta ligeiramente para bater certo com os discos que tens.`;
+  });
+}
+
+/* === GRÁFICO 1RM === */
+function renderRmChart(ex) {
+  if (!rmChart || !graficoInfo) return;
+  if (!ex) {
+    rmChart.innerHTML = "";
+    graficoInfo.textContent = "Escolhe um exercício para ver o gráfico.";
+    return;
+  }
+
+  const hist = (rmHistory[ex] || []).slice(); // cópia
+  const series = hist.map(h => ({
+    date: h.date,
+    value: h.value
+  }));
+
+  if (dataRm[ex]) {
+    series.push({
+      date: new Date().toISOString().slice(0,10),
+      value: dataRm[ex],
+      current: true
+    });
+  }
+
+  if (!series.length) {
+    rmChart.innerHTML = "";
+    graficoInfo.textContent = "Ainda não há dados de 1RM para este exercício.";
+    return;
+  }
+
+  series.sort((a, b) => a.date.localeCompare(b.date));
+
+  const values = series.map(p => p.value);
+  const minV = Math.min.apply(null, values);
+  const maxV = Math.max.apply(null, values);
+
+  const pad = 10;
+  const w = 320;
+  const h = 180;
+  const innerW = w - 2 * pad;
+  const innerH = h - 2 * pad;
+
+  const yMin = minV * 0.95;
+  const yMax = maxV * 1.05;
+
+  function xScale(i) {
+    if (series.length === 1) return pad + innerW / 2;
+    return pad + (innerW * i) / (series.length - 1);
+  }
+
+  function yScale(v) {
+    if (yMax === yMin) return pad + innerH / 2;
+    const t = (v - yMin) / (yMax - yMin);
+    return pad + (1 - t) * innerH;
+  }
+
+  const points = series.map((p, i) => xScale(i) + "," + yScale(p.value)).join(" ");
+
+  let svgContent = "";
+
+  // Eixo X simples (linha)
+  svgContent += `<line x1="${pad}" y1="${h-pad}" x2="${w-pad}" y2="${h-pad}" stroke="#ccc" stroke-width="1"/>`;
+  // Eixo Y simples
+  svgContent += `<line x1="${pad}" y1="${pad}" x2="${pad}" y2="${h-pad}" stroke="#ccc" stroke-width="1"/>`;
+
+  // Polilinha principal
+  svgContent += `<polyline points="${points}" fill="none" stroke="#22c55e" stroke-width="2"/>`;
+
+  // Pontos
+  series.forEach((p, i) => {
+    const cx = xScale(i);
+    const cy = yScale(p.value);
+    const isCurrent = !!p.current;
+    const r = isCurrent ? 4 : 3;
+    const color = isCurrent ? "#16a34a" : "#1d4ed8";
+    svgContent += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${color}" />`;
+  });
+
+  rmChart.innerHTML = svgContent;
+
+  const lista = series.map((p, i) => {
+    const rotulo = p.current ? "atual" : `#${i+1}`;
+    return `${rotulo} (${p.date}): ${formatKg(p.value)}`;
+  });
+
+  graficoInfo.textContent =
+    `Evolução do 1RM em ${ex}: ` + lista.join(" · ");
+}
+
+/* evento alterar exercício no gráfico */
+if (graficoExEl) {
+  graficoExEl.addEventListener("change", () => {
+    renderRmChart(graficoExEl.value);
   });
 }
 
