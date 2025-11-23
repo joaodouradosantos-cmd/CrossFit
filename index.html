@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CrossFit Moita</title>
+  <title>Cross Moita – 1RM</title>
 
   <!-- Cor da barra de topo nos telemóveis -->
   <meta name="theme-color" content="#f2f2f2" />
@@ -196,6 +196,36 @@
       font-size: 0.8rem;
       color: #444;
     }
+
+    /* Linha de perfil + botão Editar */
+    #profileInfoWrapper {
+      margin-top: 4px;
+      font-size: 0.8rem;
+      color: #444;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    #profileInfo {
+      flex: 1;
+    }
+
+    .btn-edit-profile {
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid #cccccc;
+      background: #e5e5e5;
+      color: #222;
+      font-size: 0.7rem;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .btn-edit-profile:active {
+      transform: scale(0.97);
+    }
   </style>
 </head>
 
@@ -204,7 +234,7 @@
 
   <header>
     <img id="appLogo" src="imagens/crossmoita_logo.png" alt="Cross Moita Logo">
-    <div class="subtitle">Registo pessoal de treinos</div>
+    <div class="subtitle">Registo pessoal de treinos de força</div>
   </header>
 
   <!-- PERFIL -->
@@ -239,8 +269,11 @@
       <button class="btn-primary" id="saveProfile">Guardar perfil</button>
     </div>
 
-    <!-- Linha de resumo do perfil (fica sozinha depois de guardar) -->
-    <div class="helper-text" id="profileInfo"></div>
+    <!-- Linha de resumo do perfil + botão EDITAR -->
+    <div id="profileInfoWrapper">
+      <span id="profileInfo"></span>
+      <button id="editProfileBtn" class="btn-edit-profile">Editar</button>
+    </div>
   </section>
 
   <!-- TABS -->
@@ -295,7 +328,7 @@
       </div>
     </div>
 
-    <!-- NOVO MÓDULO: CÁLCULO DE CARGA SUGERIDA -->
+    <!-- MÓDULO: CÁLCULO DE CARGA SUGERIDA -->
     <div class="card">
       <div class="form-row">
         <div class="field">
@@ -426,6 +459,7 @@ const alturaEl = document.getElementById("altura");
 const pesoEl = document.getElementById("peso");
 const profileInfo = document.getElementById("profileInfo");
 const perfilForm = document.getElementById("perfilForm");
+const editProfileBtn = document.getElementById("editProfileBtn");
 
 function updateProfileInfo() {
   if (!profileInfo) return;
@@ -470,6 +504,15 @@ if (saveProfileBtn) {
     localStorage.setItem(STORAGE_PROFILE, JSON.stringify(profile));
     updateProfileInfo();
     alert("Perfil atualizado.");
+  });
+}
+
+/* Botão pequeno "Editar" ao lado da linha de perfil */
+if (editProfileBtn) {
+  editProfileBtn.addEventListener("click", () => {
+    if (perfilForm) {
+      perfilForm.style.display = "block";
+    }
   });
 }
 
@@ -525,7 +568,7 @@ const sel = document.getElementById("exercise");
 const rm = document.getElementById("oneRm");
 const bodyTable = document.getElementById("tableBody");
 
-/* NOVO MÓDULO: ELEMENTOS DA CALCULADORA DE CARGA */
+/* MÓDULO CALCULADORA DE CARGA */
 const calcExEl = document.getElementById("calcExercicio");
 const calcRepsEl = document.getElementById("calcReps");
 const calcObjEl = document.getElementById("calcObjetivo");
@@ -572,7 +615,7 @@ function initSelect() {
   }
 }
 
-/* Atualiza lista de exercícios na calculadora de carga (apenas com 1RM registado) */
+/* atualizar lista da calculadora (só exercícios com 1RM) */
 function refreshCalcExOptions() {
   if (!calcExEl) return;
   calcExEl.innerHTML = "";
@@ -647,7 +690,6 @@ function renderRm() {
     bodyTable.appendChild(tr);
   });
 
-  // Atualiza lista de exercícios na calculadora
   refreshCalcExOptions();
 }
 
@@ -662,9 +704,7 @@ document.getElementById("addBtn").addEventListener("click", () => {
   renderRm();
 });
 
-/* === NOVO MÓDULO: CÁLCULO DE CARGA SUGERIDA === */
-
-/* devolve intervalo de percentagens sugeridas com base em reps e objetivo */
+/* === CALCULADORA DE CARGA SUGERIDA === */
 function getPercentRange(reps, objetivo) {
   let minP, maxP;
 
@@ -683,7 +723,6 @@ function getPercentRange(reps, objetivo) {
     else if (reps <= 10) { minP = 0.45; maxP = 0.60; }
     else { minP = 0.40; maxP = 0.55; }
   } else {
-    // automático com base no nº de reps
     if (reps === 1) { minP = 0.9; maxP = 1.0; }
     else if (reps <= 3) { minP = 0.85; maxP = 0.95; }
     else if (reps <= 5) { minP = 0.80; maxP = 0.90; }
@@ -1059,4 +1098,3 @@ if ("serviceWorker" in navigator) {
 
 </body>
 </html>
-
