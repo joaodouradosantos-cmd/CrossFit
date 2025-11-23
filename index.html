@@ -258,12 +258,11 @@
       transform: scale(0.90);
     }
 
-    /* Traduções – já não usado, mas não faz mal ficar o CSS */
-    #tradSearch {
-      width: 100%;
-      margin-bottom: 8px;
+    #backupInfo {
+      margin-top: 6px;
+      font-size: 0.75rem;
+      color: #555;
     }
-
   </style>
 </head>
 <body>
@@ -379,11 +378,15 @@
         </button>
         <button class="btn-secondary opt-btn" data-target="opt-calc">
           <span class="opt-emoji">🧮</span>
-          <span>Melhoramento</span>
+          <span>Carga sugerida</span>
         </button>
         <button class="btn-secondary opt-btn" data-target="opt-graficos">
           <span class="opt-emoji">📈</span>
           <span>Gráfico</span>
+        </button>
+        <button class="btn-secondary opt-btn" data-target="opt-backup">
+          <span class="opt-emoji">💾</span>
+          <span>Backup</span>
         </button>
       </div>
       <div class="helper-text" style="margin-top:8px;">
@@ -556,13 +559,36 @@
 
     </section>
 
+    <!-- OPÇÃO 4: BACKUP -->
+    <section id="opt-backup" class="option-section">
+      <div class="card">
+        <h3 style="margin-top:0; margin-bottom:8px;">💾 Backup de dados</h3>
+        <p class="helper-text">
+          Exporta um ficheiro com o teu perfil, 1RM, histórico de WOD e restante informação.
+          Podes guardar em Google Drive, iCloud, Ficheiros, etc. Para restaurar noutro telemóvel, basta importar o ficheiro.
+        </p>
+        <div class="form-row">
+          <button class="btn-primary" id="exportBackupBtn">Exportar backup</button>
+          <button class="btn-secondary" id="importBackupBtn">Importar backup</button>
+          <input type="file" id="backupFileInput" accept="application/json" style="display:none;" />
+        </div>
+        <div id="backupInfo"></div>
+      </div>
+    </section>
+
   </section>
 
 </div>
 
 <script>
-/* ===== PERFIL ===== */
+/* ===== CHAVES DE ARMAZENAMENTO ===== */
 const STORAGE_PROFILE = "crossfit_profile";
+const STORAGE_RM = "crossfit_1rm";
+const STORAGE_RM_HISTORY = "crossfit_1rm_history";
+const STORAGE_TREINO = "crossfit_treinos";
+const STORAGE_BACKUP_META = "crossfit_backup_meta";
+
+/* ===== PERFIL ===== */
 let profile = JSON.parse(localStorage.getItem(STORAGE_PROFILE) || "{}");
 
 const sexoEl = document.getElementById("sexo");
@@ -615,6 +641,7 @@ if (saveProfileBtn) {
     };
     localStorage.setItem(STORAGE_PROFILE, JSON.stringify(profile));
     updateProfileInfo();
+    registerBackupMeta("Perfil atualizado");
     alert("Perfil atualizado.");
   });
 }
@@ -708,8 +735,6 @@ const PERC = [
   0.80, 0.85, 0.90, 0.95
 ];
 
-const STORAGE_RM = "crossfit_1rm";
-const STORAGE_RM_HISTORY = "crossfit_1rm_history";
 let dataRm = JSON.parse(localStorage.getItem(STORAGE_RM) || "{}");
 let rmHistory = JSON.parse(localStorage.getItem(STORAGE_RM_HISTORY) || "{}");
 
@@ -718,7 +743,6 @@ const rm = document.getElementById("oneRm");
 const bodyTable = document.getElementById("tableBody");
 
 /* WOD */
-const STORAGE_TREINO = "crossfit_treinos";
 let treinos = JSON.parse(localStorage.getItem(STORAGE_TREINO) || "[]");
 
 const treinoDataEl = document.getElementById("treinoData");
@@ -748,6 +772,12 @@ const calcBtn = document.getElementById("calcBtn");
 const graphExerciseEl = document.getElementById("graphExercise");
 const rmChartCanvas = document.getElementById("rmChart");
 let rmChart = null;
+
+/* Backup */
+const exportBackupBtn = document.getElementById("exportBackupBtn");
+const importBackupBtn = document.getElementById("importBackupBtn");
+const backupFileInput = document.getElementById("backupFileInput");
+const backupInfoEl = document.getElementById("backupInfo");
 
 /* Helpers */
 function formatKg(v) {
@@ -843,6 +873,7 @@ function deleteEx(name) {
   delete rmHistory[name];
   localStorage.setItem(STORAGE_RM, JSON.stringify(dataRm));
   localStorage.setItem(STORAGE_RM_HISTORY, JSON.stringify(rmHistory));
+  registerBackupMeta("1RM removido");
   renderRm();
 }
 
@@ -924,6 +955,7 @@ document.getElementById("addBtn").addEventListener("click", () => {
   localStorage.setItem(STORAGE_RM_HISTORY, JSON.stringify(rmHistory));
 
   rm.value = "";
+  registerBackupMeta("1RM atualizado");
   renderRm();
 });
 
@@ -1124,6 +1156,7 @@ function addTreinoEntry() {
 
   treinos.unshift(entry);
   saveTreinos();
+  registerBackupMeta("WOD registado");
   renderTreinos();
 }
 
@@ -1132,6 +1165,7 @@ function deleteTreinoEntry(index) {
   if (!confirm("Apagar este registo de WOD?")) return;
   treinos.splice(index, 1);
   saveTreinos();
+  registerBackupMeta("WOD removido");
   renderTreinos();
 }
 
@@ -1449,6 +1483,142 @@ if (toggleDailyHistoryBtn && dailyHistorySection) {
   });
 }
 
+/* === BACKUP === */
+
+function formatDateTime(dt) {
+  const d = new Date(dt);
+  if (isNaN(d.getTime())) return "";
+  const dd = String(d.getDate()).padStart(2, "0");
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const yyyy = d.getFullYear();
+  const hh = String(d.getHours()).padStart(2, "0");
+  const mi = String(d.getMinutes()).padStart(2, "0");
+  return `${dd}/${mm}/${yyyy} ${hh}:${mi}`;
+}
+
+/* Regista meta-informação de backup no localStorage (apenas texto) */
+function registerBackupMeta(evento) {
+  try {
+    const meta = JSON.parse(localStorage.getItem(STORAGE_BACKUP_META) || "{}");
+    meta.lastChange = new Date().toISOString();
+    meta.lastEvent = evento || "";
+    localStorage.setItem(STORAGE_BACKUP_META, JSON.stringify(meta));
+    updateBackupInfo();
+  } catch (e) {}
+}
+
+function updateBackupInfo() {
+  if (!backupInfoEl) return;
+  const meta = JSON.parse(localStorage.getItem(STORAGE_BACKUP_META) || "{}");
+  const lastBackup = meta.lastBackup ? formatDateTime(meta.lastBackup) : "nunca";
+  const lastChange = meta.lastChange ? formatDateTime(meta.lastChange) : "sem registo";
+  backupInfoEl.innerHTML =
+    `<div class="helper-text">
+       Último backup exportado: <strong>${lastBackup}</strong><br>
+       Última alteração de dados: <strong>${lastChange}</strong>
+     </div>`;
+}
+
+/* Cria objeto de backup com todos os dados relevantes */
+function buildBackupObject() {
+  return {
+    version: 1,
+    createdAt: new Date().toISOString(),
+    profile: profile || {},
+    dataRm: dataRm || {},
+    rmHistory: rmHistory || {},
+    treinos: treinos || []
+  };
+}
+
+/* Descarrega um objeto JSON como ficheiro */
+function downloadJson(obj, filename) {
+  const dataStr = "data:application/json;charset=utf-8," + encodeURIComponent(JSON.stringify(obj));
+  const a = document.createElement("a");
+  a.setAttribute("href", dataStr);
+  a.setAttribute("download", filename);
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
+
+/* Exportar backup (manual) */
+if (exportBackupBtn) {
+  exportBackupBtn.addEventListener("click", () => {
+    const backup = buildBackupObject();
+    const now = new Date();
+    const yyyy = now.getFullYear();
+    const mm = String(now.getMonth() + 1).padStart(2, "0");
+    const dd = String(now.getDate()).padStart(2, "0");
+    const filename = `crossfit_backup_${yyyy}${mm}${dd}.json`;
+    downloadJson(backup, filename);
+
+    try {
+      const meta = JSON.parse(localStorage.getItem(STORAGE_BACKUP_META) || "{}");
+      meta.lastBackup = new Date().toISOString();
+      localStorage.setItem(STORAGE_BACKUP_META, JSON.stringify(meta));
+    } catch (e) {}
+    updateBackupInfo();
+    alert("Backup exportado. Podes agora guardar o ficheiro em Google Drive, iCloud, Ficheiros, etc.");
+  });
+}
+
+/* Importar backup (manual) */
+if (importBackupBtn && backupFileInput) {
+  importBackupBtn.addEventListener("click", () => {
+    backupFileInput.value = "";
+    backupFileInput.click();
+  });
+
+  backupFileInput.addEventListener("change", (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+      try {
+        const content = evt.target.result;
+        const data = JSON.parse(content);
+
+        if (!data || typeof data !== "object") {
+          alert("Ficheiro inválido.");
+          return;
+        }
+
+        // Validação simples
+        if (!("dataRm" in data) && !("treinos" in data)) {
+          alert("Este ficheiro não parece ser um backup válido da app.");
+          return;
+        }
+
+        profile = data.profile || {};
+        dataRm = data.dataRm || {};
+        rmHistory = data.rmHistory || {};
+        treinos = data.treinos || [];
+
+        localStorage.setItem(STORAGE_PROFILE, JSON.stringify(profile));
+        localStorage.setItem(STORAGE_RM, JSON.stringify(dataRm));
+        localStorage.setItem(STORAGE_RM_HISTORY, JSON.stringify(rmHistory));
+        localStorage.setItem(STORAGE_TREINO, JSON.stringify(treinos));
+
+        registerBackupMeta("Backup importado");
+
+        loadProfile();
+        renderRm();
+        refreshCalcExOptions();
+        refreshGraphExerciseOptions();
+        renderTreinos();
+
+        alert("Backup importado com sucesso.");
+      } catch (err) {
+        console.error(err);
+        alert("Erro ao ler o ficheiro de backup.");
+      }
+    };
+    reader.readAsText(file);
+  });
+}
+
 /* === TABS PRINCIPAIS === */
 document.querySelectorAll(".tab-btn").forEach(btn => {
   btn.addEventListener("click", () => {
@@ -1482,6 +1652,7 @@ if (treinoDataEl && !treinoDataEl.value) {
   treinoDataEl.value = new Date().toISOString().slice(0, 10);
 }
 renderTreinos();
+updateBackupInfo();
 
 /* SERVICE WORKER */
 if ("serviceWorker" in navigator) {
@@ -1493,4 +1664,3 @@ if ("serviceWorker" in navigator) {
 
 </body>
 </html>
-
