@@ -141,7 +141,7 @@
       color: #444;
     }
 
-    /* Tabs principais: 1RM / OPÇÕES (com efeito 3D) */
+    /* Tabs principais: 1RM / OPÇÕES (3D) */
     .tabs {
       display: flex;
       gap: 8px;
@@ -381,13 +381,9 @@
     <div class="card">
       <h3 style="margin-top:0; margin-bottom:8px;">Opções</h3>
       <div class="options-grid">
-        <button class="btn-secondary opt-btn" data-target="opt-wod-registo">
+        <button class="btn-secondary opt-btn" data-target="opt-wod">
           <span class="opt-emoji">🟩</span>
-          <span>WOD – Registo</span>
-        </button>
-        <button class="btn-secondary opt-btn" data-target="opt-wod-hist">
-          <span class="opt-emoji">📋</span>
-          <span>WOD – Histórico</span>
+          <span>WOD</span>
         </button>
         <button class="btn-secondary opt-btn" data-target="opt-calc">
           <span class="opt-emoji">🧮</span>
@@ -407,10 +403,10 @@
       </div>
     </div>
 
-    <!-- OPÇÃO 1A: WOD – REGISTO -->
-    <section id="opt-wod-registo" class="option-section">
+    <!-- WOD: REGISTO + HISTÓRICO JUNTO -->
+    <section id="opt-wod" class="option-section">
       <div class="card">
-        <h3 style="margin-top:0; margin-bottom:8px;">🟩 WOD do dia – Registo</h3>
+        <h3 style="margin-top:0; margin-bottom:8px;">🟩 WOD do dia</h3>
 
         <div class="form-row">
           <div class="field">
@@ -463,12 +459,9 @@
           A carga de cada exercício é calculada como: peso × repetições × rondas.
         </div>
       </div>
-    </section>
 
-    <!-- OPÇÃO 1B: WOD – HISTÓRICO -->
-    <section id="opt-wod-hist" class="option-section">
       <div class="card">
-        <h3 style="margin-top:0; margin-bottom:8px;">📋 Registo e histórico do WOD</h3>
+        <h3 style="margin-top:0; margin-bottom:8px;">Registo e histórico</h3>
         <div class="scroll">
           <table>
             <thead>
@@ -520,7 +513,7 @@
       </div>
     </section>
 
-    <!-- OPÇÃO 2: CARGA SUGERIDA -->
+    <!-- CARGA SUGERIDA -->
     <section id="opt-calc" class="option-section">
       <div class="card">
         <h3 style="margin-top:0; margin-bottom:8px;">🧮 Carga sugerida</h3>
@@ -555,7 +548,7 @@
       </div>
     </section>
 
-    <!-- OPÇÃO 3: GRÁFICOS -->
+    <!-- GRÁFICOS -->
     <section id="opt-graficos" class="option-section">
       <div class="card">
         <h3 style="margin-top:0; margin-bottom:8px;">📈 Gráfico de evolução do 1RM</h3>
@@ -569,7 +562,7 @@
       </div>
     </section>
 
-    <!-- OPÇÃO 4: BACKUP -->
+    <!-- BACKUP -->
     <section id="opt-backup" class="option-section">
       <div class="card">
         <h3 style="margin-top:0; margin-bottom:8px;">💾 Backup de dados</h3>
