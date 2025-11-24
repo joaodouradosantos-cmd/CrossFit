@@ -307,8 +307,12 @@
       cursor: pointer;
       font-size: 0.9rem;
       box-shadow: 0 6px 14px rgba(0,0,0,0.65);
-      transition: transform 0.1s ease, box-shadow 0.1s ease,
-                  background 0.1s ease, border-color 0.1s ease, color 0.1s ease;
+      transition:
+        transform 0.1s ease,
+        box-shadow 0.1s ease,
+        background 0.1s ease,
+        border-color 0.1s ease,
+        color 0.1s ease;
     }
 
     .tab-btn:hover {
@@ -524,23 +528,23 @@
       <div class="scroll">
         <table>
           <thead>
-            <tr>
-              <th>Exercício</th>
-              <th>1RM</th>
-              <th>25%</th>
-              <th>30%</th>
-              <th>35%</th>
-              <th>40%</th>
-              <th>50%</th>
-              <th>60%</th>
-              <th>70%</th>
-              <th>75%</th>
-              <th>80%</th>
-              <th>85%</th>
-              <th>90%</th>
-              <th>95%</th>
-              <th></th>
-            </tr>
+          <tr>
+            <th>Exercício</th>
+            <th>1RM</th>
+            <th>25%</th>
+            <th>30%</th>
+            <th>35%</th>
+            <th>40%</th>
+            <th>50%</th>
+            <th>60%</th>
+            <th>70%</th>
+            <th>75%</th>
+            <th>80%</th>
+            <th>85%</th>
+            <th>90%</th>
+            <th>95%</th>
+            <th></th>
+          </tr>
           </thead>
           <tbody id="tableBody"></tbody>
         </table>
@@ -643,18 +647,18 @@
         <div class="scroll">
           <table>
             <thead>
-              <tr>
-                <th>Data</th>
-                <th>Exercício</th>
-                <th>Tipo</th>
-                <th>Rondas</th>
-                <th>Reps</th>
-                <th>Peso</th>
-                <th>% 1RM</th>
-                <th>Tempo</th>
-                <th>Carga</th>
-                <th></th>
-              </tr>
+            <tr>
+              <th>Data</th>
+              <th>Exercício</th>
+              <th>Tipo</th>
+              <th>Rondas</th>
+              <th>Reps</th>
+              <th>Peso</th>
+              <th>% 1RM</th>
+              <th>Tempo</th>
+              <th>Carga</th>
+              <th></th>
+            </tr>
             </thead>
             <tbody id="treinoBody"></tbody>
           </table>
@@ -671,18 +675,18 @@
           <div class="scroll">
             <table>
               <thead>
-                <tr>
-                  <th>Data</th>
-                  <th>Exercício</th>
-                  <th>Tipo</th>
-                  <th>Rondas</th>
-                  <th>Reps</th>
-                  <th>Peso</th>
-                  <th>% 1RM</th>
-                  <th>Tempo</th>
-                  <th>Carga</th>
-                  <th></th>
-                </tr>
+              <tr>
+                <th>Data</th>
+                <th>Exercício</th>
+                <th>Tipo</th>
+                <th>Rondas</th>
+                <th>Reps</th>
+                <th>Peso</th>
+                <th>% 1RM</th>
+                <th>Tempo</th>
+                <th>Carga</th>
+                <th></th>
+              </tr>
               </thead>
               <tbody id="dailyHistoryBody"></tbody>
             </table>
@@ -759,11 +763,11 @@
         <div class="scroll" style="margin-top:8px;">
           <table>
             <thead>
-              <tr>
-                <th>Nome (EN)</th>
-                <th>Tradução (PT)</th>
-                <th>Descrição</th>
-              </tr>
+            <tr>
+              <th>Nome (EN)</th>
+              <th>Tradução (PT)</th>
+              <th>Descrição</th>
+            </tr>
             </thead>
             <tbody id="guiaBody"></tbody>
           </table>
@@ -1320,10 +1324,11 @@ if (calcBtn) {
       `a carga sugerida é entre ${(minP*100).toFixed(0)}% e ${(maxP*100).toFixed(0)}% do 1RM: ` +
       `${formatKg(minLoad)} – ${formatKg(maxLoad)}. Ajusta ligeiramente para bater certo com os discos que tens.`;
 
-    // Se o utilizador definir um peso objetivo e/ou prazo, acrescentamos orientação extra
+    // Peso objetivo e prazo
     if (targetKgVal && !isNaN(targetKgVal)) {
       if (targetKgVal <= oneRmVal) {
-        msg += `\n\nO peso objetivo (${formatKg(targetKgVal)}) está abaixo ou muito próximo do teu 1RM atual. Foca-te em consolidar técnica, controlar o volume e manter consistência semanal.`;
+        msg += `\n\nO peso objetivo (${formatKg(targetKgVal)}) está abaixo ou muito próximo do teu 1RM atual. ` +
+               `Foca-te em consolidar técnica, controlar o volume e manter consistência semanal.`;
       } else {
         if (weeksVal && weeksVal > 0) {
           const incPercent = ((targetKgVal - oneRmVal) / oneRmVal) * 100;
@@ -1356,7 +1361,8 @@ if (calcBtn) {
                  `Uma sugestão, tendo em conta o teu nível, é realizar ${freq} de ${ex}, com ${seriesReps}, ` +
                  `aumentando 2,5–5 kg quando conseguires todas as séries com boa técnica e sem falhas.`;
         } else {
-          msg += `\n\nTens como objetivo chegar a ${formatKg(targetKgVal)}. Define um prazo em semanas para obteres uma recomendação mais detalhada de volume e frequência.`;
+          msg += `\n\nTens como objetivo chegar a ${formatKg(targetKgVal)}. ` +
+                 `Define um prazo em semanas para obteres uma recomendação mais detalhada de volume e frequência.`;
         }
       }
     }
@@ -1379,7 +1385,7 @@ function updateRmChart() {
     });
 
     hist.forEach((entry, idx) => {
-      labels.push(entry.date || "h" + (idx + 1));
+      labels.push(entry.date || ("h" + (idx + 1)));
       values.push(entry.value);
     });
 
@@ -1421,7 +1427,9 @@ function updateRmChart() {
     return;
   }
 
-  const datasetLabel = MOVES_PT[ex] ? `${ex} – ${MOVES_PT[ex]} – 1RM (kg)` : ex + " – 1RM (kg)";
+  const datasetLabel = MOVES_PT[ex]
+    ? `${ex} – ${MOVES_PT[ex]} – 1RM (kg)`
+    : ex + " – 1RM (kg)";
 
   rmChart = new Chart(ctx, {
     type: "line",
@@ -1958,7 +1966,7 @@ function renderGuiaExercicios() {
   if (!guiaBody) return;
   guiaBody.innerHTML = "";
 
-  const filtro = (guiaSearch?.value || "").toLowerCase().trim();
+  const filtro = (guiaSearch && guiaSearch.value ? guiaSearch.value : "").toLowerCase().trim();
 
   EXER_INFO.forEach(ex => {
     const texto = (ex.en + " " + ex.pt + " " + ex.descricao).toLowerCase();
