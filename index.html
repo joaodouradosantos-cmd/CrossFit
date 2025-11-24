@@ -16,13 +16,30 @@
 
   <style>
     :root {
-      font-family: system-ui, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
       color-scheme: light;
+      --bg-gradient-top: #e5e5e5;
+      --bg-gradient-bottom: #d1d1d1;
+      --card-bg: #ffffff;
+      --card-border: #e0e0e0;
+      --card-radius: 16px;
+      --primary: #22c55e;
+      --primary-dark: #15803d;
+      --secondary-bg: #e5e5e5;
+      --secondary-border: #cccccc;
+      --text-main: #111111;
+      --text-muted: #555555;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
-      background: linear-gradient(to bottom, #e0e0e0 90%, #d4d4d4 100%);
-      color: #111;
+      margin: 0;
+      background: linear-gradient(to bottom, var(--bg-gradient-top) 85%, var(--bg-gradient-bottom) 100%);
+      color: var(--text-main);
       display: flex;
       justify-content: center;
       min-height: 100vh;
@@ -31,8 +48,7 @@
     .app {
       width: 100%;
       max-width: 900px;
-      padding: 16px;
-      box-sizing: border-box;
+      padding: 16px 14px 24px 14px;
     }
 
     header {
@@ -49,17 +65,17 @@
     }
 
     .subtitle {
-      font-size: 0.85rem;
-      color: #555;
+      font-size: 0.9rem;
+      color: var(--text-muted);
     }
 
     .card {
-      background: #ffffff;
-      border-radius: 14px;
+      background: var(--card-bg);
+      border-radius: var(--card-radius);
       padding: 14px;
-      margin-bottom: 16px;
-      border: 1px solid #e0e0e0;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+      margin-bottom: 14px;
+      border: 1px solid var(--card-border);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
     }
 
     /* PERFIL SEM “CARTÃO” BRANCO */
@@ -67,7 +83,7 @@
       background: transparent;
       border: none;
       box-shadow: none;
-      padding: 0;
+      padding: 0 2px;
       margin-bottom: 4px;
     }
 
@@ -93,51 +109,65 @@
 
     label {
       font-size: 0.8rem;
-      color: #444;
+      color: #444444;
     }
 
-    input, select, textarea, button {
+    input,
+    select,
+    textarea,
+    button {
       padding: 10px;
-      border-radius: 10px;
+      border-radius: 12px;
       background: #ffffff;
-      color: #111;
+      color: var(--text-main);
       border: 1px solid #cccccc;
       font-size: 0.9rem;
-      box-sizing: border-box;
       font-family: inherit;
+      min-height: 40px; /* melhor toque em smartphone */
     }
 
-    input:focus, select:focus, textarea:focus {
+    input:focus,
+    select:focus,
+    textarea:focus {
       outline: none;
-      border-color: #22c55e;
+      border-color: var(--primary);
       box-shadow: 0 0 0 1px rgba(34,197,94,0.2);
     }
 
     .btn-primary {
-      background: #22c55e;
-      border-color: #22c55e;
+      background: var(--primary);
+      border-color: var(--primary);
       color: #ffffff;
       font-weight: 600;
       cursor: pointer;
+      transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.08s ease;
+    }
+
+    .btn-primary:active {
+      transform: scale(0.97);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      background: var(--primary-dark);
     }
 
     .btn-secondary {
       padding: 8px 10px;
       border-radius: 999px;
-      border: 1px solid #cccccc;
-      background: #e5e5e5;
-      color: #222;
+      border: 1px solid var(--secondary-border);
+      background: var(--secondary-bg);
+      color: #222222;
       font-size: 0.8rem;
       cursor: pointer;
       white-space: nowrap;
+      transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.08s ease;
     }
 
     .btn-secondary:active {
       transform: scale(0.97);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
     }
 
     .btn-delete {
-      padding: 2px 4px;
+      padding: 2px 6px;
       border-radius: 999px;
       border: 1px solid #e5e5e5;
       background: #f97373;
@@ -153,7 +183,7 @@
     .helper-text {
       margin-top: 4px;
       font-size: 0.8rem;
-      color: #444;
+      color: #444444;
     }
 
     .btn-edit-profile {
@@ -161,10 +191,11 @@
       border-radius: 999px;
       border: 1px solid #cccccc;
       background: #e5e5e5;
-      color: #222;
+      color: #222222;
       font-size: 0.65rem;
       cursor: pointer;
       white-space: nowrap;
+      transition: background 0.08s ease, transform 0.08s ease;
     }
 
     .btn-edit-profile:active {
@@ -189,11 +220,12 @@
       border-radius: 999px;
       border: 1px solid #cccccc;
       background: #e5e5e5;
-      color: #222;
+      color: #222222;
       cursor: pointer;
       font-size: 0.9rem;
       box-shadow: 0 4px 0 #b3b3b3;
-      transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s ease, border-color 0.1s ease, color 0.1s ease;
+      transition: transform 0.1s ease, box-shadow 0.1s ease,
+                  background 0.1s ease, border-color 0.1s ease, color 0.1s ease;
     }
 
     .tab-btn:hover {
@@ -202,16 +234,21 @@
     }
 
     .tab-btn.active {
-      background: #22c55e;
-      border-color: #22c55e;
+      background: var(--primary);
+      border-color: var(--primary);
       color: #ffffff;
       font-weight: 600;
       transform: translateY(2px);
-      box-shadow: 0 2px 0 #15803d;
+      box-shadow: 0 2px 0 var(--primary-dark);
     }
 
-    .section { display: none; }
-    .section.active { display: block; }
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
 
     .options-grid {
       display: grid;
@@ -244,10 +281,11 @@
       width: 100%;
       border-collapse: collapse;
       font-size: 0.8rem;
-      color: #111;
+      color: var(--text-main);
     }
 
-    th, td {
+    th,
+    td {
       padding: 6px;
       text-align: center;
       border-bottom: 1px solid #dddddd;
@@ -256,7 +294,7 @@
 
     th {
       background: #f9f9f9;
-      color: #333;
+      color: #333333;
       position: sticky;
       top: 0;
       z-index: 1;
@@ -267,12 +305,48 @@
       overflow: auto;
       border-radius: 10px;
       border: 1px solid #e5e5e5;
+      -webkit-overflow-scrolling: touch; /* scroll suave no telemóvel */
     }
 
     #backupInfo {
       margin-top: 6px;
       font-size: 0.75rem;
-      color: #555;
+      color: #555555;
+    }
+
+    /* Ajustes específicos para ecrãs pequenos */
+    @media (max-width: 480px) {
+      .app {
+        padding: 12px 10px 20px 10px;
+      }
+
+      .card {
+        padding: 12px;
+        margin-bottom: 12px;
+      }
+
+      .form-row {
+        gap: 8px;
+      }
+
+      .field {
+        min-width: 100%;
+      }
+
+      th,
+      td {
+        padding: 5px;
+        font-size: 0.75rem;
+      }
+
+      .tabs {
+        margin-top: 6px;
+      }
+
+      .tab-btn {
+        font-size: 0.8rem;
+        padding: 8px 0;
+      }
     }
   </style>
 </head>
@@ -364,7 +438,7 @@
         <table>
           <thead>
             <tr>
-              <th>Exercício (EN)</th>
+              <th>Exercício</th>
               <th>1RM</th>
               <th>25%</th>
               <th>30%</th>
@@ -704,111 +778,169 @@ if (editProfileBtnHeader) {
   });
 }
 
-/* ===== BASE DE EXERCÍCIOS COMPLETA (EN / PT / DESCRIÇÃO) ===== */
-const EXERCISES = [
-  /* === BARBELL / HALTEROFILISMO (1RM = true) === */
-  { nameEn: "Chest Press", namePt: "Supino com barra", isWeight: true, category: "barbell", description: "Deitado no banco, empurrar a barra para cima a partir do peito, controlando a descida." },
-  { nameEn: "Back Squat", namePt: "Agachamento com barra nas costas", isWeight: true, category: "barbell", description: "Agachamento com a barra apoiada nas costas, descendo até pelo menos à paralela e subindo com o tronco firme." },
-  { nameEn: "Front Squat", namePt: "Agachamento frontal", isWeight: true, category: "barbell", description: "Agachamento com a barra apoiada na parte da frente dos ombros, mantendo o tronco mais vertical." },
-  { nameEn: "Overhead Squat", namePt: "Agachamento acima da cabeça", isWeight: true, category: "barbell", description: "Agachamento com a barra acima da cabeça, braços estendidos e core firme para estabilizar." },
-  { nameEn: "Deadlift", namePt: "Peso morto", isWeight: true, category: "barbell", description: "Levar a barra do chão até à anca com costas neutras, empurrando o chão com as pernas." },
-  { nameEn: "Sumo Deadlift", namePt: "Peso morto sumo", isWeight: true, category: "barbell", description: "Peso morto com pés mais afastados e mãos a agarrar a barra entre as pernas, reduzindo a amplitude de anca." },
-  { nameEn: "Romanian Deadlift (RDL)", namePt: "Peso morto romeno", isWeight: true, category: "barbell", description: "Peso morto com menor flexão de joelhos, focado em posteriores da coxa e glúteos." },
-  { nameEn: "Power Clean", namePt: "Power clean", isWeight: true, category: "barbell", description: "Levar a barra do chão até aos ombros de forma explosiva, recebendo-a acima da paralela." },
-  { nameEn: "Squat Clean", namePt: "Squat clean", isWeight: true, category: "barbell", description: "Clean com receção em agachamento completo, antes de subir para a posição de pé." },
-  { nameEn: "Clean & Jerk", namePt: "Clean & jerk", isWeight: true, category: "barbell", description: "Clean do chão aos ombros seguido de jerk dos ombros até acima da cabeça." },
-  { nameEn: "Power Snatch", namePt: "Power snatch", isWeight: true, category: "barbell", description: "Arranco com receção acima da paralela, num movimento do chão até overhead." },
-  { nameEn: "Squat Snatch", namePt: "Squat snatch", isWeight: true, category: "barbell", description: "Arranco com receção em agachamento profundo, seguido de extensão até ficar de pé." },
-  { nameEn: "Push Press", namePt: "Push press", isWeight: true, category: "barbell", description: "Press de ombros com pequeno impulso das pernas, terminando com a barra acima da cabeça." },
-  { nameEn: "Push Jerk", namePt: "Push jerk", isWeight: true, category: "barbell", description: "Impulso de pernas e encaixe da barra acima da cabeça, recebendo em semi-agachamento." },
-  { nameEn: "Split Jerk", namePt: "Split jerk", isWeight: true, category: "barbell", description: "Jerk em passada, recebendo a barra overhead com uma perna à frente e outra atrás." },
-  { nameEn: "Strict Press", namePt: "Press militar estrito", isWeight: true, category: "barbell", description: "Press de ombros sem ajuda das pernas, apenas com força de ombros e braços." },
-  { nameEn: "Thruster", namePt: "Thruster", isWeight: true, category: "barbell", description: "Agachamento frontal seguido diretamente de press acima da cabeça num só movimento." },
-  { nameEn: "Barbell Row", namePt: "Remada com barra", isWeight: true, category: "barbell", description: "Com o tronco inclinado, puxar a barra em direção ao abdómen mantendo as costas neutras." },
-  { nameEn: "Bent Over Row", namePt: "Remada inclinada", isWeight: true, category: "barbell", description: "Remada com maior inclinação do tronco, focando dorsais e parte média das costas." },
-  { nameEn: "Good Morning", namePt: "Good morning", isWeight: true, category: "barbell", description: "Com a barra nas costas, inclinar o tronco à frente com ligeira flexão de joelhos e voltar à posição inicial." },
-  { nameEn: "Lunges com barra", namePt: "Passadas com barra", isWeight: true, category: "barbell", description: "Passadas à frente ou atrás com a barra apoiada nos ombros, mantendo o tronco direito." },
-  { nameEn: "Hip Thrust com barra", namePt: "Hip thrust com barra", isWeight: true, category: "barbell", description: "Elevar a anca com as costas apoiadas num banco e a barra sobre a bacia, contraindo bem os glúteos." },
-
-  /* DUMBBELL / HALTERES (1RM = true nos básicos) */
-  { nameEn: "Dumbbell Press", namePt: "Press com halteres", isWeight: true, category: "dumbbell", description: "Press de ombros com halteres, de pé ou sentado, subindo acima da cabeça." },
-  { nameEn: "Dumbbell Bench Press", namePt: "Supino com halteres", isWeight: true, category: "dumbbell", description: "Deitado no banco, empurrar dois halteres para cima a partir do peito." },
-  { nameEn: "Dumbbell Snatch", namePt: "Snatch com halteres", isWeight: true, category: "dumbbell", description: "Do chão até acima da cabeça com um haltere, num movimento explosivo." },
-  { nameEn: "Dumbbell Clean", namePt: "Clean com halteres", isWeight: true, category: "dumbbell", description: "Levar os halteres das pernas até aos ombros com extensão de anca." },
-  { nameEn: "Dumbbell Clean & Jerk", namePt: "Clean & jerk com halteres", isWeight: true, category: "dumbbell", description: "Clean com halteres até ao ombro seguido de impulso até overhead." },
-  { nameEn: "Dumbbell Thruster", namePt: "Thruster com halteres", isWeight: true, category: "dumbbell", description: "Agachamento seguido de press com halteres acima da cabeça num só movimento." },
-  { nameEn: "Dumbbell Row", namePt: "Remada com halteres", isWeight: true, category: "dumbbell", description: "Remada unilateral ou bilateral, puxando o haltere em direção ao tronco." },
-  { nameEn: "Dumbbell Lunges", namePt: "Passadas com halteres", isWeight: true, category: "dumbbell", description: "Passadas segurando um haltere em cada mão junto ao corpo." },
-
-  /* KETTLEBELL (peso, mas mais usado em WOD) */
-  { nameEn: "Kettlebell Swing", namePt: "Swing com kettlebell", isWeight: true, category: "kettlebell", description: "Balanço da kettlebell usando sobretudo o impulso da anca, não dos braços." },
-  { nameEn: "Kettlebell Clean", namePt: "Clean com kettlebell", isWeight: true, category: "kettlebell", description: "Levar a kettlebell do fundo até à posição de rack junto ao peito." },
-  { nameEn: "Kettlebell Snatch", namePt: "Snatch com kettlebell", isWeight: true, category: "kettlebell", description: "Arranco unilateral, do chão ou baloiço até acima da cabeça." },
-  { nameEn: "Goblet Squat", namePt: "Agachamento goblet", isWeight: true, category: "kettlebell", description: "Agachamento segurando kettlebell ou haltere junto ao peito." },
-  { nameEn: "Kettlebell Lunges", namePt: "Passadas com kettlebell", isWeight: true, category: "kettlebell", description: "Passadas segurando a kettlebell ao lado do corpo ou em rack." },
-
-  /* === GINÁSTICA / CALISTENIA (1RM = false) === */
-  { nameEn: "Pull-Up", namePt: "Puxada na barra", isWeight: false, category: "gymnastic", description: "Suspenso na barra, puxar até o queixo ultrapassar a barra, com pegada pronada." },
-  { nameEn: "Chin-Up", namePt: "Puxada em supinação", isWeight: false, category: "gymnastic", description: "Puxada na barra com palmas viradas para si, focando mais os bíceps." },
-  { nameEn: "Chest-to-Bar Pull-Up", namePt: "Puxada ao peito", isWeight: false, category: "gymnastic", description: "Puxada até o peito tocar na barra, exigindo maior amplitude." },
-  { nameEn: "Bar Muscle-Up", namePt: "Muscle-up na barra", isWeight: false, category: "gymnastic", description: "Puxada explosiva seguida de transição e dip, terminando com o tronco por cima da barra." },
-  { nameEn: "Ring Muscle-Up", namePt: "Muscle-up nas argolas", isWeight: false, category: "gymnastic", description: "Versão em argolas, mais instável, combinando puxada e dip." },
-  { nameEn: "Toes-to-Bar (T2B)", namePt: "Pés à barra", isWeight: false, category: "gymnastic", description: "Suspenso na barra, elevar os pés até tocar na barra com controlo de core." },
-  { nameEn: "Knees-to-Elbows (K2E)", namePt: "Joelhos aos cotovelos", isWeight: false, category: "gymnastic", description: "Suspenso na barra, elevar os joelhos até tocar nos cotovelos." },
-  { nameEn: "Hanging Knee Raise", namePt: "Elevação de joelhos", isWeight: false, category: "gymnastic", description: "Suspenso na barra, elevar os joelhos até à altura da anca ou acima." },
-  { nameEn: "Handstand Push-Up (HSPU)", namePt: "Flexão de braços em pino", isWeight: false, category: "gymnastic", description: "Em pino contra a parede ou livre, realizar flexões de braços." },
-  { nameEn: "Handstand Walk", namePt: "Caminhada em pino", isWeight: false, category: "gymnastic", description: "Deslocar-se apoiado apenas nas mãos em posição de pino." },
-  { nameEn: "Pistol Squat", namePt: "Agachamento numa perna", isWeight: false, category: "gymnastic", description: "Agachamento completo numa perna, mantendo a outra estendida à frente." },
-  { nameEn: "Sit-Up", namePt: "Abdominal", isWeight: false, category: "gymnastic", description: "Deitado de costas, subir o tronco até ficar sentado." },
-  { nameEn: "GHD Sit-Up", namePt: "Abdominal GHD", isWeight: false, category: "gymnastic", description: "Abdominal profundo na máquina GHD, descendo além da linha da anca e regressando." },
-  { nameEn: "Back Extension (GHD)", namePt: "Extensão lombar", isWeight: false, category: "gymnastic", description: "Na GHD, descer o tronco em flexão de anca e voltar à extensão." },
-  { nameEn: "Ring Row", namePt: "Remada em argolas", isWeight: false, category: "gymnastic", description: "Suspenso nas argolas com os pés no chão, puxar o peito em direção às argolas." },
-  { nameEn: "Ring Dip", namePt: "Mergulhos em argolas", isWeight: false, category: "gymnastic", description: "A partir de braços estendidos, descer até ombros abaixo dos cotovelos e voltar a subir." },
-  { nameEn: "Air Squat", namePt: "Agachamento simples", isWeight: false, category: "gymnastic", description: "Agachamento apenas com peso corporal, descendo até abaixo da paralela." },
-  { nameEn: "Push-Up", namePt: "Flexões de braços", isWeight: false, category: "gymnastic", description: "Em prancha, baixar o peito em direção ao chão e voltar a subir." },
-  { nameEn: "Hand-Release Push-Up", namePt: "Flexões com mãos ao ar", isWeight: false, category: "gymnastic", description: "No fundo da flexão, levantar as mãos do chão antes de voltar a subir." },
-
-  /* === METCON / WOD === */
-  { nameEn: "Burpee", namePt: "Burpee", isWeight: false, category: "metcon", description: "Agachar, colocar as mãos no chão, fazer flexão, voltar a levantar e terminar com um salto." },
-  { nameEn: "Burpee Box Jump-Over", namePt: "Burpee com salto sobre a caixa", isWeight: false, category: "metcon", description: "Burpee seguido de salto por cima da caixa, de um lado para o outro." },
-  { nameEn: "Box Jump", namePt: "Salto para a caixa", isWeight: false, category: "metcon", description: "Saltar com os dois pés para cima da caixa e estabilizar antes de descer." },
-  { nameEn: "Box Jump Over", namePt: "Salto por cima da caixa", isWeight: false, category: "metcon", description: "Saltar para cima e para o outro lado da caixa, sem necessidade de estabilizar no topo." },
-  { nameEn: "Wall Ball", namePt: "Lançamento de bola", isWeight: true, category: "metcon", description: "Agachamento com bola medicinal seguido de lançamento até um alvo na parede." },
-  { nameEn: "Devil Press", namePt: "Devil press", isWeight: true, category: "metcon", description: "Burpee com halteres seguido de movimento tipo snatch duplo até overhead." },
-  { nameEn: "Man Maker", namePt: "Man maker", isWeight: true, category: "metcon", description: "Combinação de remada, burpee, clean e thruster com halteres." },
-
-  /* === CARDIO / ERGÓMETROS === */
-  { nameEn: "Rowing", namePt: "Remo", isWeight: false, category: "cardio", description: "Exercício na máquina de remo, trabalhando pernas, tronco e braços de forma coordenada." },
-  { nameEn: "Ski Erg", namePt: "Ski erg", isWeight: false, category: "cardio", description: "Simulador de esqui, puxando as manetes de cima para baixo de forma contínua." },
-  { nameEn: "Assault Bike", namePt: "Bicicleta de resistência", isWeight: false, category: "cardio", description: "Bicicleta com resistência de ar, trabalhando simultaneamente braços e pernas." },
-  { nameEn: "Running", namePt: "Corrida", isWeight: false, category: "cardio", description: "Corrida em tapete ou exterior, em ritmo contínuo ou intervalado." },
-  { nameEn: "Sprint", namePt: "Sprint", isWeight: false, category: "cardio", description: "Corrida explosiva de curta distância, em máxima intensidade." },
-  { nameEn: "Double Under", namePt: "Saltos duplos na corda", isWeight: false, category: "cardio", description: "Saltos em que a corda passa duas vezes por baixo dos pés em cada salto." },
-  { nameEn: "Single Under", namePt: "Saltos simples na corda", isWeight: false, category: "cardio", description: "Saltos em que a corda passa uma vez por baixo dos pés em cada salto." },
-
-  /* === STRONGMAN / CARGAS === */
-  { nameEn: "Farmer Carry", namePt: "Caminhada com cargas", isWeight: true, category: "strongman", description: "Caminhar segurando cargas pesadas (halteres, kettlebells, pegas) ao lado do corpo." },
-  { nameEn: "Sled Push", namePt: "Empurrar trenó", isWeight: true, category: "strongman", description: "Empurrar um trenó com carga ao longo de uma distância definida." },
-  { nameEn: "Sled Pull", namePt: "Puxar trenó", isWeight: true, category: "strongman", description: "Puxar um trenó com carga, com arnês ou corda, para trás ou para a frente." },
-  { nameEn: "Sandbag Carry", namePt: "Caminhada com saco", isWeight: true, category: "strongman", description: "Transportar um saco pesado ao peito, ombro ou costas." },
-  { nameEn: "Yoke Carry", namePt: "Caminhada com yoke", isWeight: true, category: "strongman", description: "Caminhar com uma estrutura pesada apoiada nos ombros (yoke)." },
-  { nameEn: "Rope Climb", namePt: "Subida à corda", isWeight: false, category: "gymnastic", description: "Subir a corda usando técnica de pernas ou apenas braços, tocando um alvo no topo." },
-  { nameEn: "Bear Complex", namePt: "Bear complex", isWeight: true, category: "complex", description: "Sequência: power clean, front squat, push press, back squat e push press novamente." },
-
-  /* === ACESSÓRIOS / MOBILIDADE === */
-  { nameEn: "Hip Thrust", namePt: "Elevação de anca", isWeight: true, category: "accessory", description: "Elevar a anca com costas apoiadas num banco, com ou sem carga." },
-  { nameEn: "Glute Bridge", namePt: "Ponte de glúteos", isWeight: false, category: "accessory", description: "Elevar a anca a partir de posição deitado, com ombros no chão." },
-  { nameEn: "Reverse Hyperextension", namePt: "Hiperextensão reversa", isWeight: false, category: "accessory", description: "Na máquina Reverse Hyper, elevar as pernas atrás do corpo." },
-  { nameEn: "Shrug", namePt: "Encolhimento de ombros", isWeight: true, category: "accessory", description: "Elevar os ombros em direção às orelhas segurando barra ou halteres." }
+/* ===== EXERCÍCIOS ===== */
+const MOVES = [
+  "Chest Press",
+  "Back Squat",
+  "Front Squat",
+  "Overhead Squat",
+  "Deadlift",
+  "Sumo Deadlift",
+  "Romanian Deadlift (RDL)",
+  "Power Clean",
+  "Squat Clean",
+  "Clean & Jerk",
+  "Power Snatch",
+  "Squat Snatch",
+  "Push Press",
+  "Push Jerk",
+  "Split Jerk",
+  "Strict Press",
+  "Thruster",
+  "Barbell Row",
+  "Bent Over Row",
+  "Good Morning",
+  "Lunges com barra",
+  "Hip Thrust com barra",
+  "Dumbbell Press",
+  "Dumbbell Bench Press",
+  "Dumbbell Snatch",
+  "Dumbbell Clean",
+  "Dumbbell Clean & Jerk",
+  "Dumbbell Thruster",
+  "Dumbbell Row",
+  "Dumbbell Lunges",
+  "Kettlebell Swing",
+  "Kettlebell Clean",
+  "Kettlebell Snatch",
+  "Goblet Squat",
+  "Kettlebell Lunges"
 ];
 
-// Mapa rápido EN -> objeto
-const EXERCISE_MAP = {};
-EXERCISES.forEach(ex => {
-  EXERCISE_MAP[ex.nameEn] = ex;
-});
+const MOVES_PT = {
+  "Chest Press": "Supino com barra",
+  "Back Squat": "Agachamento com barra nas costas",
+  "Front Squat": "Agachamento frontal",
+  "Overhead Squat": "Agachamento acima da cabeça",
+  "Deadlift": "Peso morto",
+  "Sumo Deadlift": "Peso morto sumo",
+  "Romanian Deadlift (RDL)": "Peso morto romeno",
+  "Power Clean": "Power clean",
+  "Squat Clean": "Squat clean",
+  "Clean & Jerk": "Clean & jerk",
+  "Power Snatch": "Power snatch",
+  "Squat Snatch": "Squat snatch",
+  "Push Press": "Push press",
+  "Push Jerk": "Push jerk",
+  "Split Jerk": "Split jerk",
+  "Strict Press": "Press militar estrito",
+  "Thruster": "Thruster",
+  "Barbell Row": "Remada com barra",
+  "Bent Over Row": "Remada inclinada",
+  "Good Morning": "Good morning",
+  "Lunges com barra": "Passadas com barra",
+  "Hip Thrust com barra": "Hip thrust com barra",
+  "Dumbbell Press": "Press com halteres",
+  "Dumbbell Bench Press": "Supino com halteres",
+  "Dumbbell Snatch": "Snatch com halteres",
+  "Dumbbell Clean": "Clean com halteres",
+  "Dumbbell Clean & Jerk": "Clean & jerk com halteres",
+  "Dumbbell Thruster": "Thruster com halteres",
+  "Dumbbell Row": "Remada com halteres",
+  "Dumbbell Lunges": "Passadas com halteres",
+  "Kettlebell Swing": "Swing com kettlebell",
+  "Kettlebell Clean": "Clean com kettlebell",
+  "Kettlebell Snatch": "Snatch com kettlebell",
+  "Goblet Squat": "Agachamento goblet",
+  "Kettlebell Lunges": "Passadas com kettlebell"
+};
 
-/* PERCENTAGENS FIXAS 1RM */
+/* GUIA – LISTA TIPO JSON (inclui mais exercícios que MOVES) */
+const EXER_INFO = [
+  { en: "Chest Press", pt: "Supino com barra", descricao: "Empurrar a barra para longe do peito, deitado no banco, controlando a descida e a subida." },
+  { en: "Back Squat", pt: "Agachamento com barra nas costas", descricao: "Agachamento com a barra apoiada nas costas, descendo até pelo menos à paralela e subindo com o tronco firme." },
+  { en: "Front Squat", pt: "Agachamento frontal", descricao: "Agachamento com a barra apoiada na parte da frente dos ombros, mantendo o tronco mais vertical." },
+  { en: "Overhead Squat", pt: "Agachamento acima da cabeça", descricao: "Agachamento com a barra acima da cabeça, braços estendidos e core bem firme para estabilizar." },
+  { en: "Deadlift", pt: "Peso morto", descricao: "Levar a barra do chão até à anca com costas neutras, empurrando o chão com as pernas e contraindo glúteos no topo." },
+  { en: "Sumo Deadlift", pt: "Peso morto sumo", descricao: "Peso morto com pés mais afastados e mãos a agarrar a barra entre as pernas, reduzindo a amplitude de anca." },
+  { en: "Romanian Deadlift (RDL)", pt: "Peso morto romeno", descricao: "Peso morto com menor flexão de joelhos, focado em posteriores da coxa e glúteos, mantendo a barra perto do corpo." },
+  { en: "Power Clean", pt: "Power clean", descricao: "Levar a barra do chão até aos ombros de forma explosiva, recebendo-a acima da paralela." },
+  { en: "Squat Clean", pt: "Squat clean", descricao: "Clean com receção em agachamento completo antes de subir para a posição de pé." },
+  { en: "Clean & Jerk", pt: "Clean & jerk", descricao: "Levar a barra do chão aos ombros (clean) e dos ombros até acima da cabeça (jerk) em dois movimentos distintos." },
+  { en: "Power Snatch", pt: "Power snatch", descricao: "Arranco com receção acima da paralela, num único movimento do chão até overhead." },
+  { en: "Squat Snatch", pt: "Squat snatch", descricao: "Arranco com receção em agachamento profundo, seguido de extensão até ficar totalmente de pé." },
+  { en: "Push Press", pt: "Push press", descricao: "Press de ombros com pequeno impulso das pernas, terminando com a barra acima da cabeça." },
+  { en: "Push Jerk", pt: "Push jerk", descricao: "Impulso de pernas e encaixe da barra acima da cabeça, recebendo em semi-agachamento antes de estender." },
+  { en: "Split Jerk", pt: "Split jerk", descricao: "Jerk em passada, recebendo a barra overhead com uma perna à frente e outra atrás para maior estabilidade." },
+  { en: "Strict Press", pt: "Press militar estrito", descricao: "Press de ombros sem ajuda das pernas, só com força dos ombros e braços, de pé ou sentado." },
+  { en: "Thruster", pt: "Thruster", descricao: "Agachamento frontal seguido diretamente de press acima da cabeça num único movimento fluido." },
+  { en: "Barbell Row", pt: "Remada com barra", descricao: "Com o tronco inclinado à frente, puxar a barra em direção ao abdómen mantendo as costas neutras." },
+  { en: "Bent Over Row", pt: "Remada inclinada", descricao: "Remada com maior inclinação do tronco, focando dorsais e parte média das costas." },
+  { en: "Good Morning", pt: "Good morning", descricao: "Com a barra nas costas, inclinar o tronco à frente com ligeira flexão de joelhos e voltar à posição inicial." },
+  { en: "Lunges com barra", pt: "Passadas com barra", descricao: "Passadas à frente ou atrás com a barra apoiada nos ombros, mantendo o tronco direito." },
+  { en: "Hip Thrust com barra", pt: "Hip thrust com barra", descricao: "Elevar a anca com as costas apoiadas num banco e a barra sobre a bacia, contraindo bem os glúteos." },
+  { en: "Dumbbell Press", pt: "Press com halteres", descricao: "Press de ombros com halteres, de pé ou sentado, subindo os halteres acima da cabeça." },
+  { en: "Dumbbell Bench Press", pt: "Supino com halteres", descricao: "Deitado no banco, empurrar dois halteres para cima a partir do peito, controlando a descida." },
+  { en: "Dumbbell Snatch", pt: "Snatch com halteres", descricao: "Do chão até acima da cabeça com um haltere, num movimento explosivo e contínuo." },
+  { en: "Dumbbell Clean", pt: "Clean com halteres", descricao: "Levar o haltere do chão ou das pernas até ao ombro, com extensão de anca." },
+  { en: "Dumbbell Clean & Jerk", pt: "Clean & jerk com halteres", descricao: "Clean com haltere até ao ombro seguido de impulso até overhead." },
+  { en: "Dumbbell Thruster", pt: "Thruster com halteres", descricao: "Agachamento seguido de press com halteres acima da cabeça num só movimento." },
+  { en: "Dumbbell Row", pt: "Remada com halteres", descricao: "Remada unilateral ou bilateral puxando o haltere em direção ao tronco, focando dorsais." },
+  { en: "Dumbbell Lunges", pt: "Passadas com halteres", descricao: "Passadas segurando um haltere em cada mão junto ao corpo." },
+  { en: "Kettlebell Swing", pt: "Swing com kettlebell", descricao: "Balanço da kettlebell usando sobretudo o impulso da anca, não dos braços." },
+  { en: "Kettlebell Clean", pt: "Clean com kettlebell", descricao: "Levar a kettlebell do fundo até à posição de rack junto ao peito." },
+  { en: "Kettlebell Snatch", pt: "Snatch com kettlebell", descricao: "Arranco unilateral, do chão ou baloiço até acima da cabeça." },
+  { en: "Goblet Squat", pt: "Agachamento goblet", descricao: "Agachamento segurando a kettlebell ou haltere junto ao peito, com pés à largura dos ombros." },
+  { en: "Kettlebell Lunges", pt: "Passadas com kettlebell", descricao: "Passadas segurando a kettlebell ao lado do corpo ou em posição de rack." },
+
+  /* GINÁSTICA / CALISTENIA */
+  { en: "Pull-Up", pt: "Puxada na barra", descricao: "Suspenso na barra, puxar até o queixo ultrapassar a barra, usando pegada em pronação." },
+  { en: "Chin-Up", pt: "Puxada em supinação", descricao: "Semelhante ao pull-up, mas com palmas das mãos viradas para ti, focando mais bíceps." },
+  { en: "Chest-to-Bar Pull-Up", pt: "Puxada ao peito", descricao: "Puxada na barra até o peito tocar na barra, exigindo maior amplitude." },
+  { en: "Bar Muscle-Up", pt: "Muscle-up na barra", descricao: "Puxada explosiva seguida de transição e dip, terminando com o tronco por cima da barra." },
+  { en: "Ring Muscle-Up", pt: "Muscle-up nas argolas", descricao: "Versão nas argolas, mais instável, combinando puxada e dip num só movimento." },
+  { en: "Toes-to-Bar (T2B)", pt: "Pés à barra", descricao: "Suspenso na barra, elevar os pés até tocar na barra, usando controlo de core." },
+  { en: "Knees-to-Elbows (K2E)", pt: "Joelhos aos cotovelos", descricao: "Suspenso na barra, elevar os joelhos até tocar nos cotovelos." },
+  { en: "Hanging Knee Raise", pt: "Elevação de joelhos", descricao: "Versão mais simples, elevando os joelhos até à altura da anca ou ligeiramente acima." },
+  { en: "Handstand Push-Up (HSPU)", pt: "Flexão de braços em pino", descricao: "Em pino contra a parede ou livre, realizar flexões de braços até a cabeça tocar ligeiramente no chão ou alvo." },
+  { en: "Handstand Walk", pt: "Caminhada em pino", descricao: "Deslocar-se apoiado apenas nas mãos, em posição de pino." },
+  { en: "Pistol Squat", pt: "Agachamento numa perna", descricao: "Agachamento completo numa perna, mantendo a outra estendida à frente." },
+  { en: "Sit-Up", pt: "Abdominal", descricao: "Deitado de costas, subir o tronco até ficar sentado, muitas vezes com apoio de almofada de abdominais." },
+  { en: "GHD Sit-Up", pt: "Abdominal GHD", descricao: "Abdominal profundo na máquina GHD, descendo além da linha da anca e regressando ao topo." },
+  { en: "Back Extension (GHD)", pt: "Extensão lombar", descricao: "Na GHD, descer o tronco em flexão de anca e voltar à extensão, focando lombar e glúteos." },
+
+  /* METCON / CONDICIONAMENTO */
+  { en: "Burpee", pt: "Burpee", descricao: "Agachar, colocar as mãos no chão, fazer flexão, voltar a levantar e terminar com um salto." },
+  { en: "Burpee Box Jump-Over", pt: "Burpee com salto sobre a caixa", descricao: "Realizar um burpee e depois saltar por cima da caixa, podendo não aterrar em pé em cima dela." },
+  { en: "Box Jump", pt: "Salto para a caixa", descricao: "Saltar com os dois pés para cima da caixa e estabilizar antes de descer." },
+  { en: "Box Jump Over", pt: "Salto por cima da caixa", descricao: "Saltar para cima e para o outro lado da caixa, sem necessidade de estabilizar no topo." },
+  { en: "Wall Ball", pt: "Lançamento de bola", descricao: "Agachamento com bola medicinal seguido de lançamento até um alvo na parede." },
+  { en: "Rowing", pt: "Remo", descricao: "Exercício na máquina de remo, trabalhando pernas, tronco e braços de forma coordenada." },
+  { en: "Ski Erg", pt: "Ski erg", descricao: "Simulador de esqui, puxando as manetes de cima para baixo em movimento contínuo." },
+  { en: "Assault Bike", pt: "Bicicleta de resistência", descricao: "Bicicleta com resistência de ar, trabalhando simultaneamente braços e pernas." },
+  { en: "Running", pt: "Corrida", descricao: "Corrida simples, em tapete ou no exterior, podendo ser em ritmo contínuo ou intervalado." },
+  { en: "Double Under", pt: "Saltos duplos na corda", descricao: "Saltos em que a corda passa duas vezes por baixo dos pés em cada salto." },
+  { en: "Single Under", pt: "Saltos simples na corda", descricao: "Saltos em que a corda passa uma vez por baixo dos pés em cada salto." },
+  { en: "Sled Push", pt: "Empurrar trenó", descricao: "Empurrar um trenó com carga ao longo de uma distância definida." },
+  { en: "Sled Pull", pt: "Puxar trenó", descricao: "Puxar um trenó com carga, com arnês ou corda, para trás ou para a frente." },
+  { en: "Farmer Carry", pt: "Caminhada com cargas", descricao: "Caminhar segurando cargas pesadas (halteres ou kettlebells) ao lado do corpo." },
+  { en: "Sprint", pt: "Sprint", descricao: "Corrida explosiva de curta distância, normalmente em máxima intensidade." },
+
+  /* COMPLEXOS / FORÇA FUNCIONAL */
+  { en: "Bear Complex", pt: "Bear complex", descricao: "Sequência contínua: power clean, front squat, push press, back squat e push press novamente." },
+  { en: "Devil Press", pt: "Devil press", descricao: "Burpee com halteres seguido de swing até overhead, num movimento fluido." },
+  { en: "Man Maker", pt: "Man maker", descricao: "Combinação de remada, burpee, clean e thruster com halteres." },
+  { en: "Sandbag Carry", pt: "Caminhada com saco", descricao: "Transportar um saco pesado ao peito, ombro ou costas ao longo de uma distância." },
+  { en: "Yoke Carry", pt: "Caminhada com yoke", descricao: "Caminhar com uma estrutura pesada apoiada nos ombros (yoke), trabalhando força total." },
+  { en: "Rope Climb", pt: "Subida à corda", descricao: "Subir a corda usando técnica de pernas ou apenas braços, tocando um alvo no topo." },
+
+  /* ACESSÓRIOS / MOBILIDADE EXTRA */
+  { en: "Hip Thrust", pt: "Elevação de anca", descricao: "Elevar a anca com costas apoiadas num banco, com ou sem carga, focando glúteos." },
+  { en: "Glute Bridge", pt: "Ponte de glúteos", descricao: "Elevar a anca a partir de posição deitado no chão, mantendo ombros apoiados." },
+  { en: "Reverse Hyperextension", pt: "Hiperextensão reversa", descricao: "Exercício na máquina Reverse Hyper, elevando as pernas atrás do corpo para trabalhar glúteos e lombar." },
+  { en: "Shrug", pt: "Encolhimento de ombros", descricao: "Elevar os ombros em direção às orelhas segurando barra ou halteres, focando trapézios." }
+];
+
 const PERC = [
   0.25, 0.30, 0.35, 0.40,
   0.50, 0.60, 0.70, 0.75,
@@ -869,32 +1001,26 @@ function formatKg(v) {
   return v.toFixed(1).replace(".", ",") + " kg";
 }
 
-/* Selects – 1RM = só peso; WOD = todos EN–PT */
+/* Selects – só nomes em inglês (para 1RM e WOD) */
 function initSelects() {
   if (sel) {
     sel.innerHTML = "";
-    EXERCISES
-      .filter(e => e.isWeight)
-      .sort((a,b) => a.nameEn.localeCompare(b.nameEn))
-      .forEach(ex => {
-        const opt = document.createElement("option");
-        opt.value = ex.nameEn;
-        opt.textContent = ex.nameEn; // só EN no 1RM
-        sel.appendChild(opt);
-      });
+    MOVES.forEach(m => {
+      const opt = document.createElement("option");
+      opt.value = m;
+      opt.textContent = m;
+      sel.appendChild(opt);
+    });
   }
 
   if (treinoExEl) {
     treinoExEl.innerHTML = "";
-    EXERCISES
-      .slice()
-      .sort((a,b) => a.nameEn.localeCompare(b.nameEn))
-      .forEach(ex => {
-        const opt = document.createElement("option");
-        opt.value = ex.nameEn;
-        opt.textContent = `${ex.nameEn} – ${ex.namePt}`;
-        treinoExEl.appendChild(opt);
-      });
+    MOVES.forEach(m => {
+      const opt = document.createElement("option");
+      opt.value = m;
+      opt.textContent = m;
+      treinoExEl.appendChild(opt);
+    });
   }
 }
 
@@ -914,11 +1040,9 @@ function refreshCalcExOptions() {
 
   calcExEl.disabled = false;
   names.forEach(n => {
-    const exInfo = EXERCISE_MAP[n];
-    const label = exInfo ? `${exInfo.nameEn}` : n;
     const opt = document.createElement("option");
     opt.value = n;
-    opt.textContent = label;
+    opt.textContent = n;
     calcExEl.appendChild(opt);
   });
 }
@@ -944,11 +1068,9 @@ function refreshGraphExerciseOptions() {
 
   graphExerciseEl.disabled = false;
   names.forEach(n => {
-    const exInfo = EXERCISE_MAP[n];
-    const label = exInfo ? exInfo.nameEn : n;
     const opt = document.createElement("option");
     opt.value = n;
-    opt.textContent = label;
+    opt.textContent = n;
     graphExerciseEl.appendChild(opt);
   });
 
@@ -972,7 +1094,8 @@ function renderRm() {
     const tr = document.createElement("tr");
 
     const tdName = document.createElement("td");
-    tdName.textContent = name; // só EN na tabela de 1RM
+    const label = MOVES_PT[name] ? `${name} – ${MOVES_PT[name]}` : name;
+    tdName.textContent = label;
     tr.appendChild(tdName);
 
     const td1rm = document.createElement("td");
@@ -1210,8 +1333,7 @@ function updateRmChart() {
     return;
   }
 
-  const exInfo = EXERCISE_MAP[ex];
-  const datasetLabel = exInfo ? `${exInfo.nameEn} – 1RM (kg)` : ex + " – 1RM (kg)";
+  const datasetLabel = MOVES_PT[ex] ? `${ex} – ${MOVES_PT[ex]} – 1RM (kg)` : ex + " – 1RM (kg)";
 
   rmChart = new Chart(ctx, {
     type: "line",
@@ -1319,8 +1441,7 @@ function renderDailyHistory() {
     tr.appendChild(tdDate);
 
     const tdEx = document.createElement("td");
-    const exInfo = EXERCISE_MAP[t.ex];
-    const label = exInfo ? `${exInfo.nameEn} – ${exInfo.namePt}` : t.ex;
+    const label = MOVES_PT[t.ex] ? `${t.ex} – ${MOVES_PT[t.ex]}` : t.ex;
     tdEx.textContent = label || "";
     tr.appendChild(tdEx);
 
@@ -1517,8 +1638,7 @@ function renderTreinos() {
     tr.appendChild(tdDate);
 
     const tdEx = document.createElement("td");
-    const exInfo = EXERCISE_MAP[e.ex];
-    const label = exInfo ? `${exInfo.nameEn} – ${exInfo.namePt}` : e.ex;
+    const label = MOVES_PT[e.ex] ? `${e.ex} – ${MOVES_PT[e.ex]}` : e.ex;
     tdEx.textContent = label || "";
     tr.appendChild(tdEx);
 
@@ -1730,12 +1850,10 @@ if (importBackupBtn && backupFileInput) {
         registerBackupMeta("Backup importado");
 
         loadProfile();
-        initSelects();
         renderRm();
         refreshCalcExOptions();
         refreshGraphExerciseOptions();
         renderTreinos();
-        renderGuiaExercicios();
 
         alert("Backup importado com sucesso.");
       } catch (err) {
@@ -1747,29 +1865,29 @@ if (importBackupBtn && backupFileInput) {
   });
 }
 
-/* GUIA EXERCÍCIOS – usa EXERCISES */
+/* GUIA EXERCÍCIOS */
 function renderGuiaExercicios() {
   if (!guiaBody) return;
   guiaBody.innerHTML = "";
 
   const filtro = (guiaSearch?.value || "").toLowerCase().trim();
 
-  EXERCISES.forEach(ex => {
-    const texto = (ex.nameEn + " " + ex.namePt + " " + ex.description).toLowerCase();
+  EXER_INFO.forEach(ex => {
+    const texto = (ex.en + " " + ex.pt + " " + ex.descricao).toLowerCase();
     if (filtro && !texto.includes(filtro)) return;
 
     const tr = document.createElement("tr");
 
     const tdEn = document.createElement("td");
-    tdEn.textContent = ex.nameEn;
+    tdEn.textContent = ex.en;
     tr.appendChild(tdEn);
 
     const tdPt = document.createElement("td");
-    tdPt.textContent = ex.namePt;
+    tdPt.textContent = ex.pt;
     tr.appendChild(tdPt);
 
     const tdDesc = document.createElement("td");
-    tdDesc.textContent = ex.description;
+    tdDesc.textContent = ex.descricao;
     tr.appendChild(tdDesc);
 
     guiaBody.appendChild(tr);
