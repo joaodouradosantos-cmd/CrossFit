@@ -72,6 +72,13 @@
     .subtitle {
       font-size: 0.88rem;
       color: #d6d6d6;
+      cursor: pointer;
+      text-decoration: none;
+      transition: text-decoration 0.15s ease;
+    }
+
+    .subtitle:hover {
+      text-decoration: underline;
     }
 
     .card {
@@ -177,27 +184,6 @@
       color: #444;
     }
 
-    .btn-edit-profile {
-      padding: 4px 8px;
-      border-radius: 999px;
-      border: 1px solid #cccccc;
-      background: #e5e5e5;
-      color: #222;
-      font-size: 0.65rem;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
-    .btn-edit-profile:active {
-      transform: scale(0.95);
-    }
-
-    #editProfileBtnHeader {
-      position: absolute;
-      top: 4px;
-      right: 8px;
-    }
-
     .tabs {
       display: flex;
       gap: 8px;
@@ -301,7 +287,6 @@
 <div class="app">
 
   <header>
-    <button id="editProfileBtnHeader" class="btn-edit-profile">Editar perfil</button>
     <img id="appLogo" src="imagens/crossmoita_logo.png" alt="Cross Moita Logo">
     <div class="subtitle" id="appSubtitle">Registo de treinos</div>
   </header>
@@ -494,10 +479,6 @@
             <label>Tempo (opcional)</label>
             <input id="treinoTempo" type="text" placeholder="Ex.: 12:35, 20', AMRAP 10'..." />
           </div>
-          <div class="field">
-            <label>Distância (km – opcional)</label>
-            <input id="treinoDist" type="number" step="0.01" min="0" />
-          </div>
         </div>
 
         <button class="btn-primary" id="treinoAdd">Adicionar ao WOD</button>
@@ -520,7 +501,6 @@
                 <th>Peso</th>
                 <th>% 1RM</th>
                 <th>Tempo</th>
-                <th>Distância (km)</th>
                 <th>Carga</th>
                 <th></th>
               </tr>
@@ -549,7 +529,6 @@
                   <th>Peso</th>
                   <th>% 1RM</th>
                   <th>Tempo</th>
-                  <th>Distância (km)</th>
                   <th>Carga</th>
                   <th></th>
                 </tr>
@@ -636,7 +615,6 @@
               <tr>
                 <th>Data</th>
                 <th>Carga total</th>
-                <th>Distância total (km)</th>
                 <th>N.º exercícios</th>
                 <th>Melhor tempo metcon</th>
               </tr>
@@ -735,7 +713,7 @@ const idadeEl = document.getElementById("idade");
 const alturaEl = document.getElementById("altura");
 const pesoEl = document.getElementById("peso");
 const perfilForm = document.getElementById("perfilForm");
-const editProfileBtnHeader = document.getElementById("editProfileBtnHeader");
+const subtitleEl = document.getElementById("appSubtitle");
 
 function updateProfileInfo() {
   if (perfilForm) perfilForm.style.display = "none";
@@ -747,7 +725,7 @@ function updateSubtitle() {
   if (profile && profile.nome && profile.nome.trim() !== "") {
     sub.textContent = `Registo de treinos do ${profile.nome}`;
   } else {
-    sub.textContent = "Registo de treinos";
+    sub.textContent = "Toca aqui para configurar o teu perfil";
   }
 }
 
@@ -783,9 +761,9 @@ if (saveProfileBtn) {
   });
 }
 
-if (editProfileBtnHeader) {
-  editProfileBtnHeader.addEventListener("click", () => {
-    if (!perfilForm) return;
+/* clicar no subtítulo abre/fecha o formulário de perfil */
+if (subtitleEl && perfilForm) {
+  subtitleEl.addEventListener("click", () => {
     const visible = perfilForm.style.display === "block";
     perfilForm.style.display = visible ? "none" : "block";
   });
@@ -985,7 +963,6 @@ const treinoRondasEl = document.getElementById("treinoRondas");
 const treinoRepsEl = document.getElementById("treinoReps");
 const treinoPesoEl = document.getElementById("treinoPeso");
 const treinoTempoEl = document.getElementById("treinoTempo");
-const treinoDistEl = document.getElementById("treinoDist");
 const treinoAddBtn = document.getElementById("treinoAdd");
 const treinoBody = document.getElementById("treinoBody");
 const treinoResumoEl = document.getElementById("treinoResumo");
@@ -1419,7 +1396,6 @@ function addTreinoEntry() {
   const reps = parseInt(treinoRepsEl.value || "0", 10);
   const peso = parseFloat(treinoPesoEl.value || "0");
   const tempo = treinoTempoEl.value.trim();
-  const dist = treinoDistEl ? parseFloat(treinoDistEl.value || "0") : 0;
 
   if (!ex || !reps || reps <= 0) return;
 
@@ -1437,7 +1413,6 @@ function addTreinoEntry() {
     reps,
     peso,
     tempo,
-    distancia: dist || 0,
     carga,
     perc1rm
   };
@@ -1506,14 +1481,6 @@ function renderDailyHistory() {
     const tdTempo = document.createElement("td");
     tdTempo.textContent = t.tempo || "";
     tr.appendChild(tdTempo);
-
-    const tdDist = document.createElement("td");
-    if (t.distancia && t.distancia > 0) {
-      tdDist.textContent = t.distancia.toFixed(2).replace(".", ",") + " km";
-    } else {
-      tdDist.textContent = "";
-    }
-    tr.appendChild(tdDist);
 
     const tdCarga = document.createElement("td");
     tdCarga.textContent = t.carga ? formatKg(t.carga) : "";
@@ -1619,9 +1586,8 @@ function renderWeeklyHistory() {
     const mon = getMonday(t.date);
     if (!mon) return;
     const key = mon.toISOString().slice(0,10);
-    if (!semanas[key]) semanas[key] = { carga: 0, distancia: 0 };
-    semanas[key].carga += t.carga || 0;
-    semanas[key].distancia += t.distancia || 0;
+    if (!semanas[key]) semanas[key] = 0;
+    semanas[key] += t.carga || 0;
   });
 
   const keys = Object.keys(semanas).sort((a, b) => b.localeCompare(a));
@@ -1641,15 +1607,12 @@ function renderWeeklyHistory() {
     const mon = new Date(k);
     const sun = new Date(mon);
     sun.setDate(mon.getDate() + 6);
-    const txtCarga = formatKg(semanas[k].carga);
-    const txtDist = semanas[k].distancia > 0
-      ? `${semanas[k].distancia.toFixed(2).replace(".", ",")} km`
-      : "0 km";
-    return fmt(mon) + " – " + fmt(sun) + ": " + txtCarga + " · " + txtDist;
+    const txtCarga = formatKg(semanas[k]);
+    return fmt(mon) + " – " + fmt(sun) + ": " + txtCarga;
   });
 
   weeklyHistoryEl.innerHTML =
-    "Histórico das últimas semanas (carga total e distância):<br>" +
+    "Histórico das últimas semanas (carga total):<br>" +
     lines.join("<br>");
 }
 
@@ -1673,7 +1636,6 @@ function renderTreinos() {
 
   let totalCarga = 0;
   let totalSeries = 0;
-  let totalDist = 0;
   let blocosForca = 0;
   let blocosHipertrofia = 0;
   let blocosLeve = 0;
@@ -1718,14 +1680,6 @@ function renderTreinos() {
     tdTempo.textContent = e.tempo || "";
     tr.appendChild(tdTempo);
 
-    const tdDist = document.createElement("td");
-    if (e.distancia && e.distancia > 0) {
-      tdDist.textContent = e.distancia.toFixed(2).replace(".", ",") + " km";
-    } else {
-      tdDist.textContent = "";
-    }
-    tr.appendChild(tdDist);
-
     const tdCarga = document.createElement("td");
     tdCarga.textContent = e.carga ? formatKg(e.carga) : "";
     tr.appendChild(tdCarga);
@@ -1742,7 +1696,6 @@ function renderTreinos() {
 
     totalCarga += e.carga || 0;
     totalSeries += (e.rondas || 0);
-    totalDist += e.distancia || 0;
 
     if (e.perc1rm && e.reps) {
       const p = e.perc1rm;
@@ -1758,13 +1711,8 @@ function renderTreinos() {
   });
 
   if (treinoResumoEl) {
-    let resumo =
+    treinoResumoEl.textContent =
       "Resumo do dia " + dia + ": carga total do WOD = " + formatKg(totalCarga);
-    if (totalDist > 0) {
-      resumo += " · distância total = " +
-        totalDist.toFixed(2).replace(".", ",") + " km";
-    }
-    treinoResumoEl.textContent = resumo;
   }
 
   const sugestao = buildSugestao(
@@ -2006,7 +1954,7 @@ function renderPerformance() {
     if (!treinos.length) {
       const tr = document.createElement("tr");
       const td = document.createElement("td");
-      td.colSpan = 5;
+      td.colSpan = 4;
       td.textContent = "Ainda não existem WOD registados.";
       tr.appendChild(td);
       perfWodBody.appendChild(tr);
@@ -2017,14 +1965,12 @@ function renderPerformance() {
         if (!map[t.date]) {
           map[t.date] = {
             cargaTotal: 0,
-            distanciaTotal: 0,
             numEx: 0,
             melhorTempoMetconSeg: null
           };
         }
         map[t.date].cargaTotal += t.carga || 0;
         map[t.date].numEx += 1;
-        map[t.date].distanciaTotal += t.distancia || 0;
 
         if (t.tipo === "metcon" && t.tempo) {
           const sec = parseTimeToSeconds(t.tempo);
@@ -2039,7 +1985,6 @@ function renderPerformance() {
       const rows = Object.keys(map).map(date => ({
         date,
         cargaTotal: map[date].cargaTotal,
-        distanciaTotal: map[date].distanciaTotal,
         numEx: map[date].numEx,
         melhorTempoMetconSeg: map[date].melhorTempoMetconSeg
       }));
@@ -2057,12 +2002,6 @@ function renderPerformance() {
         tdCarga.textContent = formatKg(r.cargaTotal);
         tr.appendChild(tdCarga);
 
-        const tdDist = document.createElement("td");
-        tdDist.textContent = r.distanciaTotal > 0
-          ? r.distanciaTotal.toFixed(2).replace(".", ",") + " km"
-          : "-";
-        tr.appendChild(tdDist);
-
         const tdNum = document.createElement("td");
         tdNum.textContent = r.numEx.toString();
         tr.appendChild(tdNum);
@@ -2079,7 +2018,7 @@ function renderPerformance() {
       if (!perfWodBody.hasChildNodes()) {
         const tr = document.createElement("tr");
         const td = document.createElement("td");
-        td.colSpan = 5;
+        td.colSpan = 4;
         td.textContent = "Sem dados suficientes para gerar ranking.";
         tr.appendChild(td);
         perfWodBody.appendChild(tr);
@@ -2146,7 +2085,7 @@ function renderPerformance() {
         metconMap[key] = {
           exercicio: key,
           tempoSeg: sec,
-          tempoStr: t.tempo,
+          tempoStr: t.empo,
           date: t.date || "",
           carga: t.carga || 0
         };
