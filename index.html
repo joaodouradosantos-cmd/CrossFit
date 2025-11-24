@@ -61,28 +61,31 @@
       box-shadow: 0 12px 30px rgba(15,23,42,0.7);
     }
 
-    /* Caixa tipo plyo box para o logo */
+    /* Caixa tipo plyo box para o logo – ajustada ao tamanho do logo, sem cantos boleados e com efeito 3D */
     .logo-box {
-      max-width: 360px;
+      display: inline-block;
       margin: 0 auto 10px auto;
-      padding: 8px;
-      border-radius: 26px;
+      padding: 4px;
+      border-radius: 0;
       background: radial-gradient(circle at top left, rgba(15,23,42,0.9), rgba(15,23,42,1));
       box-shadow:
-        0 18px 40px rgba(0,0,0,0.85),
+        0 18px 40px rgba(0,0,0,0.9),
         0 0 0 1px rgba(148,163,184,0.25);
+      position: relative;
+      transform: perspective(650px) rotateX(7deg);
+      transform-origin: center top;
     }
 
     /* Madeira de pinho com veios */
     .logo-box-inner {
       position: relative;
-      border-radius: 20px;
-      padding: 16px 18px;
+      border-radius: 0;
+      padding: 8px 10px;
       background: linear-gradient(135deg, #e3b979, #c08a4a);
       box-shadow:
-        inset 0 0 0 1px rgba(0,0,0,0.35),
-        inset 0 8px 18px rgba(255,255,255,0.35),
-        inset 0 -10px 24px rgba(0,0,0,0.38);
+        inset 0 0 0 1px rgba(0,0,0,0.45),
+        inset 0 6px 14px rgba(255,255,255,0.25),
+        inset 0 -10px 24px rgba(0,0,0,0.45);
       overflow: hidden;
     }
 
@@ -103,11 +106,28 @@
       pointer-events: none;
     }
 
+    /* Parafusos nos cantos da caixa */
+    .logo-box-inner::after {
+      content: "";
+      position: absolute;
+      inset: 6px;
+      background:
+        radial-gradient(circle, #444 0, #222 45%, #000 70%, transparent 72%) 0 0,
+        radial-gradient(circle, #444 0, #222 45%, #000 70%, transparent 72%) 100% 0,
+        radial-gradient(circle, #444 0, #222 45%, #000 70%, transparent 72%) 0 100%,
+        radial-gradient(circle, #444 0, #222 45%, #000 70%, transparent 72%) 100% 100%;
+      background-size: 10px 10px;
+      background-repeat: no-repeat;
+      pointer-events: none;
+      opacity: 0.85;
+    }
+
     #appLogo {
-      max-width: 75%;
+      max-width: 220px;
+      width: 100%;
       height: auto;
       display: block;
-      margin: 0 auto;
+      margin: 0;
       position: relative;
       z-index: 1;
       padding: 0;
@@ -268,6 +288,7 @@
       position: absolute;
       top: 4px;
       right: 8px;
+      z-index: 10; /* garante que fica à frente da caixa */
     }
 
     .tabs {
