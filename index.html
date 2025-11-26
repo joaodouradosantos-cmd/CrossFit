@@ -79,6 +79,16 @@
       transform: translateY(-1px);
     }
 
+    /* BOTÃO RESERVAS – CANTO SUPERIOR DIREITO */
+    .reservas-top-btn {
+      position: absolute;
+      top: 6px;
+      right: 8px;
+      font-size: 0.75rem;
+      padding: 6px 10px;
+      z-index: 5;
+    }
+
     .card {
       background: #e1e1e1;
       background-image:
@@ -392,13 +402,13 @@
       font-size: 0.75rem;
       color: #222;
     }
-  /* REMOVER RISCOS APENAS NO CARD "REGISTO E HISTÓRICO" */
-#opt-wod .card:nth-of-type(2) {
-    background-image: none !important;
-    background-color: #e1e1e1 !important;
-}
 
-</style>
+    /* REMOVER RISCOS APENAS NO CARD "REGISTO E HISTÓRICO" */
+    #opt-wod .card:nth-of-type(2) {
+      background-image: none !important;
+      background-color: #e1e1e1 !important;
+    }
+  </style>
 </head>
 <body>
 <div class="app">
@@ -406,6 +416,7 @@
   <header>
     <img id="appLogo" src="imagens/crossbox_logo.png" alt="Cross Moita Logo">
     <div class="subtitle" id="appSubtitle">Registo de treinos</div>
+    <button id="reservasTopBtn" class="btn-secondary reservas-top-btn">📅 Reservas</button>
   </header>
 
   <!-- PERFIL -->
@@ -460,7 +471,7 @@
   <!-- TABS PRINCIPAIS -->
   <div class="tabs">
     <button class="tab-btn active" data-target="sec-1rm">1RM</button>
-    <button class="tab-btn" data-target="sec-opcoes">WOD & Tools</button>
+    <button class="tab-btn" data-target="sec-opcoes">WOD &amp; Tools</button>
   </div>
 
   <!-- SECÇÃO 1: 1RM -->
@@ -491,7 +502,7 @@
               <th>1RM</th>
               <th>25%</th>
               <th>30%</th>
-              <th>35%</th</th>
+              <th>35%</th>
               <th>40%</th>
               <th>50%</th>
               <th>60%</th>
@@ -514,7 +525,7 @@
   <!-- SECÇÃO 2: OPÇÕES -->
   <section id="sec-opcoes" class="section">
 
-    <div class="card">      
+    <div class="card">
       <div class="options-grid">
         <button class="btn-secondary opt-btn" data-target="opt-wod">
           <span class="opt-emoji">🟩</span>
@@ -536,12 +547,16 @@
           <span class="opt-emoji">📚</span>
           <span>Exercícios</span>
         </button>
+        <button class="btn-secondary opt-btn" data-target="opt-reservas">
+          <span class="opt-emoji">📅</span>
+          <span>Reservas</span>
+        </button>
         <button class="btn-secondary opt-btn" data-target="opt-backup">
           <span class="opt-emoji">💾</span>
           <span>Backup</span>
         </button>
       </div>
-      <div class="helper-text" style="margin-top:8px;">  
+      <div class="helper-text" style="margin-top:8px;">
       </div>
     </div>
 
@@ -798,6 +813,77 @@
       </div>
     </section>
 
+    <!-- RESERVAS -->
+    <section id="opt-reservas" class="option-section">
+      <div class="card">
+        <h3 style="margin-top:0; margin-bottom:8px;">📅 Reservas de aula</h3>
+
+        <div class="form-row">
+          <div class="field">
+            <label>Data</label>
+            <input id="reservaData" type="date" />
+          </div>
+          <div class="field">
+            <label>Aula / Horário</label>
+            <select id="reservaHora">
+              <option value="">Selecionar aula</option>
+              <option value="06:00">06:00</option>
+              <option value="07:00">07:00</option>
+              <option value="09:00">09:00</option>
+              <option value="18:00">18:00</option>
+              <option value="19:00">19:00</option>
+              <option value="20:00">20:00</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label>Nome do atleta (opcional)</label>
+            <input id="reservaNome" type="text" placeholder="Se vazio, usa o nome do perfil" />
+          </div>
+        </div>
+
+        <button class="btn-primary" id="reservaAddBtn">Guardar reserva</button>
+        <div class="helper-text">
+          Cada reserva ocupa 1 vaga na aula escolhida. Limite padrão: 16 vagas por aula.
+          Se o nome for deixado em branco, é usado o nome do perfil.
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-top:0; margin-bottom:8px;">Reservas e presenças</h3>
+        <div class="scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Aula</th>
+                <th>Nome</th>
+                <th>Vaga</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="reservasBody"></tbody>
+          </table>
+        </div>
+        <div class="helper-text" id="reservasResumo" style="margin-top:6px;"></div>
+
+        <h4 style="margin-top:10px; margin-bottom:4px;">Ranking mensal de presenças</h4>
+        <div class="scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Atleta</th>
+                <th>Presenças no mês</th>
+              </tr>
+            </thead>
+            <tbody id="reservasRankingBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
     <!-- BACKUP -->
     <section id="opt-backup" class="option-section">
       <div class="card">
@@ -826,6 +912,12 @@ const STORAGE_RM = "crossfit_1rm";
 const STORAGE_RM_HISTORY = "crossfit_1rm_history";
 const STORAGE_TREINO = "crossfit_treinos";
 const STORAGE_BACKUP_META = "crossfit_backup_meta";
+const STORAGE_RESERVAS = "crossfit_reservas";
+const STORAGE_PRESENCAS = "crossfit_presencas";
+const STORAGE_RANKINGS = "crossfit_rankings";
+
+/* Limite de vagas por aula (podes alterar aqui) */
+const VAGAS_POR_AULA = 16;
 
 /* ===== PERFIL ===== */
 let profile = JSON.parse(localStorage.getItem(STORAGE_PROFILE) || "{}");
@@ -1126,6 +1218,17 @@ const exportBackupBtn = document.getElementById("exportBackupBtn");
 const importBackupBtn = document.getElementById("importBackupBtn");
 const backupFileInput = document.getElementById("backupFileInput");
 const backupInfoEl = document.getElementById("backupInfo");
+
+/* Reservas */
+let reservas = JSON.parse(localStorage.getItem(STORAGE_RESERVAS) || "[]");
+const reservaDataEl = document.getElementById("reservaData");
+const reservaHoraEl = document.getElementById("reservaHora");
+const reservaNomeEl = document.getElementById("reservaNome");
+const reservaAddBtn = document.getElementById("reservaAddBtn");
+const reservasBody = document.getElementById("reservasBody");
+const reservasResumoEl = document.getElementById("reservasResumo");
+const reservasRankingBody = document.getElementById("reservasRankingBody");
+const reservasTopBtn = document.getElementById("reservasTopBtn");
 
 function formatKg(v) {
   return v.toFixed(1).replace(".", ",") + " kg";
@@ -1949,7 +2052,8 @@ function buildBackupObject() {
     profile: profile || {},
     dataRm: dataRm || {},
     rmHistory: rmHistory || {},
-    treinos: treinos || []
+    treinos: treinos || [],
+    reservas: reservas || []
   };
 }
 
@@ -2013,11 +2117,13 @@ if (importBackupBtn && backupFileInput) {
         dataRm = data.dataRm || {};
         rmHistory = data.rmHistory || {};
         treinos = data.treinos || [];
+        reservas = data.reservas || [];
 
         localStorage.setItem(STORAGE_PROFILE, JSON.stringify(profile));
         localStorage.setItem(STORAGE_RM, JSON.stringify(dataRm));
         localStorage.setItem(STORAGE_RM_HISTORY, JSON.stringify(rmHistory));
         localStorage.setItem(STORAGE_TREINO, JSON.stringify(treinos));
+        localStorage.setItem(STORAGE_RESERVAS, JSON.stringify(reservas));
 
         registerBackupMeta("Backup importado");
 
@@ -2026,6 +2132,7 @@ if (importBackupBtn && backupFileInput) {
         refreshCalcExOptions();
         refreshGraphExerciseOptions();
         renderTreinos();
+        renderReservas();
 
         alert("Backup importado com sucesso.");
       } catch (err) {
@@ -2303,6 +2410,229 @@ function renderPerformance() {
   }
 }
 
+/* ===== RESERVAS ===== */
+function saveReservas() {
+  localStorage.setItem(STORAGE_RESERVAS, JSON.stringify(reservas));
+}
+
+/* Formato data PT */
+function formatDatePt(iso) {
+  if (!iso) return "";
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return iso;
+  const dd = String(d.getDate()).padStart(2, "0");
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const yyyy = d.getFullYear();
+  return `${dd}/${mm}/${yyyy}`;
+}
+
+function addReserva() {
+  let date = reservaDataEl.value || new Date().toISOString().slice(0,10);
+  const hora = reservaHoraEl.value;
+  let nome = (reservaNomeEl.value || "").trim();
+
+  if (!hora) {
+    alert("Seleciona a aula/horário.");
+    return;
+  }
+
+  if (!nome) {
+    if (profile && profile.nome && profile.nome.trim() !== "") {
+      nome = profile.nome.trim();
+    } else {
+      nome = "Atleta";
+    }
+  }
+
+  /* impedir reservas duplicadas para o mesmo atleta na mesma aula/dia */
+  const existe = reservas.some(r => r.date === date && r.hora === hora && r.nome.toLowerCase() === nome.toLowerCase());
+  if (existe) {
+    alert("Já tens uma reserva registada para essa aula e data.");
+    return;
+  }
+
+  /* Contar vagas já ocupadas nessa aula/dia */
+  const vagasUsadas = reservas.filter(r => r.date === date && r.hora === hora).length;
+  if (vagasUsadas >= VAGAS_POR_AULA) {
+    alert("A aula está cheia. Não é possível registar mais reservas.");
+    return;
+  }
+
+  const vagaNumero = vagasUsadas + 1;
+
+  const entry = {
+    date,
+    hora,
+    nome,
+    vaga: vagaNumero
+  };
+
+  reservas.push(entry);
+  saveReservas();
+  registerBackupMeta("Reserva registada");
+
+  renderReservas();
+}
+
+function deleteReserva(index) {
+  if (index < 0 || index >= reservas.length) return;
+  if (!confirm("Apagar esta reserva?")) return;
+  reservas.splice(index, 1);
+  saveReservas();
+  registerBackupMeta("Reserva removida");
+  renderReservas();
+}
+
+function renderReservas() {
+  if (!reservasBody) return;
+  reservasBody.innerHTML = "";
+
+  if (!reservas.length) {
+    const tr = document.createElement("tr");
+    const td = document.createElement("td");
+    td.colSpan = 5;
+    td.textContent = "Ainda não existem reservas registadas.";
+    tr.appendChild(td);
+    reservasBody.appendChild(tr);
+
+    if (reservasResumoEl) reservasResumoEl.textContent = "Sem reservas ativas.";
+    if (reservasRankingBody) reservasRankingBody.innerHTML = "";
+    localStorage.setItem(STORAGE_PRESENCAS, JSON.stringify({}));
+    localStorage.setItem(STORAGE_RANKINGS, JSON.stringify({}));
+    return;
+  }
+
+  /* ordenar por data e hora */
+  const lista = reservas.slice().sort((a, b) => {
+    const da = (a.date || "").localeCompare(b.date || "");
+    if (da !== 0) return da;
+    return (a.hora || "").localeCompare(b.hora || "");
+  });
+
+  /* contagens por data/hora para resumo */
+  const mapaAulas = {};
+  lista.forEach((r, idx) => {
+    const key = `${r.date} ${r.hora}`;
+    if (!mapaAulas[key]) mapaAulas[key] = 0;
+    mapaAulas[key] += 1;
+
+    const tr = document.createElement("tr");
+
+    const tdData = document.createElement("td");
+    tdData.textContent = formatDatePt(r.date);
+    tr.appendChild(tdData);
+
+    const tdHora = document.createElement("td");
+    tdHora.textContent = r.hora;
+    tr.appendChild(tdHora);
+
+    const tdNome = document.createElement("td");
+    tdNome.textContent = r.nome;
+    tr.appendChild(tdNome);
+
+    const tdVaga = document.createElement("td");
+    tdVaga.textContent = `${r.vaga}/${VAGAS_POR_AULA}`;
+    tr.appendChild(tdVaga);
+
+    const tdDel = document.createElement("td");
+    const btn = document.createElement("button");
+    btn.textContent = "🗑";
+    btn.className = "btn-delete";
+    btn.addEventListener("click", () => {
+      const indexReal = reservas.indexOf(r);
+      deleteReserva(indexReal);
+    });
+    tdDel.appendChild(btn);
+    tr.appendChild(tdDel);
+
+    reservasBody.appendChild(tr);
+  });
+
+  /* resumo geral */
+  if (reservasResumoEl) {
+    const total = reservas.length;
+    const aulasHoje = reservas.filter(r => r.date === new Date().toISOString().slice(0,10)).length;
+    reservasResumoEl.textContent =
+      `Reservas ativas: ${total} (reservas para hoje: ${aulasHoje}). Limite por aula: ${VAGAS_POR_AULA} vagas.`;
+  }
+
+  /* Presenças acumuladas por atleta (todas as reservas) */
+  const presencasMap = {};
+  reservas.forEach(r => {
+    const key = r.nome;
+    if (!presencasMap[key]) presencasMap[key] = 0;
+    presencasMap[key] += 1;
+  });
+  localStorage.setItem(STORAGE_PRESENCAS, JSON.stringify(presencasMap));
+
+  /* Ranking mensal – mês atual */
+  const agora = new Date();
+  const anoAtual = agora.getFullYear();
+  const mesAtual = agora.getMonth(); // 0–11
+  const rankingMap = {};
+
+  reservas.forEach(r => {
+    if (!r.date) return;
+    const d = new Date(r.date);
+    if (isNaN(d.getTime())) return;
+    if (d.getFullYear() !== anoAtual || d.getMonth() !== mesAtual) return;
+
+    const nome = r.nome;
+    if (!rankingMap[nome]) rankingMap[nome] = 0;
+    rankingMap[nome] += 1;
+  });
+
+  const rankingArray = Object.keys(rankingMap).map(nome => ({
+    nome,
+    presencas: rankingMap[nome]
+  })).sort((a, b) => b.presencas - a.presencas);
+
+  localStorage.setItem(STORAGE_RANKINGS, JSON.stringify({
+    mes: `${anoAtual}-${String(mesAtual+1).padStart(2,"0")}`,
+    ranking: rankingArray
+  }));
+
+  if (reservasRankingBody) {
+    reservasRankingBody.innerHTML = "";
+    if (!rankingArray.length) {
+      const tr = document.createElement("tr");
+      const td = document.createElement("td");
+      td.colSpan = 2;
+      td.textContent = "Ainda não há presenças registadas neste mês.";
+      tr.appendChild(td);
+      reservasRankingBody.appendChild(tr);
+    } else {
+      rankingArray.forEach(item => {
+        const tr = document.createElement("tr");
+        const tdNome = document.createElement("td");
+        tdNome.textContent = item.nome;
+        tr.appendChild(tdNome);
+
+        const tdPres = document.createElement("td");
+        tdPres.textContent = String(item.presencas);
+        tr.appendChild(tdPres);
+
+        reservasRankingBody.appendChild(tr);
+      });
+    }
+  }
+}
+
+if (reservaAddBtn) {
+  reservaAddBtn.addEventListener("click", addReserva);
+}
+
+/* Botão do canto superior – atalho direto para Reservas */
+if (reservasTopBtn) {
+  reservasTopBtn.addEventListener("click", () => {
+    const tabOpcoesBtn = document.querySelector('.tab-btn[data-target="sec-opcoes"]');
+    if (tabOpcoesBtn) tabOpcoesBtn.click();
+
+    const optReservasBtn = document.querySelector('.opt-btn[data-target="opt-reservas"]');
+    if (optReservasBtn) optReservasBtn.click();
+  });
+}
+
 /* TABS PRINCIPAIS */
 document.querySelectorAll(".tab-btn").forEach(btn => {
   btn.addEventListener("click", () => {
@@ -2339,6 +2669,12 @@ renderTreinos();
 updateBackupInfo();
 renderGuiaExercicios();
 renderPerformance();
+renderReservas();
+
+/* reserva data default */
+if (reservaDataEl && !reservaDataEl.value) {
+  reservaDataEl.value = new Date().toISOString().slice(0, 10);
+}
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", function () {
@@ -2349,18 +2685,3 @@ if ("serviceWorker" in navigator) {
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
