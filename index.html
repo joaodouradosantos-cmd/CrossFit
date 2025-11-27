@@ -576,33 +576,42 @@
 
     <div class="card">
       <div class="options-grid">
-        <button class="btn-secondary opt-btn" data-target="opt-wod">
-          <span class="opt-emoji">🟩</span>
-          <span>WOD</span>
-        </button>
-        <button class="btn-secondary opt-btn" data-target="opt-calc">
-          <span class="opt-emoji">🧮</span>
-          <span>Objetivo</span>
-        </button>
-        <button class="btn-secondary opt-btn" data-target="opt-graficos">
-          <span class="opt-emoji">📈</span>
-          <span>Gráfico</span>
-        </button>
-        <button class="btn-secondary opt-btn" data-target="opt-performance">
-          <span class="opt-emoji">🏅</span>
-          <span>Desempenho</span>
-        </button>
-        <button class="btn-secondary opt-btn" data-target="opt-guia">
-          <span class="opt-emoji">📚</span>
-          <span>Exercícios</span>
-        </button>
-        <button class="btn-secondary opt-btn" data-target="opt-backup">
-          <span class="opt-emoji">💾</span>
-          <span>Backup</span>
-        </button>
-        <button class="btn-secondary opt-btn" data-target="sec-reservas">
-          <span class="opt-emoji">📆</span>
-      </button>
+  <button class="btn-secondary opt-btn" data-target="opt-wod">
+    <span class="opt-emoji">🟩</span>
+    <span>WOD</span>
+  </button>
+
+  <button class="btn-secondary opt-btn" data-target="opt-calc">
+    <span class="opt-emoji">🧮</span>
+    <span>Objetivo</span>
+  </button>
+
+  <button class="btn-secondary opt-btn" data-target="opt-graficos">
+    <span class="opt-emoji">📈</span>
+    <span>Gráfico</span>
+  </button>
+
+  <button class="btn-secondary opt-btn" data-target="opt-performance">
+    <span class="opt-emoji">🏅</span>
+    <span>Desempenho</span>
+  </button>
+
+  <button class="btn-secondary opt-btn" data-target="opt-guia">
+    <span class="opt-emoji">📚</span>
+    <span>Exercícios</span>
+  </button>
+
+  <button class="btn-secondary opt-btn" data-target="opt-backup">
+    <span class="opt-emoji">💾</span>
+    <span>Backup</span>
+  </button>
+
+  <!-- NOVO BOTÃO RESERVAS DENTRO DO WOD & TOOLS -->
+  <button class="btn-secondary opt-btn" data-target="sec-reservas">
+    <span class="opt-emoji">📆</span>
+    <span>Reservas</span>
+  </button>
+</div>
 
         <div class="helper-text" style="margin-top:8px;">
       </div>
@@ -2617,9 +2626,20 @@ document.querySelectorAll(".tab-btn").forEach(btn => {
 document.querySelectorAll(".opt-btn").forEach(btn => {
   btn.addEventListener("click", () => {
     const target = btn.dataset.target;
+
+    // esconder sub-secções do WOD & Tools
     document.querySelectorAll(".option-section").forEach(s => s.classList.remove("active"));
+
+    // ativar a opção normal, se existir (WOD, Objetivo, Gráficos, etc.)
     const sec = document.getElementById(target);
-    if (sec) sec.classList.add("active");
+    if (sec && sec.classList.contains("option-section")) {
+      sec.classList.add("active");
+    }
+
+    // caso especial: botão "Reservas" dentro do WOD & Tools
+    if (target === "sec-reservas" && typeof reservasSection !== "undefined" && reservasSection) {
+      reservasSection.style.display = "block";
+    }
   });
 });
 
@@ -2657,4 +2677,5 @@ if ("serviceWorker" in navigator) {
 
 </body>
 </html>
+
 
