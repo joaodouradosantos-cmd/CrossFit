@@ -16,173 +16,69 @@
 
   <style>
     :root {
-      font-family: system-ui, sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color-scheme: light;
     }
 
-    body {
-      background:
-        /* RISCOS ESCUROS TIPO ARRANHÕES */
-        repeating-linear-gradient(
-          145deg,
-          rgba(18, 22, 15, 0.95) 0px,
-          rgba(18, 22, 15, 0.95) 120px,
-          rgba(12, 13, 10, 1) 121px,
-          rgba(12, 13, 10, 1) 132px
-        ),
-        /* MANCHAS OLIVA / LAMA */
-        radial-gradient(circle at 12% 0%, rgba(116, 128, 76, 0.55) 0, transparent 55%),
-        radial-gradient(circle at 85% 100%, rgba(140, 110, 60, 0.45) 0, transparent 60%),
-        /* FUNDO PRINCIPAL VERDE TROPA ESCURO */
-        linear-gradient(to bottom, #4f5b32 0%, #262f1c 40%, #141710 100%);
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background-color: #111;
+    }
 
-      color: #111;
+    body {
+      min-height: 100vh;
       display: flex;
       justify-content: center;
-      min-height: 100vh;
+      align-items: stretch;
+      padding: 0;
+      box-sizing: border-box;
+      color: #f3f3f3;
+      background:
+        radial-gradient(circle at 0 0, rgba(60, 80, 50, 0.45) 0, transparent 55%),
+        radial-gradient(circle at 100% 0, rgba(110, 90, 60, 0.35) 0, transparent 55%),
+        radial-gradient(circle at 0 100%, rgba(70, 60, 40, 0.35) 0, transparent 55%),
+        linear-gradient(145deg, #1a1f16 0%, #151912 40%, #0d100c 100%);
       background-attachment: fixed;
     }
 
+    * {
+      box-sizing: border-box;
+    }
+
     .app {
+      position: relative;
       width: 100%;
-      max-width: 900px;
-      padding: 8px;
-      box-sizing: border-box;
-    }
-
-    header {
-      text-align: center;
-      margin-bottom: 6px;
-      position: relative;
-    }
-
-    #appLogo {
-      max-width: 340px;
-      height: auto;
-      display: block;
-      margin: 0 auto 0px auto;
-    }
-
-    .subtitle {
-      font-size: 0.90rem;
-      margin-top: -10px;
-      color: #e0e5d8;
-      cursor: pointer;
-      text-decoration: none;
-      text-shadow: 0 2px 3px rgba(0, 0, 0, 0.6);
-      letter-spacing: 0.03em;
-      transition: text-decoration 0.15s ease, transform 0.1s ease;
-    }
-
-    .subtitle:hover {
-      text-decoration: underline;
-      transform: translateY(-1px);
-    }
-
-    .card {
-      background: #e1e1e1;
-      background-image:
-        linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(180, 180, 180, 0.12)),
-        repeating-linear-gradient(
-          135deg,
-          rgba(0, 0, 0, 0.09) 0px,
-          rgba(0, 0, 0, 0.09) 1px,
-          transparent 1px,
-          transparent 4px
-        );
+      max-width: 960px;
+      margin: 8px;
+      padding: 12px;
       border-radius: 14px;
-      padding: 14px;
-      margin-bottom: 16px;
-      border: 1px solid #9d9d9d;
-      box-shadow:
-        0 4px 10px rgba(0, 0, 0, 0.35),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.06);
-    }
-
-    /* PERFIL SEM “CARTÃO” VISÍVEL */
-    #perfil.card {
-      background: transparent;
-      border: none;
-      box-shadow: none;
-      padding: 0;
-      margin-bottom: 4px;
-    }
-
-    #perfilForm {
-      display: none;
-      margin-bottom: 8px;
-    }
-
-    .form-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 8px;
-    }
-
-    .field {
-      flex: 1;
-      min-width: 140px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    label {
-      font-size: 0.8rem;
-      color: #2b2b2b;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    input,
-    select,
-    textarea,
-    button {
-      padding: 10px;
-      border-radius: 10px;
-      background: #f8f8f8;
-      color: #222;
-      border: 1px solid #b7b7b7;
-      font-size: 0.9rem;
-      box-sizing: border-box;
-      font-family: inherit;
-    }
-
-    input:focus,
-    select:focus,
-    textarea:focus {
-      outline: none;
-      border-color: #22c55e;
-      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.25);
-    }
-
-    /* BOTÃO PRINCIPAL – ESTILO GUERRA SUJA */
-    .btn-primary {
       background:
-        linear-gradient(145deg, #1f7b3a, #0f4220);
-      border: 1px solid #050806;
-      color: #f4f4f4;
-      font-weight: 700;
-      cursor: pointer;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
+        linear-gradient(
+          135deg,
+          rgba(18, 23, 16, 0.97) 0%,
+          rgba(13, 16, 11, 0.98) 40%,
+          rgba(8, 9, 6, 0.99) 100%
+        );
       box-shadow:
-        0 3px 0 #050806,
-        inset 0 0 0 1px rgba(255, 255, 255, 0.04);
-      position: relative;
+        0 0 0 1px rgba(0, 0, 0, 0.8),
+        0 18px 35px rgba(0, 0, 0, 0.9);
       overflow: hidden;
     }
 
-    .btn-primary::after {
+    .app::before {
       content: "";
       position: absolute;
       inset: 0;
-      background-image:
+      background:
+        radial-gradient(circle at 0 0, rgba(180, 180, 120, 0.13) 0, transparent 55%),
+        radial-gradient(circle at 100% 0, rgba(160, 140, 90, 0.12) 0, transparent 55%),
+        radial-gradient(circle at 30% 100%, rgba(130, 150, 90, 0.16) 0, transparent 50%),
         repeating-linear-gradient(
-          135deg,
-          rgba(255, 255, 255, 0.08) 0px,
-          rgba(255, 255, 255, 0.08) 1px,
+          125deg,
+          rgba(0, 0, 0, 0.2) 0px,
+          rgba(0, 0, 0, 0.2) 1px,
           transparent 1px,
           transparent 4px
         );
@@ -191,143 +87,184 @@
       pointer-events: none;
     }
 
-    .btn-primary:active {
-      transform: translateY(1px);
-      box-shadow:
-        0 1px 0 #050806,
-        inset 0 0 0 1px rgba(0, 0, 0, 0.3);
-    }
-
-    /* BOTÕES SECUNDÁRIOS – RISCADOS / BATTLE WORN */
-    .btn-secondary {
-      padding: 8px 10px;
-      border-radius: 999px;
-      border: 1px solid #303030;
-      background:
-        linear-gradient(145deg, #3b3f3a, #202320);
-      color: #f2f2f2;
-      font-size: 0.8rem;
-      cursor: pointer;
-      white-space: nowrap;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      box-shadow:
-        0 3px 0 #050807,
-        inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+    header {
       position: relative;
-      overflow: hidden;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      z-index: 2;
     }
 
-    .btn-secondary::before {
+    #appLogo {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid rgba(40, 45, 32, 0.95);
+      box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.9),
+        0 0 12px rgba(0, 0, 0, 0.9);
+    }
+
+    h1 {
+      font-size: 1.15rem;
+      margin: 0;
+      color: #f7f7f0;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.9);
+    }
+
+    .subtitle {
+      font-size: 0.78rem;
+      color: #d2d6c8;
+      margin-top: 2px;
+    }
+
+    .app::after {
       content: "";
       position: absolute;
       inset: 0;
-      background-image:
-        repeating-linear-gradient(
-          135deg,
-          rgba(255, 255, 255, 0.07) 0px,
-          rgba(255, 255, 255, 0.07) 1px,
-          transparent 1px,
-          transparent 5px
-        );
-      mix-blend-mode: soft-light;
-      opacity: 0.28;
-      pointer-events: none;
-    }
-
-    .btn-secondary:active {
-      transform: translateY(1px);
-      box-shadow: 0 1px 0 #050807;
-    }
-
-    /* BOTÃO APAGAR – MANTIDO MAS MAIS “BRUTO” */
-    .btn-delete {
-      padding: 2px 4px;
-      border-radius: 999px;
-      border: 1px solid #3b0505;
       background:
-        linear-gradient(145deg, #b93333, #7a1515);
-      color: #ffffff;
-      font-size: 0.75rem;
-      cursor: pointer;
-      box-shadow: 0 2px 0 #2a0202;
+        radial-gradient(circle at 10% 0%, rgba(90, 110, 70, 0.5) 0, transparent 55%),
+        radial-gradient(circle at 90% 0%, rgba(120, 100, 70, 0.45) 0, transparent 55%);
+      mix-blend-mode: soft-light;
+      opacity: 0.55;
+      pointer-events: none;
+      z-index: 0;
     }
 
-    .btn-delete:hover {
-      background: linear-gradient(145deg, #ef4444, #b91c1c);
+    .card {
+      position: relative;
+      background:
+        radial-gradient(circle at 0 0, rgba(160, 150, 110, 0.18) 0, transparent 55%),
+        radial-gradient(circle at 100% 0, rgba(110, 130, 90, 0.16) 0, transparent 55%),
+        linear-gradient(135deg,
+          rgba(22, 27, 18, 0.98),
+          rgba(16, 19, 12, 0.99)
+        );
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 10px;
+      box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.85),
+        0 12px 24px rgba(0, 0, 0, 0.85);
+      z-index: 1;
+    }
+
+    h2, h3 {
+      margin: 0 0 6px 0;
+      color: #f0f2e8;
+      font-size: 0.95rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.78rem;
+      margin-bottom: 2px;
+      color: #e2e5d4;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 6px 7px;
+      border-radius: 6px;
+      border: 1px solid rgba(92, 98, 80, 0.8);
+      background: rgba(10, 12, 7, 0.96);
+      color: #f7f7f2;
+      font-size: 0.8rem;
+      outline: none;
+      box-shadow:
+        inset 0 0 0 1px rgba(0, 0, 0, 0.7);
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: rgba(205, 190, 122, 0.95);
+      box-shadow:
+        0 0 0 1px rgba(205, 190, 122, 0.8),
+        0 0 0 3px rgba(205, 190, 122, 0.25);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 60px;
+    }
+
+    .form-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .field {
+      flex: 1;
+      min-width: 120px;
+    }
+
+    .field-small {
+      max-width: 120px;
     }
 
     .helper-text {
-      margin-top: 4px;
-      font-size: 0.8rem;
-      color: #222;
+      font-size: 0.72rem;
+      color: #c3c8b5;
+      margin-top: 3px;
+    }
+
+    .helper-text strong {
+      color: #f5f7eb;
     }
 
     .tabs {
       display: flex;
       gap: 8px;
-      margin: 10px 0 14px 0;
+      margin: 4px 0 10px 0;
+      position: relative;
+      z-index: 2;
     }
 
     .tab-btn {
       flex: 1;
-      padding: 10px 0;
+      padding: 6px 8px;
       border-radius: 999px;
-      border: 1px solid #202320;
+      border: 1px solid rgba(117, 129, 94, 0.85);
       background:
-        linear-gradient(145deg, #32372f, #21241f);
-      color: #f1f1f1;
+        radial-gradient(circle at 0 0, rgba(150, 170, 90, 0.25) 0, transparent 60%);
+      color: #f4f4ea;
+      font-size: 0.8rem;
       cursor: pointer;
-      font-size: 0.9rem;
-      box-shadow:
-        0 4px 0 #050806,
-        inset 0 0 0 1px rgba(255, 255, 255, 0.04);
-      transition:
-        transform 0.1s ease,
-        box-shadow 0.1s ease,
-        background 0.1s ease,
-        border-color 0.1s ease,
-        color 0.1s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
       text-transform: uppercase;
-      letter-spacing: 0.09em;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .tab-btn::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background-image:
-        repeating-linear-gradient(
-          135deg,
-          rgba(255, 255, 255, 0.08) 0px,
-          rgba(255, 255, 255, 0.08) 1px,
-          transparent 1px,
-          transparent 4px
-        );
-      mix-blend-mode: soft-light;
-      opacity: 0.3;
-      pointer-events: none;
+      letter-spacing: 0.08em;
+      box-shadow:
+        0 2px 0 rgba(0, 0, 0, 0.7);
     }
 
     .tab-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 5px 0 #040605;
+      filter: brightness(1.05);
     }
 
     .tab-btn.active {
-      background:
-        linear-gradient(145deg, #1f7b3a, #0f4220);
-      border-color: #0b2614;
-      color: #ffffff;
-      font-weight: 700;
-      transform: translateY(2px);
-      box-shadow: 0 2px 0 #041207;
+      background: linear-gradient(135deg, #cfc27a, #f0df9e);
+      color: #16170e;
+      border-color: #e2d58d;
+      box-shadow:
+        0 0 0 1px rgba(6, 5, 0, 0.9),
+        0 3px 0 rgba(6, 5, 0, 0.95);
     }
 
-    .section { display: none; }
-    .section.active { display: block; }
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
 
     .options-grid {
       display: grid;
@@ -359,47 +296,178 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.8rem;
-      color: #111;
+      font-size: 0.79rem;
     }
 
-    th,
-    td {
-      padding: 6px;
-      text-align: center;
-      border-bottom: 1px solid #d9d9d9;
+    th, td {
+      padding: 4px 6px;
+      border-bottom: 1px solid rgba(70, 75, 55, 0.8);
       white-space: nowrap;
+      text-align: left;
     }
 
     th {
-      background: #d5d5d5;
-      color: #222;
-      position: sticky;
-      top: 0;
-      z-index: 1;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #c9ceb8;
+    }
+
+    tr:nth-child(even) td {
+      background: rgba(9, 11, 6, 0.88);
+    }
+
+    tr:nth-child(odd) td {
+      background: rgba(12, 14, 8, 0.88);
     }
 
     .scroll {
-      max-height: 260px;
-      overflow: auto;
-      border-radius: 10px;
-      border: 1px solid #b5b5b5;
-      background: #f0f0f0;
+      overflow-x: auto;
     }
 
-    #backupInfo {
-      margin-top: 6px;
+    .btn-primary,
+    .btn-secondary,
+    .btn-ghost {
+      border-radius: 999px;
+      border: 1px solid transparent;
+      padding: 6px 10px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      font-family: inherit;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      justify-content: center;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #d9c877, #f5e59a);
+      color: #15140b;
+      border-color: #f0e2a0;
+      box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.8),
+        0 3px 0 rgba(0, 0, 0, 0.9);
+      font-weight: 600;
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.05);
+    }
+
+    .btn-secondary {
+      background: radial-gradient(circle at 0 0, rgba(150, 167, 92, 0.25) 0, transparent 60%);
+      color: #f0f3e5;
+      border-color: rgba(110, 120, 85, 0.9);
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.7);
+    }
+
+    .btn-secondary:hover {
+      filter: brightness(1.07);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: #d4d7c5;
+      border-color: rgba(113, 120, 92, 0.7);
+      border-style: dashed;
+    }
+
+    .btn-ghost:hover {
+      border-style: solid;
+      filter: brightness(1.08);
+    }
+
+    .btn-delete {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .btn-small {
+      padding: 3px 8px;
+      font-size: 0.7rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: radial-gradient(circle at 0 0, rgba(180, 165, 100, 0.4) 0, transparent 55%);
+      border-radius: 999px;
+      border: 1px solid rgba(188, 173, 105, 0.9);
+      padding: 3px 7px;
+      font-size: 0.68rem;
+      color: #f7f7e9;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: radial-gradient(circle at 0 0, rgba(110, 125, 72, 0.55) 0, transparent 55%);
+      border-radius: 999px;
+      border: 1px solid rgba(131, 145, 88, 0.9);
+      padding: 2px 6px;
+      font-size: 0.68rem;
+      color: #f3f5e8;
+    }
+
+    .chip .label {
+      opacity: 0.9;
+    }
+
+    .chip .value {
+      font-weight: 600;
+    }
+
+    .small-text {
+      font-size: 0.72rem;
+      color: #c5cab7;
+    }
+
+    .warning {
+      background: rgba(150, 100, 40, 0.32);
+      border: 1px solid rgba(200, 150, 80, 0.85);
+      color: #f7f0df;
+      padding: 6px 8px;
+      border-radius: 8px;
       font-size: 0.75rem;
-      color: #222;
+      margin-bottom: 6px;
     }
 
-    /* REMOVER RISCOS APENAS NO CARD "REGISTO E HISTÓRICO" */
-    #opt-wod .card:nth-of-type(2) {
-      background-image: none !important;
-      background-color: #e1e1e1 !important;
+    .success {
+      background: rgba(110, 150, 80, 0.32);
+      border: 1px solid rgba(155, 200, 110, 0.85);
+      color: #f4f8ea;
+      padding: 6px 8px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      margin-top: 4px;
     }
 
-    /* BOTÃO RESERVAS NO CANTO SUPERIOR DIREITO */
+    .alert {
+      background: rgba(150, 70, 60, 0.38);
+      border: 1px solid rgba(210, 120, 100, 0.9);
+      color: #ffece6;
+      padding: 6px 8px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      margin-top: 6px;
+    }
+
+    canvas {
+      max-width: 100%;
+    }
+
+    .no-select {
+      user-select: none;
+    }
+
+    /* BOTÃO RESERVAS NO CANTO SUPERIOR DIREITO (já sem HTML associado) */
     #reservasBtn {
       position: absolute;
       top: 4px;
@@ -407,6 +475,29 @@
       padding: 4px 8px;
       font-size: 0.7rem;
       z-index: 5;
+    }
+
+    @media (max-width: 600px) {
+      header {
+        align-items: flex-start;
+      }
+
+      #appLogo {
+        width: 52px;
+        height: 52px;
+      }
+
+      h1 {
+        font-size: 1.05rem;
+      }
+
+      .form-row {
+        flex-direction: column;
+      }
+
+      .options-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
     }
   </style>
 </head>
@@ -416,7 +507,7 @@
   <header>
     <img id="appLogo" src="imagens/crossbox_logo.png" alt="Cross Moita Logo">
     <div class="subtitle" id="appSubtitle">Registo de treinos</div>
-    <button id="reservasBtn" class="btn-secondary">Reservas</button>
+
   </header>
 
   <!-- PERFIL -->
@@ -443,20 +534,17 @@
           <label>Sexo</label>
           <select id="sexo">
             <option value="">Selecionar</option>
-            <option value="homem">Homem</option>
-            <option value="mulher">Mulher</option>
+            <option value="masculino">Masculino</option>
+            <option value="feminino">Feminino</option>
           </select>
         </div>
         <div class="field">
           <label>Idade</label>
-          <input id="idade" type="number" min="10" max="100" />
+          <input id="idade" type="number" min="10" max="99" />
         </div>
-      </div>
-
-      <div class="form-row">
         <div class="field">
           <label>Altura (cm)</label>
-          <input id="altura" type="number" min="100" max="230" />
+          <input id="altura" type="number" min="130" max="220" />
         </div>
         <div class="field">
           <label>Peso (kg)</label>
@@ -467,64 +555,7 @@
       <button class="btn-primary" id="saveProfile">Guardar perfil</button>
     </div>
   </section>
-
-  <!-- RESERVAS & PRESENÇAS (ALUNO) -->
-  <section class="card" id="sec-reservas" style="display:none; margin-bottom:10px;">
-    <h3 style="margin-top:0; margin-bottom:8px;">📆 Reservas & Presenças</h3>
-
-    <div class="form-row">
-      <div class="field">
-        <label>Data da aula</label>
-        <input id="reservaData" type="date" />
-      </div>
-      <div class="field">
-        <label>Hora</label>
-        <input id="reservaHora" type="time" />
-      </div>
-    </div>
-
-    <div class="form-row">
-      <div class="field">
-        <label>Tipo de aula</label>
-        <select id="reservaTipo">
-          <option value="">Selecionar</option>
-          <option value="WOD">WOD</option>
-          <option value="Open Box">Open Box</option>
-          <option value="Halterofilismo">Halterofilismo</option>
-          <option value="Mobilidade">Mobilidade</option>
-          <option value="Competição">Competição</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>Nota (opcional)</label>
-        <input id="reservaNota" type="text" placeholder="Ex.: parceiro, foco, objetivo do dia..." />
-      </div>
-    </div>
-
-    <button class="btn-primary" id="reservaAddBtn">Guardar reserva</button>
-
-    <div class="helper-text" style="margin-top:6px;">
-      Estas reservas e presenças são pessoais e ficam apenas guardadas neste dispositivo.
-    </div>
-
-    <div class="scroll" style="margin-top:10px;">
-      <table>
-        <thead>
-          <tr>
-            <th>Data</th>
-            <th>Hora</th>
-            <th>Aula</th>
-            <th>Nota</th>
-            <th>Presença</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody id="reservasBody"></tbody>
-      </table>
-    </div>
-
-    <div class="helper-text" id="reservasResumo" style="margin-top:6px;"></div>
-  </section>
+  <!-- (antiga sec-reservas aqui foi removida; agora está dentro de WOD & Tools) -->
 
   <!-- TABS PRINCIPAIS -->
   <div class="tabs">
@@ -560,10 +591,11 @@
               <th>1RM</th>
               <th>25%</th>
               <th>30%</th>
-              <th>35%</th</th>
+              <th>35%</th>
               <th>40%</th>
               <th>50%</th>
               <th>60%</th>
+              <th>65%</th>
               <th>70%</th>
               <th>75%</th>
               <th>80%</th>
@@ -578,6 +610,23 @@
       </div>
     </div>
 
+    <div class="card">
+      <h3>Histórico de 1RM</h3>
+      <div class="scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Exercício</th>
+              <th>Data</th>
+              <th>1RM</th>
+              <th>Diferença</th>
+            </tr>
+          </thead>
+          <tbody id="historyBody"></tbody>
+        </table>
+      </div>
+      <div class="helper-text" id="historyResumo"></div>
+    </div>
   </section>
 
   <!-- SECÇÃO 2: OPÇÕES -->
@@ -601,6 +650,10 @@
           <span class="opt-emoji">🏅</span>
           <span>Desempenho</span>
         </button>
+        <button class="btn-secondary opt-btn" data-target="opt-reservas">
+          <span class="opt-emoji">📆</span>
+          <span>Marcações</span>
+        </button>
         <button class="btn-secondary opt-btn" data-target="opt-guia">
           <span class="opt-emoji">📚</span>
           <span>Exercícios</span>
@@ -609,10 +662,71 @@
           <span class="opt-emoji">💾</span>
           <span>Backup</span>
         </button>
+
       </div>
       <div class="helper-text" style="margin-top:8px;">
       </div>
     </div>
+
+    <!-- MARCAÇÕES / RESERVAS -->
+    <section id="opt-reservas" class="option-section">
+      <div class="card">
+        <h3 style="margin-top:0; margin-bottom:8px;">📆 Reservas & Presenças</h3>
+
+        <div class="form-row">
+          <div class="field">
+            <label>Data da aula</label>
+            <input id="reservaData" type="date" />
+          </div>
+          <div class="field">
+            <label>Hora</label>
+            <input id="reservaHora" type="time" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label>Tipo de aula</label>
+            <select id="reservaTipo">
+              <option value="">Selecionar</option>
+              <option value="WOD">WOD</option>
+              <option value="Open Box">Open Box</option>
+              <option value="Halterofilismo">Halterofilismo</option>
+              <option value="Mobilidade">Mobilidade</option>
+              <option value="Competição">Competição</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Nota (opcional)</label>
+            <input id="reservaNota" type="text" placeholder="Ex.: parceiro, foco, objetivo do dia..." />
+          </div>
+        </div>
+
+        <button class="btn-primary" id="reservaAddBtn">Guardar reserva</button>
+
+        <div class="helper-text" style="margin-top:6px;">
+          Estas reservas e presenças são pessoais e ficam apenas guardadas neste dispositivo.
+        </div>
+
+        <div class="scroll" style="margin-top:10px;">
+          <table>
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Hora</th>
+                <th>Aula</th>
+                <th>Nota</th>
+                <th>Presença</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="reservasBody"></tbody>
+          </table>
+        </div>
+
+        <div class="helper-text" id="reservasResumo" style="margin-top:6px;"></div>
+      </div>
+    </section>
 
     <!-- WOD -->
     <section id="opt-wod" class="option-section">
@@ -633,11 +747,10 @@
 
         <div class="form-row">
           <div class="field">
-            <label>Tipo</label>
-            <select id="treinoTipo">
+            <label>Categoria</label>
+            <select id="treinoCategoria">
               <option value="">Selecionar</option>
               <option value="força">Força</option>
-              <option value="hipertrofia">Hipertrofia</option>
               <option value="técnica">Técnica</option>
               <option value="metcon">Metcon</option>
             </select>
@@ -654,88 +767,57 @@
             <input id="treinoReps" type="number" min="1" />
           </div>
           <div class="field">
-            <label>Peso (kg)</label>
-            <input id="treinoPeso" type="number" step="0.5" min="0" />
+            <label>Carga / Intensidade</label>
+            <input id="treinoCarga" type="text" placeholder="Ex.: 80kg, RX, 70% 1RM..." />
           </div>
         </div>
 
         <div class="form-row">
           <div class="field">
-            <label>Tempo (opcional)</label>
-            <input id="treinoTempo" type="text" placeholder="Ex.: 12:35, 20', AMRAP 10'..." />
+            <label>Tempo / Score</label>
+            <input id="treinoScore" type="text" placeholder="Ex.: 12:35, 3 rondas + 10 reps..." />
           </div>
           <div class="field">
-            <label>Distância (km – Metcon, opcional)</label>
-            <input id="treinoDist" type="number" step="0.01" min="0" />
+            <label>RPE (1-10)</label>
+            <input id="treinoRpe" type="number" min="1" max="10" />
           </div>
         </div>
 
-        <button class="btn-primary" id="treinoAdd">Adicionar ao WOD</button>
-        <div class="helper-text">
-          A carga de cada exercício (kg) é calculada como: peso × repetições × rondas.
-          A distância em metcon é somada à parte, em km.
+        <div class="form-row">
+          <div class="field">
+            <label>Notas</label>
+            <textarea id="treinoNotas" placeholder="Como correu? Onde sentiste mais dificuldade?"></textarea>
+          </div>
         </div>
+
+        <button class="btn-primary" id="treinoAdd">Registar WOD</button>
       </div>
 
       <div class="card">
-        <h3 style="margin-top:0; margin-bottom:8px;">Registo e histórico</h3>
+        <h3>Histórico de treinos</h3>
         <div class="scroll">
           <table>
             <thead>
               <tr>
                 <th>Data</th>
                 <th>Exercício</th>
-                <th>Tipo</th>
-                <th>Rondas</th>
-                <th>Reps</th>
-                <th>Peso</th>
-                <th>% 1RM</th>
-                <th>Tempo</th>
-                <th>Distância (km)</th>
-                <th>Carga (kg)</th>
+                <th>Categoria</th>
+                <th>Score</th>
+                <th>RPE</th>
                 <th></th>
               </tr>
             </thead>
-            <tbody id="treinoBody"></tbody>
+            <tbody id="treinoTableBody"></tbody>
           </table>
         </div>
         <div class="helper-text" id="treinoResumo"></div>
-        <div class="helper-text" id="treinoSugestao" style="margin-top:4px; font-weight:500;"></div>
-        <div class="helper-text" id="weeklyHistory" style="margin-top:6px;"></div>
-
-        <button class="btn-secondary" id="toggleDailyHistory" style="margin-top:8px;">
-          Histórico diário completo
-        </button>
-
-        <div id="dailyHistorySection" style="display:none; margin-top:8px;">
-          <div class="scroll">
-            <table>
-              <thead>
-                <tr>
-                  <th>Data</th>
-                  <th>Exercício</th>
-                  <th>Tipo</th>
-                  <th>Rondas</th>
-                  <th>Reps</th>
-                  <th>Peso</th>
-                  <th>% 1RM</th>
-                  <th>Tempo</th>
-                  <th>Distância (km)</th>
-                  <th>Carga (kg)</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody id="dailyHistoryBody"></tbody>
-            </table>
-          </div>
-        </div>
       </div>
     </section>
 
     <!-- OBJETIVO -->
     <section id="opt-calc" class="option-section">
       <div class="card">
-        <h3 style="margin-top:0; margin-bottom:8px;">🧮 Objetivo</h3>
+        <h3>Objetivo do treino</h3>
 
         <div class="form-row">
           <div class="field">
@@ -755,18 +837,11 @@
               <option value="">Automático</option>
               <option value="forca">Força</option>
               <option value="hipertrofia">Hipertrofia</option>
-              <option value="tecnica">Técnica / Volume leve</option>
+              <option value="tecnica">Técnica</option>
             </select>
           </div>
-        </div>
-
-        <div class="form-row">
           <div class="field">
-            <label>Peso objetivo (kg – opcional)</label>
-            <input id="calcTargetKg" type="number" step="0.5" min="0" />
-          </div>
-          <div class="field">
-            <label>Prazo (semanas – opcional)</label>
+            <label>Semanas de progressão</label>
             <input id="calcWeeks" type="number" min="1" />
           </div>
         </div>
@@ -781,87 +856,48 @@
     <!-- GRÁFICOS -->
     <section id="opt-graficos" class="option-section">
       <div class="card">
-        <h3 style="margin-top:0; margin-bottom:8px;">📈 Gráfico de evolução do 1RM</h3>
-        <div class="field">
-          <label>Exercício</label>
-          <select id="graphExercise"></select>
+        <h3>Gráficos de evolução</h3>
+
+        <div class="form-row">
+          <div class="field">
+            <label>Tipo de gráfico</label>
+            <select id="graphTipo">
+              <option value="1rm">1RM</option>
+              <option value="wod">WOD / RPE</option>
+            </select>
+          </div>
+          <div class="field" id="graphExContainer">
+            <label>Exercício</label>
+            <select id="graphExercicio"></select>
+          </div>
         </div>
-        <div style="margin-top:8px;">
-          <canvas id="rmChart" style="width:100%; max-height:260px;"></canvas>
-        </div>
+
+        <canvas id="chart" height="180"></canvas>
+        <div class="helper-text" id="graphHelper"></div>
       </div>
     </section>
-
     <!-- PERFORMANCE -->
     <section id="opt-performance" class="option-section">
       <div class="card">
-        <h3 style="margin-top:0; margin-bottom:8px;">🏅 Performance física</h3>
-        <p class="helper-text">
-          Resumo automático com base nos teus registos de WOD, 1RM e metcons (carga em kg e distância em km).
-        </p>
-
-        <h4 style="margin-top:10px; margin-bottom:4px;">WOD – dias com mais carga</h4>
-        <div class="scroll">
-          <table>
-            <thead>
-              <tr>
-                <th>Data</th>
-                <th>Carga total (kg)</th>
-                <th>Distância total (km)</th>
-                <th>N.º exercícios</th>
-                <th>Melhor tempo metcon</th>
-              </tr>
-            </thead>
-            <tbody id="perfWodBody"></tbody>
-          </table>
-        </div>
-
-        <h4 style="margin-top:12px; margin-bottom:4px;">Top 1RM</h4>
-        <div class="scroll">
-          <table>
-            <thead>
-              <tr>
-                <th>Exercício</th>
-                <th>1RM</th>
-                <th>Rel. peso corporal</th>
-              </tr>
-            </thead>
-            <tbody id="perf1rmBody"></tbody>
-          </table>
-        </div>
-
-        <h4 style="margin-top:12px; margin-bottom:4px;">Metcon – melhores tempos</h4>
-        <div class="scroll">
-          <table>
-            <thead>
-              <tr>
-                <th>Exercício</th>
-                <th>Melhor tempo</th>
-                <th>Data</th>
-                <th>Carga / distância</th>
-              </tr>
-            </thead>
-            <tbody id="perfMetconBody"></tbody>
-          </table>
-        </div>
+        <h3>Desempenho global</h3>
+        <div id="performanceResumo" class="small-text"></div>
       </div>
     </section>
 
-    <!-- GUIA EXERCÍCIOS -->
+    <!-- GUIA DE EXERCÍCIOS -->
     <section id="opt-guia" class="option-section">
       <div class="card">
-        <h3 style="margin-top:0; margin-bottom:8px;">📚 Guia de exercícios</h3>
-        <input id="guiaSearch" type="text" placeholder="Procurar por nome (EN/PT) ou descrição..." />
-        <div class="scroll" style="margin-top:8px;">
+        <h3>Guia rápido de exercícios</h3>
+        <div class="scroll">
           <table>
             <thead>
               <tr>
-                <th>Nome (EN)</th>
-                <th>Tradução (PT)</th>
+                <th>Exercício</th>
+                <th>Categoria</th>
                 <th>Descrição</th>
               </tr>
             </thead>
-            <tbody id="guiaBody"></tbody>
+            <tbody id="guiaExerciciosBody"></tbody>
           </table>
         </div>
       </div>
@@ -870,17 +906,21 @@
     <!-- BACKUP -->
     <section id="opt-backup" class="option-section">
       <div class="card">
-        <h3 style="margin-top:0; margin-bottom:8px;">💾 Backup de dados</h3>
-        <p class="helper-text">
-          Exporta um ficheiro com o teu perfil, 1RM, histórico de WOD e restante informação.
-          Podes guardar em Google Drive, iCloud, Ficheiros, etc. Para restaurar noutro telemóvel, basta importar o ficheiro.
-        </p>
+        <h3>Backup & Ficheiros</h3>
+
         <div class="form-row">
-          <button class="btn-primary" id="exportBackupBtn">Exportar backup</button>
-          <button class="btn-secondary" id="importBackupBtn">Importar backup</button>
-          <input type="file" id="backupFileInput" accept="application/json" style="display:none;" />
+          <div class="field">
+            <label>Exportar dados</label>
+            <button class="btn-secondary btn-small" id="exportBackupBtn">Exportar JSON</button>
+          </div>
+          <div class="field">
+            <label>Importar dados</label>
+            <button class="btn-secondary btn-small" id="importBackupBtn">Importar JSON</button>
+            <input id="backupFileInput" type="file" accept=".json" style="display:none;" />
+          </div>
         </div>
-        <div id="backupInfo"></div>
+
+        <div class="helper-text" id="backupInfo" style="margin-top:6px;"></div>
       </div>
     </section>
 
@@ -889,7 +929,7 @@
 </div>
 
 <script>
-/* ===== CHAVES DE ARMAZENAMENTO ===== */
+/* STORAGE KEYS */
 const STORAGE_PROFILE = "crossfit_profile";
 const STORAGE_RM = "crossfit_1rm";
 const STORAGE_RM_HISTORY = "crossfit_1rm_history";
@@ -914,220 +954,139 @@ const perfilForm = document.getElementById("perfilForm");
 const subtitleEl = document.getElementById("appSubtitle");
 
 function updateProfileInfo() {
-  if (perfilForm) perfilForm.style.display = "none";
-}
-
-function updateSubtitle() {
-  const sub = document.getElementById("appSubtitle");
-  if (!sub) return;
-  if (profile && profile.nome && profile.nome.trim() !== "") {
-    sub.textContent = `Registo de treinos do ${profile.nome}`;
+  if (!perfilForm) return;
+  const nome = (profile.nome || "").trim();
+  if (nome) {
+    subtitleEl.textContent = `Registo de treinos de ${nome}`;
   } else {
-    sub.textContent = "Toca aqui para configurar o teu perfil";
+    subtitleEl.textContent = "Registo de treinos";
   }
 }
 
 function loadProfile() {
-  if (!sexoEl) return;
-  if (profile.nome && nomeEl) nomeEl.value = profile.nome;
-  if (profile.nivel && nivelEl) nivelEl.value = profile.nivel;
-  if (profile.sexo) sexoEl.value = profile.sexo;
-  if (profile.idade) idadeEl.value = profile.idade;
-  if (profile.altura) alturaEl.value = profile.altura;
-  if (profile.peso) pesoEl.value = profile.peso;
+  if (!profile) return;
+
+  nomeEl.value = profile.nome || "";
+  nivelEl.value = profile.nivel || "";
+  sexoEl.value = profile.sexo || "";
+  idadeEl.value = profile.idade || "";
+  alturaEl.value = profile.altura || "";
+  pesoEl.value = profile.peso || "";
+
   updateProfileInfo();
-  updateSubtitle();
 }
 
-const saveProfileBtn = document.getElementById("saveProfile");
-if (saveProfileBtn) {
-  saveProfileBtn.addEventListener("click", () => {
-    profile = {
-      nome: nomeEl && nomeEl.value ? nomeEl.value.trim() : "",
-      nivel: nivelEl ? (nivelEl.value || "") : "",
-      sexo: sexoEl.value || "",
-      idade: idadeEl.value ? parseInt(idadeEl.value, 10) : "",
-      altura: alturaEl.value ? parseInt(alturaEl.value, 10) : "",
-      peso: pesoEl.value ? parseFloat(pesoEl.value) : ""
-    };
-    localStorage.setItem(STORAGE_PROFILE, JSON.stringify(profile));
-    updateProfileInfo();
-    updateSubtitle();
-    registerBackupMeta("Perfil atualizado");
-    alert("Perfil atualizado.");
-    renderPerformance();
-  });
+function saveProfile() {
+  profile = {
+    nome: nomeEl.value || "",
+    nivel: nivelEl.value || "",
+    sexo: sexoEl.value || "",
+    idade: idadeEl.value || "",
+    altura: alturaEl.value || "",
+    peso: pesoEl.value || ""
+  };
+  localStorage.setItem(STORAGE_PROFILE, JSON.stringify(profile));
+  updateProfileInfo();
 }
 
-/* clicar no subtítulo abre/fecha o formulário de perfil */
-if (subtitleEl && perfilForm) {
-  subtitleEl.addEventListener("click", () => {
-    const visible = perfilForm.style.display === "block";
-    perfilForm.style.display = visible ? "none" : "block";
-  });
-}
+document.getElementById("saveProfile").addEventListener("click", saveProfile);
 
-/* ===== EXERCÍCIOS ===== */
-const MOVES = [
-  "Chest Press",
-  "Back Squat",
-  "Front Squat",
-  "Overhead Squat",
-  "Deadlift",
-  "Sumo Deadlift",
-  "Romanian Deadlift (RDL)",
-  "Power Clean",
-  "Squat Clean",
-  "Clean & Jerk",
-  "Power Snatch",
-  "Squat Snatch",
-  "Push Press",
-  "Push Jerk",
-  "Split Jerk",
-  "Strict Press",
-  "Thruster",
-  "Barbell Row",
-  "Bent Over Row",
-  "Good Morning",
-  "Lunges com barra",
-  "Hip Thrust com barra",
-  "Dumbbell Press",
-  "Dumbbell Bench Press",
-  "Dumbbell Snatch",
-  "Dumbbell Clean",
-  "Dumbbell Clean & Jerk",
-  "Dumbbell Thruster",
-  "Dumbbell Row",
-  "Dumbbell Lunges",
-  "Kettlebell Swing",
-  "Kettlebell Clean",
-  "Kettlebell Snatch",
-  "Goblet Squat",
-  "Kettlebell Lunges"
-];
+/* ===== 1RM ===== */
+let dataRm = JSON.parse(localStorage.getItem(STORAGE_RM) || "{}");
+let rmHistory = JSON.parse(localStorage.getItem(STORAGE_RM_HISTORY) || "{}");
 
+const sel = document.getElementById("exercise");
+const oneRmInput = document.getElementById("oneRm");
+const addBtn = document.getElementById("addBtn");
+const tableBody = document.getElementById("tableBody");
+const historyBody = document.getElementById("historyBody");
+const historyResumo = document.getElementById("historyResumo");
+
+/* Exercícios base para 1RM */
 const MOVES_PT = {
-  "Chest Press": "Supino com barra",
-  "Back Squat": "Agachamento com barra nas costas",
-  "Front Squat": "Agachamento frontal",
-  "Overhead Squat": "Agachamento acima da cabeça",
-  "Deadlift": "Peso morto",
-  "Sumo Deadlift": "Peso morto sumo",
-  "Romanian Deadlift (RDL)": "Peso morto romeno",
-  "Power Clean": "Power clean",
-  "Squat Clean": "Squat clean",
-  "Clean & Jerk": "Clean & jerk",
-  "Power Snatch": "Power snatch",
-  "Squat Snatch": "Squat snatch",
-  "Push Press": "Push press",
-  "Push Jerk": "Push jerk",
-  "Split Jerk": "Split jerk",
-  "Strict Press": "Press militar estrito",
-  "Thruster": "Thruster",
-  "Barbell Row": "Remada com barra",
-  "Bent Over Row": "Remada inclinada",
-  "Good Morning": "Good morning",
-  "Lunges com barra": "Passadas com barra",
-  "Hip Thrust com barra": "Hip thrust com barra",
-  "Dumbbell Press": "Press com halteres",
-  "Dumbbell Bench Press": "Supino com halteres",
-  "Dumbbell Snatch": "Snatch com halteres",
-  "Dumbbell Clean": "Clean com halteres",
-  "Dumbbell Clean & Jerk": "Clean & jerk com halteres",
-  "Dumbbell Thruster": "Thruster com halteres",
-  "Dumbbell Row": "Remada com halteres",
-  "Dumbbell Lunges": "Passadas com halteres",
-  "Kettlebell Swing": "Swing com kettlebell",
-  "Kettlebell Clean": "Clean com kettlebell",
-  "Kettlebell Snatch": "Snatch com kettlebell",
-  "Goblet Squat": "Agachamento goblet",
-  "Kettlebell Lunges": "Passadas com kettlebell"
+  "Back Squat": "Back Squat",
+  "Front Squat": "Front Squat",
+  "Overhead Squat": "Overhead Squat",
+  "Deadlift": "Deadlift",
+  "Bench Press": "Bench Press",
+  "Strict Press": "Strict Press",
+  "Push Press": "Push Press",
+  "Push Jerk": "Push Jerk",
+  "Split Jerk": "Split Jerk",
+  "Power Clean": "Power Clean",
+  "Squat Clean": "Squat Clean",
+  "Power Snatch": "Power Snatch",
+  "Squat Snatch": "Squat Snatch",
+  "Clean & Jerk": "Clean & Jerk",
+  "Thruster": "Thruster"
 };
 
-/* GUIA – LISTA TIPO JSON (inclui mais exercícios que MOVES) */
+/* Lista detalhada de exercícios (para Guia, WOD, etc.) */
 const EXER_INFO = [
-  { en: "Chest Press", pt: "Supino com barra", descricao: "Empurrar a barra para longe do peito, deitado no banco, controlando a descida e a subida." },
-  { en: "Back Squat", pt: "Agachamento com barra nas costas", descricao: "Agachamento com a barra apoiada nas costas, descendo até pelo menos à paralela e subindo com o tronco firme." },
-  { en: "Front Squat", pt: "Agachamento frontal", descricao: "Agachamento com a barra apoiada na parte da frente dos ombros, mantendo o tronco mais vertical." },
-  { en: "Overhead Squat", pt: "Agachamento acima da cabeça", descricao: "Agachamento com a barra acima da cabeça, braços estendidos e core bem firme para estabilizar." },
-  { en: "Deadlift", pt: "Peso morto", descricao: "Levar a barra do chão até à anca com costas neutras, empurrando o chão com as pernas e contraindo glúteos no topo." },
-  { en: "Sumo Deadlift", pt: "Peso morto sumo", descricao: "Peso morto com pés mais afastados e mãos a agarrar a barra entre as pernas, reduzindo a amplitude de anca." },
-  { en: "Romanian Deadlift (RDL)", pt: "Peso morto romeno", descricao: "Peso morto com menor flexão de joelhos, focado em posteriores da coxa e glúteos, mantendo a barra perto do corpo." },
-  { en: "Power Clean", pt: "Power clean", descricao: "Levar a barra do chão até aos ombros de forma explosiva, recebendo-a acima da paralela." },
-  { en: "Squat Clean", pt: "Squat clean", descricao: "Clean com receção em agachamento completo antes de subir para a posição de pé." },
-  { en: "Clean & Jerk", pt: "Clean & jerk", descricao: "Levar a barra do chão aos ombros (clean) e dos ombros até acima da cabeça (jerk) em dois movimentos distintos." },
-  { en: "Power Snatch", pt: "Power snatch", descricao: "Arranco com receção acima da paralela, num único movimento do chão até overhead." },
-  { en: "Squat Snatch", pt: "Squat snatch", descricao: "Arranco com receção em agachamento profundo, seguido de extensão até ficar totalmente de pé." },
-  { en: "Push Press", pt: "Push press", descricao: "Press de ombros com pequeno impulso das pernas, terminando com a barra acima da cabeça." },
-  { en: "Push Jerk", pt: "Push jerk", descricao: "Impulso de pernas e encaixe da barra acima da cabeça, recebendo em semi-agachamento antes de estender." },
-  { en: "Split Jerk", pt: "Split jerk", descricao: "Jerk em passada, recebendo a barra overhead com uma perna à frente e outra atrás para maior estabilidade." },
-  { en: "Strict Press", pt: "Press militar estrito", descricao: "Press de ombros sem ajuda das pernas, só com força dos ombros e braços, de pé ou sentado." },
-  { en: "Thruster", pt: "Thruster", descricao: "Agachamento frontal seguido diretamente de press acima da cabeça num único movimento fluido." },
-  { en: "Barbell Row", pt: "Remada com barra", descricao: "Com o tronco inclinado à frente, puxar a barra em direção ao abdómen mantendo as costas neutras." },
-  { en: "Bent Over Row", pt: "Remada inclinada", descricao: "Remada com maior inclinação do tronco, focando dorsais e parte média das costas." },
-  { en: "Good Morning", pt: "Good morning", descricao: "Com a barra nas costas, inclinar o tronco à frente com ligeira flexão de joelhos e voltar à posição inicial." },
-  { en: "Lunges com barra", pt: "Passadas com barra", descricao: "Passadas à frente ou atrás com a barra apoiada nos ombros, mantendo o tronco direito." },
-  { en: "Hip Thrust com barra", pt: "Hip thrust com barra", descricao: "Elevar a anca com as costas apoiadas num banco e a barra sobre a bacia, contraindo bem os glúteos." },
-  { en: "Dumbbell Press", pt: "Press com halteres", descricao: "Press de ombros com halteres, de pé ou sentado, subindo os halteres acima da cabeça." },
-  { en: "Dumbbell Bench Press", pt: "Supino com halteres", descricao: "Deitado no banco, empurrar dois halteres para cima a partir do peito, controlando a descida." },
-  { en: "Dumbbell Snatch", pt: "Snatch com halteres", descricao: "Do chão até acima da cabeça com um haltere, num movimento explosivo e contínuo." },
-  { en: "Dumbbell Clean", pt: "Clean com halteres", descricao: "Levar o haltere do chão ou das pernas até ao ombro, com extensão de anca." },
+  { en: "Back Squat", pt: "Back Squat", descricao: "Agachamento com a barra apoiada nas costas, foco em força de pernas e core." },
+  { en: "Front Squat", pt: "Front Squat", descricao: "Agachamento frontal com a barra apoiada nos ombros. Exige mais mobilidade de tronco." },
+  { en: "Overhead Squat", pt: "Overhead Squat", descricao: "Agachamento com a barra acima da cabeça, exige muita estabilidade e mobilidade." },
+  { en: "Deadlift", pt: "Deadlift", descricao: "Levantamento da barra do chão até à anca, foco em cadeia posterior." },
+  { en: "Bench Press", pt: "Supino", descricao: "Press em banco deitado para desenvolvimento de peito, ombros e tríceps." },
+  { en: "Strict Press", pt: "Press estrito", descricao: "Press vertical sem ajuda de pernas, força pura de ombros." },
+  { en: "Push Press", pt: "Push Press", descricao: "Press de ombros com impulso de pernas." },
+  { en: "Push Jerk", pt: "Push Jerk", descricao: "Press de ombros com dip e receção em semi-agachamento." },
+  { en: "Split Jerk", pt: "Split Jerk", descricao: "Variação de jerk com passada à frente e atrás para mais estabilidade." },
+  { en: "Power Clean", pt: "Power Clean", descricao: "Clean rececionado acima da paralela, movimento explosivo com barra." },
+  { en: "Squat Clean", pt: "Squat Clean", descricao: "Clean rececionado em agachamento completo." },
+  { en: "Power Snatch", pt: "Power Snatch", descricao: "Snatch rececionado acima da paralela, movimento muito explosivo." },
+  { en: "Squat Snatch", pt: "Squat Snatch", descricao: "Snatch rececionado em agachamento completo." },
+  { en: "Clean & Jerk", pt: "Clean & Jerk", descricao: "Levantamento olímpico completo, clean seguido de jerk." },
+  { en: "Thruster", pt: "Thruster", descricao: "Front squat seguido de press acima da cabeça num só movimento." },
+  { en: "Burpee", pt: "Burpee", descricao: "Exercício de corpo inteiro, descida ao chão e salto." },
+  { en: "Pull-up", pt: "Pull-up", descricao: "Elevação na barra. Pode ser estrito, kipping ou butterfly." },
+  { en: "Toes to Bar", pt: "Toes to Bar", descricao: "Elevar os pés até à barra, forte estímulo de core." },
+  { en: "Kipping Swing", pt: "Kipping Swing", descricao: "Balanço na barra para gerar momentum em movimentos ginásticos." },
+  { en: "Chest to Bar", pt: "Chest to Bar", descricao: "Pull-up em que o peito toca na barra." },
+  { en: "Muscle-up", pt: "Muscle-up", descricao: "Passagem da posição de suspensão para suporte acima da barra ou rings." },
+  { en: "Ring Dip", pt: "Ring Dip", descricao: "Dip em argolas, muito exigente para ombros e core." },
+  { en: "Handstand Push-up", pt: "Handstand Push-up", descricao: "Flexões de braços em pino." },
+  { en: "Handstand Walk", pt: "Handstand Walk", descricao: "Marcha em pino, forte componente de skill e controlo." },
+  { en: "Box Jump", pt: "Box Jump", descricao: "Salto para cima de uma caixa, foco em potência de pernas." },
+  { en: "Box Jump Over", pt: "Box Jump Over", descricao: "Transposição de caixa, geralmente sem necessidade de extensão total." },
+  { en: "Step-up", pt: "Step-up", descricao: "Subida alternada à caixa, força unilateral de pernas." },
+  { en: "Pistol Squat", pt: "Pistol Squat", descricao: "Agachamento numa só perna, muito desafiador em equilíbrio e mobilidade." },
+  { en: "Lunge", pt: "Lunge", descricao: "Passadas em frente, atrás ou laterais." },
+  { en: "Walking Lunge", pt: "Walking Lunge", descricao: "Passadas a caminhar, com ou sem carga." },
+  { en: "Row", pt: "Remo", descricao: "Remo em máquina, excelente cardio de corpo inteiro." },
+  { en: "Ski Erg", pt: "Ski Erg", descricao: "Simulação de movimento de ski, foco em tronco superior e cardio." },
+  { en: "Assault Bike", pt: "Assault Bike", descricao: "Bicicleta de braços e pernas, muito exigente a nível metabólico." },
+  { en: "Echo Bike", pt: "Echo Bike", descricao: "Versão similar à Assault Bike, também muito intensa." },
+  { en: "Bike Erg", pt: "Bike Erg", descricao: "Bicicleta para trabalho mais contínuo de pernas." },
+  { en: "Run", pt: "Corrida", descricao: "Corrida em exterior ou tapete." },
+  { en: "Double Unders", pt: "Double Unders", descricao: "Saltos à corda em que a corda passa duas vezes por salto." },
+  { en: "Single Unders", pt: "Single Unders", descricao: "Saltos à corda simples." },
+  { en: "Sit-up", pt: "Sit-up", descricao: "Flexão de tronco para trabalhar abdominais." },
+  { en: "V-Up", pt: "V-Up", descricao: "Abdominal em forma de V, tocando pés e mãos no topo." },
+  { en: "Hollow Hold", pt: "Hollow Hold", descricao: "Isometria em hollow, base para muitos movimentos ginásticos." },
+  { en: "Plank", pt: "Prancha", descricao: "Isometria de core, pode ser frontal ou lateral." },
+  { en: "GHD Sit-up", pt: "GHD Sit-up", descricao: "Sit-up profundo na máquina GHD." },
+  { en: "Hip Extension", pt: "Extensão de anca", descricao: "Extensão na GHD, foco em lombar e isquiotibiais." },
+  { en: "Good Morning", pt: "Good Morning", descricao: "Flexão do tronco com barra aos ombros, foco em cadeia posterior." },
+  { en: "Russian Twist", pt: "Russian Twist", descricao: "Rotação de tronco com ou sem carga." },
+  { en: "Farmer\'s Carry", pt: "Farmer\'s Carry", descricao: "Caminhada a segurar pesos pesados em cada mão." },
+  { en: "Sandbag Carry", pt: "Sandbag Carry", descricao: "Caminhada com saco pesado ao ombro ou ao peito." },
+  { en: "Wall Ball", pt: "Wall Ball", descricao: "Agachamento com lançamento de bola à parede." },
+  { en: "Medball Clean", pt: "Medball Clean", descricao: "Clean com bola medicinal." },
+  { en: "Sled Push", pt: "Sled Push", descricao: "Empurrar trenó, foco em força de pernas e cardio." },
+  { en: "Sled Pull", pt: "Sled Pull", descricao: "Puxar trenó com arnês ou corda." },
+  { en: "Dumbbell Snatch", pt: "Snatch com halteres", descricao: "Elevação do chão até acima da cabeça com um haltere, num movimento explosivo e contínuo." },
+  { en: "Dumbbell Clean", pt: "Clean com halteres", descricao: "Elevar o haltere do chão ou das pernas até ao ombro, com extensão de anca." },
   { en: "Dumbbell Clean & Jerk", pt: "Clean & jerk com halteres", descricao: "Clean com haltere até ao ombro seguido de impulso até overhead." },
-  { en: "Dumbbell Thruster", pt: "Thruster com halteres", descricao: "Agachamento seguido de press com halteres acima da cabeça num só movimento." },
-  { en: "Dumbbell Row", pt: "Remada com halteres", descricao: "Remada unilateral ou bilateral puxando o haltere em direção ao tronco, focando dorsais." },
+  { en: "Dumbbell Thruster", pt: "Thruster com halteres", descricao: "Agachamento frontal seguido de press com halteres acima da cabeça num só movimento." },
+  { en: "Dumbbell Row", pt: "Remada com halteres", descricao: "Remada unilateral puxando o haltere em direção ao tronco, focando dorsais." },
   { en: "Dumbbell Lunges", pt: "Passadas com halteres", descricao: "Passadas segurando um haltere em cada mão junto ao corpo." },
   { en: "Kettlebell Swing", pt: "Swing com kettlebell", descricao: "Balanço da kettlebell usando sobretudo o impulso da anca, não dos braços." },
-  { en: "Kettlebell Clean", pt: "Clean com kettlebell", descricao: "Levar a kettlebell do fundo até à posição de rack junto ao peito." },
-  { en: "Kettlebell Snatch", pt: "Snatch com kettlebell", descricao: "Arranco unilateral, do chão ou baloiço até acima da cabeça." },
-  { en: "Goblet Squat", pt: "Agachamento goblet", descricao: "Agachamento segurando a kettlebell ou haltere junto ao peito, com pés à largura dos ombros." },
-  { en: "Kettlebell Lunges", pt: "Passadas com kettlebell", descricao: "Passadas segurando a kettlebell ao lado do corpo ou em posição de rack." },
-
-  /* GINÁSTICA / CALISTENIA */
-  { en: "Pull-Up", pt: "Puxada na barra", descricao: "Suspenso na barra, puxar até o queixo ultrapassar a barra, usando pegada em pronação." },
-  { en: "Chin-Up", pt: "Puxada em supinação", descricao: "Semelhante ao pull-up, mas com palmas das mãos viradas para ti, focando mais bíceps." },
-  { en: "Chest-to-Bar Pull-Up", pt: "Puxada ao peito", descricao: "Puxada na barra até o peito tocar na barra, exigindo maior amplitude." },
-  { en: "Bar Muscle-Up", pt: "Muscle-up na barra", descricao: "Puxada explosiva seguida de transição e dip, terminando com o tronco por cima da barra." },
-  { en: "Ring Muscle-Up", pt: "Muscle-up nas argolas", descricao: "Versão nas argolas, mais instável, combinando puxada e dip num só movimento." },
-  { en: "Toes-to-Bar (T2B)", pt: "Pés à barra", descricao: "Suspenso na barra, elevar os pés até tocar na barra, usando controlo de core." },
-  { en: "Knees-to-Elbows (K2E)", pt: "Joelhos aos cotovelos", descricao: "Suspenso na barra, elevar os joelhos até tocar nos cotovelos." },
-  { en: "Hanging Knee Raise", pt: "Elevação de joelhos", descricao: "Versão mais simples, elevando os joelhos até à altura da anca ou ligeiramente acima." },
-  { en: "Handstand Push-Up (HSPU)", pt: "Flexão de braços em pino", descricao: "Em pino contra a parede ou livre, realizar flexões de braços até a cabeça tocar ligeiramente no chão ou alvo." },
-  { en: "Handstand Walk", pt: "Caminhada em pino", descricao: "Deslocar-se apoiado apenas nas mãos, em posição de pino." },
-  { en: "Pistol Squat", pt: "Agachamento numa perna", descricao: "Agachamento completo numa perna, mantendo a outra estendida à frente." },
-  { en: "Sit-Up", pt: "Abdominal", descricao: "Deitado de costas, subir o tronco até ficar sentado, muitas vezes com apoio de almofada de abdominais." },
-  { en: "GHD Sit-Up", pt: "Abdominal GHD", descricao: "Abdominal profundo na máquina GHD, descendo além da linha da anca e regressando ao topo." },
-  { en: "Back Extension (GHD)", pt: "Extensão lombar", descricao: "Na GHD, descer o tronco em flexão de anca e voltar à extensão, focando lombar e glúteos." },
-
-  /* METCON / CONDICIONAMENTO */
-  { en: "Burpee", pt: "Burpee", descricao: "Agachar, colocar as mãos no chão, fazer flexão, voltar a levantar e terminar com um salto." },
-  { en: "Burpee Box Jump-Over", pt: "Burpee com salto sobre a caixa", descricao: "Realizar um burpee e depois saltar por cima da caixa, podendo não aterrar em pé em cima dela." },
-  { en: "Box Jump", pt: "Salto para a caixa", descricao: "Saltar com os dois pés para cima da caixa e estabilizar antes de descer." },
-  { en: "Box Jump Over", pt: "Salto por cima da caixa", descricao: "Saltar para cima e para o outro lado da caixa, sem necessidade de estabilizar no topo." },
-  { en: "Wall Ball", pt: "Lançamento de bola", descricao: "Agachamento com bola medicinal seguido de lançamento até um alvo na parede." },
-  { en: "Rowing", pt: "Remo", descricao: "Exercício na máquina de remo, trabalhando pernas, tronco e braços de forma coordenada." },
-  { en: "Ski Erg", pt: "Ski erg", descricao: "Simulador de esqui, puxando as manetes de cima para baixo em movimento contínuo." },
-  { en: "Assault Bike", pt: "Bicicleta de resistência", descricao: "Bicicleta com resistência de ar, trabalhando simultaneamente braços e pernas." },
-  { en: "Running", pt: "Corrida", descricao: "Corrida simples, em tapete ou no exterior, podendo ser em ritmo contínuo ou intervalado." },
-  { en: "Double Under", pt: "Saltos duplos na corda", descricao: "Saltos em que a corda passa duas vezes por baixo dos pés em cada salto." },
-  { en: "Single Under", pt: "Saltos simples na corda", descricao: "Saltos em que a corda passa uma vez por baixo dos pés em cada salto." },
-  { en: "Sled Push", pt: "Empurrar trenó", descricao: "Empurrar um trenó com carga ao longo de uma distância definida." },
-  { en: "Sled Pull", pt: "Puxar trenó", descricao: "Puxar um trenó com carga, com arnês ou corda, para trás ou para a frente." },
-  { en: "Farmer Carry", pt: "Caminhada com cargas", descricao: "Caminhar segurando cargas pesadas (halteres ou kettlebells) ao lado do corpo." },
-  { en: "Sprint", pt: "Sprint", descricao: "Corrida explosiva de curta distância, normalmente em máxima intensidade." },
-
-  /* COMPLEXOS / FORÇA FUNCIONAL */
-  { en: "Bear Complex", pt: "Bear complex", descricao: "Sequência contínua: power clean, front squat, push press, back squat e push press novamente." },
-  { en: "Devil Press", pt: "Devil press", descricao: "Burpee com halteres seguido de swing até overhead, num movimento fluido." },
-  { en: "Man Maker", pt: "Man maker", descricao: "Combinação de remada, burpee, clean e thruster com halteres." },
-  { en: "Sandbag Carry", pt: "Caminhada com saco", descricao: "Transportar um saco pesado ao peito, ombro ou costas ao longo de uma distância." },
-  { en: "Yoke Carry", pt: "Caminhada com yoke", descricao: "Caminhar com uma estrutura pesada apoiada nos ombros (yoke), trabalhando força total." },
-  { en: "Rope Climb", pt: "Subida à corda", descricao: "Subir a corda usando técnica de pernas ou apenas braços, tocando um alvo no topo." },
-
-  /* ACESSÓRIOS / MOBILIDADE EXTRA */
-  { en: "Hip Thrust", pt: "Elevação de anca", descricao: "Elevar a anca com costas apoiadas num banco, com ou sem carga, focando glúteos." },
-  { en: "Glute Bridge", pt: "Ponte de glúteos", descricao: "Elevar a anca a partir de posição deitado no chão, mantendo ombros apoiados." },
-  { en: "Reverse Hyperextension", pt: "Hiperextensão reversa", descricao: "Exercício na máquina Reverse Hyper, elevando as pernas atrás do corpo para trabalhar glúteos e lombar." },
-  { en: "Shrug", pt: "Encolhimento de ombros", descricao: "Elevar os ombros em direção às orelhas segurando barra ou halteres, focando trapézios." }
+  { en: "Kettlebell Clean", pt: "Clean com kettlebell", descricao: "Elevar a kettlebell do fundo até à posição de rack junto ao peito." },
+  { en: "Kettlebell Snatch", pt: "Snatch com kettlebell", descricao: "Elevação da kettlebell do fundo até acima da cabeça num só movimento." },
+  { en: "Turkish Get-up", pt: "Turkish Get-up", descricao: "Levantamento do chão até à posição de pé com carga acima da cabeça, muito completo." },
+  { en: "Russian Kettlebell Swing", pt: "Russian Kettlebell Swing", descricao: "Swing em que a kettlebell vai até à altura do ombro." },
+  { en: "American Kettlebell Swing", pt: "American Kettlebell Swing", descricao: "Swing em que a kettlebell vai até acima da cabeça." }
 ];
 
 /* Lista completa de exercícios em inglês (para WOD, Objetivo, Guia) */
@@ -1137,65 +1096,513 @@ const ALL_EXERCISES = Array.from(new Set(EXER_INFO.map(ex => ex.en))).sort();
 EXER_INFO.forEach(ex => {
   MOVES_PT[ex.en] = ex.pt;
 });
-
 const PERC = [
   0.25, 0.30, 0.35, 0.40,
-  0.50, 0.60, 0.70, 0.75,
-  0.80, 0.85, 0.90, 0.95
+  0.50, 0.60, 0.65, 0.70,
+  0.75, 0.80, 0.85, 0.90,
+  0.95
 ];
 
 let dataRm = JSON.parse(localStorage.getItem(STORAGE_RM) || "{}");
-let rmHistory = JSON.parse(localStorage.getItem(STORAGE_RM_HISTORY) || "{}");
+let rmHistory2 = JSON.parse(localStorage.getItem(STORAGE_RM_HISTORY) || "{}");
 
-const sel = document.getElementById("exercise");
-const rm = document.getElementById("oneRm");
-const bodyTable = document.getElementById("tableBody");
+/* ===== FUNÇÕES AUXILIARES ===== */
+function formatKg(v) {
+  return v.toFixed(1).replace(".", ",") + " kg";
+}
 
-/* WOD */
+function formatKm(v) {
+  return v.toFixed(2).replace(".", ",") + " km";
+}
+
+function initSelects() {
+  sel.innerHTML = "";
+  Object.keys(MOVES_PT).sort().forEach(key => {
+    const opt = document.createElement("option");
+    opt.value = key;
+    opt.textContent = MOVES_PT[key];
+    sel.appendChild(opt);
+  });
+
+  const calcEx = document.getElementById("calcExercicio");
+  calcEx.innerHTML = "";
+  ALL_EXERCISES.forEach(ex => {
+    const opt = document.createElement("option");
+    opt.value = ex;
+    opt.textContent = MOVES_PT[ex] || ex;
+    calcEx.appendChild(opt);
+  });
+
+  const graphEx = document.getElementById("graphExercicio");
+  graphEx.innerHTML = "";
+  Object.keys(MOVES_PT).sort().forEach(key => {
+    const opt = document.createElement("option");
+    opt.value = key;
+    opt.textContent = MOVES_PT[key];
+    graphEx.appendChild(opt);
+  });
+
+  const treinoEx = document.getElementById("treinoExercicio");
+  treinoEx.innerHTML = "";
+  ALL_EXERCISES.forEach(ex => {
+    const opt = document.createElement("option");
+    opt.value = ex;
+    opt.textContent = MOVES_PT[ex] || ex;
+    treinoEx.appendChild(opt);
+  });
+}
+function renderRmTable() {
+  tableBody.innerHTML = "";
+
+  Object.keys(dataRm).sort().forEach(ex => {
+    const tr = document.createElement("tr");
+
+    const tdEx = document.createElement("td");
+    tdEx.textContent = MOVES_PT[ex] || ex;
+    tr.appendChild(tdEx);
+
+    const tdRm = document.createElement("td");
+    tdRm.textContent = formatKg(dataRm[ex]);
+    tr.appendChild(tdRm);
+
+    PERC.forEach(p => {
+      const td = document.createElement("td");
+      td.textContent = formatKg(dataRm[ex] * p);
+      tr.appendChild(td);
+    });
+
+    const tdDel = document.createElement("td");
+    const btnDel = document.createElement("button");
+    btnDel.className = "btn-delete";
+    btnDel.textContent = "🗑";
+    btnDel.addEventListener("click", () => {
+      delete dataRm[ex];
+      localStorage.setItem(STORAGE_RM, JSON.stringify(dataRm));
+      renderRmTable();
+      renderRmHistory();
+    });
+    tdDel.appendChild(btnDel);
+    tr.appendChild(tdDel);
+
+    tableBody.appendChild(tr);
+  });
+}
+
+function renderRmHistory() {
+  historyBody.innerHTML = "";
+
+  const rows = [];
+  Object.keys(rmHistory2).forEach(ex => {
+    rmHistory2[ex].forEach(entry => {
+      rows.push({
+        ex,
+        data: entry.data,
+        rm: entry.rm,
+        diff: entry.diff || 0
+      });
+    });
+  });
+
+  rows.sort((a, b) => a.data.localeCompare(b.data));
+
+  rows.forEach(r => {
+    const tr = document.createElement("tr");
+
+    const tdEx = document.createElement("td");
+    tdEx.textContent = MOVES_PT[r.ex] || r.ex;
+    tr.appendChild(tdEx);
+
+    const tdData = document.createElement("td");
+    tdData.textContent = r.data;
+    tr.appendChild(tdData);
+
+    const tdRm = document.createElement("td");
+    tdRm.textContent = formatKg(r.rm);
+    tr.appendChild(tdRm);
+
+    const tdDiff = document.createElement("td");
+    if (r.diff > 0) {
+      tdDiff.textContent = `+${r.diff.toFixed(1)} kg`;
+    } else if (r.diff < 0) {
+      tdDiff.textContent = `${r.diff.toFixed(1)} kg`;
+    } else {
+      tdDiff.textContent = "-";
+    }
+    tr.appendChild(tdDiff);
+
+    historyBody.appendChild(tr);
+  });
+
+  if (rows.length > 0) {
+    const ultimo = rows[rows.length - 1];
+    historyResumo.textContent = `Último 1RM registado: ${MOVES_PT[ultimo.ex] || ultimo.ex} em ${ultimo.data} (${formatKg(ultimo.rm)}).`;
+  } else {
+    historyResumo.textContent = "Ainda não há histórico de 1RM.";
+  }
+}
+
+function addRm() {
+  const ex = sel.value;
+  const val = parseFloat(oneRmInput.value);
+  if (!ex || !val || val <= 0) {
+    alert("Preenche um exercício e um valor de 1RM válido.");
+    return;
+  }
+
+  const old = dataRm[ex] || 0;
+  const diff = old ? val - old : 0;
+
+  dataRm[ex] = val;
+  localStorage.setItem(STORAGE_RM, JSON.stringify(dataRm));
+
+  if (!rmHistory2[ex]) rmHistory2[ex] = [];
+  rmHistory2[ex].push({
+    data: new Date().toISOString().slice(0, 10),
+    rm: val,
+    diff
+  });
+  localStorage.setItem(STORAGE_RM_HISTORY, JSON.stringify(rmHistory2));
+
+  oneRmInput.value = "";
+  renderRmTable();
+  renderRmHistory();
+}
+
+addBtn.addEventListener("click", addRm);
+
+/* ===== WOD / TREINOS ===== */
 let treinos = JSON.parse(localStorage.getItem(STORAGE_TREINO) || "[]");
 
 const treinoDataEl = document.getElementById("treinoData");
-const treinoExEl = document.getElementById("treinoExercicio");
-const treinoExSearchEl = document.getElementById("treinoExercicioSearch");
-const treinoTipoEl = document.getElementById("treinoTipo");
+const treinoExercicioEl = document.getElementById("treinoExercicio");
+const treinoExercicioSearchEl = document.getElementById("treinoExercicioSearch");
+const treinoCategoriaEl = document.getElementById("treinoCategoria");
 const treinoRondasEl = document.getElementById("treinoRondas");
 const treinoRepsEl = document.getElementById("treinoReps");
-const treinoPesoEl = document.getElementById("treinoPeso");
-const treinoTempoEl = document.getElementById("treinoTempo");
-const treinoDistEl = document.getElementById("treinoDist");
+const treinoCargaEl = document.getElementById("treinoCarga");
+const treinoScoreEl = document.getElementById("treinoScore");
+const treinoRpeEl = document.getElementById("treinoRpe");
+const treinoNotasEl = document.getElementById("treinoNotas");
 const treinoAddBtn = document.getElementById("treinoAdd");
-const treinoBody = document.getElementById("treinoBody");
+const treinoTableBody = document.getElementById("treinoTableBody");
 const treinoResumoEl = document.getElementById("treinoResumo");
-const treinoSugestaoEl = document.getElementById("treinoSugestao");
-const weeklyHistoryEl = document.getElementById("weeklyHistory");
-const toggleDailyHistoryBtn = document.getElementById("toggleDailyHistory");
-const dailyHistorySection = document.getElementById("dailyHistorySection");
-const dailyHistoryBody = document.getElementById("dailyHistoryBody");
 
-/* OBJETIVO */
-const calcExEl = document.getElementById("calcExercicio");
+function filtrarExerciciosTreino() {
+  const texto = (treinoExercicioSearchEl.value || "").toLowerCase();
+  treinoExercicioEl.innerHTML = "";
+  ALL_EXERCISES
+    .filter(ex => (MOVES_PT[ex] || ex).toLowerCase().includes(texto))
+    .forEach(ex => {
+      const opt = document.createElement("option");
+      opt.value = ex;
+      opt.textContent = MOVES_PT[ex] || ex;
+      treinoExercicioEl.appendChild(opt);
+    });
+}
+
+treinoExercicioSearchEl.addEventListener("input", filtrarExerciciosTreino);
+
+function renderTreinos() {
+  treinoTableBody.innerHTML = "";
+  if (!treinos.length) {
+    treinoResumoEl.textContent = "Ainda não há treinos registados.";
+    return;
+  }
+
+  const ordenados = [...treinos].sort((a, b) => (a.data || "").localeCompare(b.data || ""));
+  ordenados.forEach((t, idx) => {
+    const tr = document.createElement("tr");
+
+    const tdData = document.createElement("td");
+    tdData.textContent = t.data || "";
+    tr.appendChild(tdData);
+
+    const tdEx = document.createElement("td");
+    tdEx.textContent = MOVES_PT[t.exercicio] || t.exercicio || "";
+    tr.appendChild(tdEx);
+
+    const tdCat = document.createElement("td");
+    tdCat.textContent = t.categoria || "";
+    tr.appendChild(tdCat);
+
+    const tdScore = document.createElement("td");
+    tdScore.textContent = t.score || "";
+    tr.appendChild(tdScore);
+
+    const tdRpe = document.createElement("td");
+    tdRpe.textContent = t.rpe || "";
+    tr.appendChild(tdRpe);
+
+    const tdDel = document.createElement("td");
+    const btnDel = document.createElement("button");
+    btnDel.className = "btn-delete";
+    btnDel.textContent = "🗑";
+    btnDel.addEventListener("click", () => {
+      treinos.splice(idx, 1);
+      localStorage.setItem(STORAGE_TREINO, JSON.stringify(treinos));
+      renderTreinos();
+      renderPerformance();
+    });
+    tdDel.appendChild(btnDel);
+    tr.appendChild(tdDel);
+
+    treinoTableBody.appendChild(tr);
+  });
+
+  const total = treinos.length;
+  const unicos = new Set(treinos.map(t => t.data || "")).size;
+  treinoResumoEl.textContent = `Treinos registados: ${total}. Dias únicos com treino: ${unicos}.`;
+}
+
+function addTreino() {
+  const data = treinoDataEl.value || new Date().toISOString().slice(0, 10);
+  const exercicio = treinoExercicioEl.value || "Outro";
+  const categoria = treinoCategoriaEl.value || "";
+  const rondas = parseInt(treinoRondasEl.value || "0", 10);
+  const reps = parseInt(treinoRepsEl.value || "0", 10);
+  const carga = treinoCargaEl.value || "";
+  const score = treinoScoreEl.value || "";
+  const rpe = parseInt(treinoRpeEl.value || "0", 10);
+  const notas = treinoNotasEl.value || "";
+
+  treinos.push({
+    data,
+    exercicio,
+    categoria,
+    rondas,
+    reps,
+    carga,
+    score,
+    rpe,
+    notas
+  });
+
+  localStorage.setItem(STORAGE_TREINO, JSON.stringify(treinos));
+  renderTreinos();
+  renderPerformance();
+
+  treinoRondasEl.value = "";
+  treinoRepsEl.value = "";
+  treinoCargaEl.value = "";
+  treinoScoreEl.value = "";
+  treinoRpeEl.value = "";
+  treinoNotasEl.value = "";
+}
+
+treinoAddBtn.addEventListener("click", addTreino);
+
+/* ===== OBJETIVO DO TREINO ===== */
+const calcExercicioEl = document.getElementById("calcExercicio");
 const calcRepsEl = document.getElementById("calcReps");
-const calcObjEl = document.getElementById("calcObjetivo");
-const calcTargetKgEl = document.getElementById("calcTargetKg");
+const calcObjetivoEl = document.getElementById("calcObjetivo");
 const calcWeeksEl = document.getElementById("calcWeeks");
-const calcResEl = document.getElementById("calcResultado");
 const calcBtn = document.getElementById("calcBtn");
+const calcResultadoEl = document.getElementById("calcResultado");
 
-/* Gráficos */
-const graphExerciseEl = document.getElementById("graphExercise");
-const rmChartCanvas = document.getElementById("rmChart");
-let rmChart = null;
+function refreshCalcExOptions() {
+  calcExercicioEl.innerHTML = "";
+  ALL_EXERCISES.forEach(ex => {
+    const opt = document.createElement("option");
+    opt.value = ex;
+    opt.textContent = MOVES_PT[ex] || ex;
+    calcExercicioEl.appendChild(opt);
+  });
+}
 
-/* Guia exercícios */
-const guiaBody = document.getElementById("guiaBody");
-const guiaSearch = document.getElementById("guiaSearch");
+function calcObjetivoTreino() {
+  const ex = calcExercicioEl.value;
+  const reps = parseInt(calcRepsEl.value || "0", 10);
+  const objetivo = calcObjetivoEl.value;
+  const weeks = parseInt(calcWeeksEl.value || "0", 10);
 
-/* Performance (rankings) */
-const perfWodBody = document.getElementById("perfWodBody");
-const perf1rmBody = document.getElementById("perf1rmBody");
-const perfMetconBody = document.getElementById("perfMetconBody");
+  if (!ex || !reps) {
+    calcResultadoEl.textContent = "Escolhe um exercício e indica as repetições.";
+    return;
+  }
 
-/* Backup */
+  let texto = `Exercício: ${(MOVES_PT[ex] || ex)} · Reps por série: ${reps}. `;
+
+  if (!objetivo) {
+    if (reps <= 5) {
+      texto += "Zona mais próxima de força máxima. Foca-te em carga alta e descanso mais longo.";
+    } else if (reps <= 10) {
+      texto += "Zona mista força/hipertrofia. Boa para ganhar massa muscular com carga moderada.";
+    } else {
+      texto += "Zona mais metabólica / resistência. Ideal para condicionamento e endurance.";
+    }
+  } else if (objetivo === "forca") {
+    texto += "Objetivo força: usa cargas altas, séries curtas (1-5 repetições) e descansos de 2-3 minutos.";
+  } else if (objetivo === "hipertrofia") {
+    texto += "Objetivo hipertrofia: 6-12 repetições, descanso de 60-90 segundos e foco em controlo do movimento.";
+  } else if (objetivo === "tecnica") {
+    texto += "Objetivo técnica: reduz a carga, aumenta o número de repetições e dá prioridade à qualidade do movimento.";
+  }
+
+  if (weeks > 0) {
+    texto += ` Planeia progredir durante ${weeks} semana(s), aumentando ligeiramente a carga ou o volume sempre que o corpo responder bem.`;
+  }
+
+  calcResultadoEl.textContent = texto;
+}
+
+calcBtn.addEventListener("click", calcObjetivoTreino);
+
+/* ===== GRÁFICOS ===== */
+const graphTipoEl = document.getElementById("graphTipo");
+const graphExContainer = document.getElementById("graphExContainer");
+const graphExercicioEl = document.getElementById("graphExercicio");
+const graphHelperEl = document.getElementById("graphHelper");
+const chartCanvas = document.getElementById("chart");
+let chartInstance = null;
+
+function refreshGraphExerciseOptions() {
+  graphExercicioEl.innerHTML = "";
+  Object.keys(dataRm).sort().forEach(ex => {
+    const opt = document.createElement("option");
+    opt.value = ex;
+    opt.textContent = MOVES_PT[ex] || ex;
+    graphExercicioEl.appendChild(opt);
+  });
+}
+
+function renderChart() {
+  const tipo = graphTipoEl.value;
+
+  if (chartInstance) {
+    chartInstance.destroy();
+    chartInstance = null;
+  }
+
+  if (tipo === "1rm") {
+    graphExContainer.style.display = "block";
+    const ex = graphExercicioEl.value;
+    if (!ex || !rmHistory2[ex] || !rmHistory2[ex].length) {
+      graphHelperEl.textContent = "Ainda não há histórico suficiente de 1RM para este exercício.";
+      return;
+    }
+
+    const dataPoints = rmHistory2[ex].sort((a, b) => a.data.localeCompare(b.data));
+    const labels = dataPoints.map(d => d.data);
+    const values = dataPoints.map(d => d.rm);
+
+    chartInstance = new Chart(chartCanvas, {
+      type: "line",
+      data: {
+        labels,
+        datasets: [{
+          label: MOVES_PT[ex] || ex,
+          data: values
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: { beginAtZero: false }
+        }
+      }
+    });
+
+    graphHelperEl.textContent = "Evolução do teu 1RM ao longo do tempo.";
+  } else {
+    graphExContainer.style.display = "none";
+    if (!treinos.length) {
+      graphHelperEl.textContent = "Ainda não há treinos registados para mostrar.";
+      return;
+    }
+
+    const ordenados = [...treinos].sort((a, b) => (a.data || "").localeCompare(b.data || ""));
+    const labels = ordenados.map(t => t.data || "");
+    const rpes = ordenados.map(t => t.rpe || 0);
+
+    chartInstance = new Chart(chartCanvas, {
+      type: "line",
+      data: {
+        labels,
+        datasets: [{
+          label: "RPE dos treinos",
+          data: rpes
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: { beginAtZero: true, max: 10 }
+        }
+      }
+    });
+
+    graphHelperEl.textContent = "Vê a evolução da intensidade (RPE) dos teus treinos ao longo do tempo.";
+  }
+}
+
+graphTipoEl.addEventListener("change", renderChart);
+graphExercicioEl.addEventListener("change", renderChart);
+
+/* ===== PERFORMANCE ===== */
+const performanceResumoEl = document.getElementById("performanceResumo");
+
+function renderPerformance() {
+  if (!treinos.length) {
+    performanceResumoEl.textContent = "Ainda não há treinos registados.";
+    return;
+  }
+
+  const totalTreinos = treinos.length;
+  const diasUnicos = new Set(treinos.map(t => t.data || "")).size;
+
+  const rpesValidos = treinos.map(t => t.rpe || 0).filter(v => v > 0);
+  const mediaRpe = rpesValidos.length
+    ? (rpesValidos.reduce((acc, v) => acc + v, 0) / rpesValidos.length).toFixed(1)
+    : null;
+
+  const porCategoria = treinos.reduce((acc, t) => {
+    const cat = t.categoria || "Sem categoria";
+    acc[cat] = (acc[cat] || 0) + 1;
+    return acc;
+  }, {});
+
+  const partesCat = Object.entries(porCategoria)
+    .map(([cat, n]) => `${cat}: ${n}`)
+    .join(" · ");
+
+  let texto = `Treinos registados: ${totalTreinos}. Dias únicos com treino: ${diasUnicos}. `;
+  if (mediaRpe) {
+    texto += `RPE médio: ${mediaRpe}. `;
+  }
+  if (partesCat) {
+    texto += `Distribuição por categoria – ${partesCat}.`;
+  }
+
+  performanceResumoEl.textContent = texto;
+}
+
+/* ===== GUIA DE EXERCÍCIOS ===== */
+const guiaBody = document.getElementById("guiaExerciciosBody");
+
+function renderGuiaExercicios() {
+  guiaBody.innerHTML = "";
+  EXER_INFO.forEach(ex => {
+    const tr = document.createElement("tr");
+
+    const tdEx = document.createElement("td");
+    tdEx.textContent = ex.pt;
+    tr.appendChild(tdEx);
+
+    const tdCat = document.createElement("td");
+    tdCat.textContent = ex.en;
+    tr.appendChild(tdCat);
+
+    const tdDesc = document.createElement("td");
+    tdDesc.textContent = ex.descricao;
+    tr.appendChild(tdDesc);
+
+    guiaBody.appendChild(tr);
+  });
+}
+
+/* ===== BACKUP ===== */
 const exportBackupBtn = document.getElementById("exportBackupBtn");
 const importBackupBtn = document.getElementById("importBackupBtn");
 const backupFileInput = document.getElementById("backupFileInput");
@@ -1216,1234 +1623,105 @@ let reservas = JSON.parse(localStorage.getItem(STORAGE_RESERVAS) || "[]");
 let presencas = JSON.parse(localStorage.getItem(STORAGE_PRESENCAS) || "[]");
 let rankingsMensais = JSON.parse(localStorage.getItem(STORAGE_RANKINGS) || "[]");
 
-function formatKg(v) {
-  return v.toFixed(1).replace(".", ",") + " kg";
+function getBackupData() {
+  return {
+    meta: {
+      createdAt: new Date().toISOString(),
+      app: "CrossBox - Diário de Treino"
+    },
+    profile,
+    dataRm,
+    rmHistory2,
+    treinos,
+    reservas,
+    presencas,
+    rankingsMensais
+  };
 }
 
-function formatKm(v) {
-  return v.toFixed(2).replace(".", ",") + " km";
+function exportBackup() {
+  const data = getBackupData();
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "crossbox_backup.json";
+  a.click();
+  URL.revokeObjectURL(url);
+
+  backupInfoEl.textContent = "Backup exportado com sucesso.";
 }
 
-/* Selects – 1RM só com MOVES (peso); WOD com ALL_EXERCISES */
-function updateTreinoExercicioOptions(filter) {
-  if (!treinoExEl) return;
-  const f = (filter || "").toLowerCase();
-  treinoExEl.innerHTML = "";
-  ALL_EXERCISES.forEach(m => {
-    const label = MOVES_PT[m] ? `${m} – ${MOVES_PT[m]}` : m;
-    if (f && !label.toLowerCase().includes(f)) return;
-    const opt = document.createElement("option");
-    opt.value = m;
-    opt.textContent = label;
-    treinoExEl.appendChild(opt);
-  });
-}
+function importBackup(file) {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const data = JSON.parse(e.target.result);
 
-function initSelects() {
-  if (sel) {
-    sel.innerHTML = "";
-    MOVES.forEach(m => {
-      const opt = document.createElement("option");
-      opt.value = m;
-      const label = MOVES_PT[m] ? `${m} – ${MOVES_PT[m]}` : m;
-      opt.textContent = label;
-      sel.appendChild(opt);
-    });
-  }
-
-  updateTreinoExercicioOptions("");
-}
-
-if (treinoExSearchEl) {
-  treinoExSearchEl.addEventListener("input", () => {
-    updateTreinoExercicioOptions(treinoExSearchEl.value || "");
-  });
-}
-
-/* OBJETIVO – lista completa de exercícios; cálculo só funciona se tiver 1RM */
-function refreshCalcExOptions() {
-  if (!calcExEl) return;
-  calcExEl.innerHTML = "";
-
-  if (!ALL_EXERCISES.length) {
-    const opt = document.createElement("option");
-    opt.value = "";
-    opt.textContent = "Sem exercícios disponíveis";
-    calcExEl.appendChild(opt);
-    calcExEl.disabled = true;
-    return;
-  }
-
-  calcExEl.disabled = false;
-  ALL_EXERCISES.forEach(n => {
-    const opt = document.createElement("option");
-    opt.value = n;
-    opt.textContent = n;
-    calcExEl.appendChild(opt);
-  });
-}
-
-function refreshGraphExerciseOptions() {
-  if (!graphExerciseEl) return;
-  const allNames = new Set([
-    ...Object.keys(dataRm || {}),
-    ...Object.keys(rmHistory || {})
-  ]);
-  const names = Array.from(allNames).sort();
-
-  graphExerciseEl.innerHTML = "";
-  if (!names.length) {
-    const opt = document.createElement("option");
-    opt.value = "";
-    opt.textContent = "Sem dados de 1RM";
-    graphExerciseEl.appendChild(opt);
-    graphExerciseEl.disabled = true;
-    updateRmChart();
-    return;
-  }
-
-  graphExerciseEl.disabled = false;
-  names.forEach(n => {
-    const opt = document.createElement("option");
-    opt.value = n;
-    opt.textContent = n;
-    graphExerciseEl.appendChild(opt);
-  });
-
-  updateRmChart();
-}
-
-function deleteEx(name) {
-  if (!name) return;
-  if (!confirm(`Apagar o exercício "${name}"?`)) return;
-  delete dataRm[name];
-  delete rmHistory[name];
-  localStorage.setItem(STORAGE_RM, JSON.stringify(dataRm));
-  localStorage.setItem(STORAGE_RM_HISTORY, JSON.stringify(rmHistory));
-  registerBackupMeta("1RM removido");
-  renderRm();
-}
-
-function renderRm() {
-  bodyTable.innerHTML = "";
-  Object.keys(dataRm).sort().forEach(name => {
-    const tr = document.createElement("tr");
-
-    const tdName = document.createElement("td");
-    const label = MOVES_PT[name] ? `${name} – ${MOVES_PT[name]}` : name;
-    tdName.textContent = label;
-    tr.appendChild(tdName);
-
-    const td1rm = document.createElement("td");
-    let oneRmText = formatKg(dataRm[name]);
-
-    if (profile && profile.peso) {
-      const rel = dataRm[name] / profile.peso;
-      oneRmText += " (" + rel.toFixed(2) + "x peso corporal)";
-    }
-
-    const histList = rmHistory[name] || [];
-    if (histList.length) {
-      const prev = histList[histList.length - 1];
-      const prevVal = prev.value;
-      const diff = dataRm[name] - prevVal;
-      if (Math.abs(diff) >= 0.5) {
-        const seta = diff > 0 ? "↑" : "↓";
-        const diffAbs = Math.abs(diff).toFixed(1).replace(".", ",");
-        oneRmText += ` · ${seta} ${diffAbs} kg vs anterior`;
+      if (data.profile) {
+        profile = data.profile;
+        localStorage.setItem(STORAGE_PROFILE, JSON.stringify(profile));
       }
+      if (data.dataRm) {
+        dataRm = data.dataRm;
+        localStorage.setItem(STORAGE_RM, JSON.stringify(dataRm));
+      }
+      if (data.rmHistory2) {
+        rmHistory2 = data.rmHistory2;
+        localStorage.setItem(STORAGE_RM_HISTORY, JSON.stringify(rmHistory2));
+      }
+      if (data.treinos) {
+        treinos = data.treinos;
+        localStorage.setItem(STORAGE_TREINO, JSON.stringify(treinos));
+      }
+      if (data.reservas) {
+        reservas = data.reservas;
+        localStorage.setItem(STORAGE_RESERVAS, JSON.stringify(reservas));
+      }
+      if (data.presencas) {
+        presencas = data.presencas;
+        localStorage.setItem(STORAGE_PRESENCAS, JSON.stringify(presencas));
+      }
+      if (data.rankingsMensais) {
+        rankingsMensais = data.rankingsMensais;
+        localStorage.setItem(STORAGE_RANKINGS, JSON.stringify(rankingsMensais));
+      }
+
+      loadProfile();
+      renderRmTable();
+      renderRmHistory();
+      renderTreinos();
+      renderReservas();
+      renderPerformance();
+      renderGuiaExercicios();
+      backupInfoEl.textContent = "Backup importado com sucesso.";
+    } catch (err) {
+      backupInfoEl.textContent = "Erro ao importar backup.";
     }
-
-    td1rm.textContent = oneRmText;
-    tr.appendChild(td1rm);
-
-    PERC.forEach(p => {
-      const td = document.createElement("td");
-      td.textContent = formatKg(dataRm[name] * p);
-      tr.appendChild(td);
-    });
-
-    const tdDelete = document.createElement("td");
-    const btn = document.createElement("button");
-    btn.textContent = "🗑";
-    btn.className = "btn-delete";
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      deleteEx(name);
-    });
-    tdDelete.appendChild(btn);
-    tr.appendChild(tdDelete);
-
-    bodyTable.appendChild(tr);
-  });
-
-  refreshCalcExOptions();
-  refreshGraphExerciseOptions();
-  renderPerformance();
+  };
+  reader.readAsText(file);
 }
 
-document.getElementById("addBtn").addEventListener("click", () => {
-  const ex = sel.value;
-  const val = parseFloat(rm.value);
-  if (!ex || !val || val <= 0) return;
-
-  const old = dataRm[ex];
-
-  if (typeof old === "number" && !isNaN(old) && old !== val) {
-    if (!rmHistory[ex]) rmHistory[ex] = [];
-    rmHistory[ex].push({
-      date: new Date().toISOString().slice(0, 10),
-      value: old
-    });
+exportBackupBtn.addEventListener("click", exportBackup);
+importBackupBtn.addEventListener("click", () => {
+  backupFileInput.click();
+});
+backupFileInput.addEventListener("change", () => {
+  if (backupFileInput.files && backupFileInput.files[0]) {
+    importBackup(backupFileInput.files[0]);
   }
-
-  dataRm[ex] = val;
-  localStorage.setItem(STORAGE_RM, JSON.stringify(dataRm));
-  localStorage.setItem(STORAGE_RM_HISTORY, JSON.stringify(rmHistory));
-
-  rm.value = "";
-  registerBackupMeta("1RM atualizado");
-  renderRm();
 });
 
-/* ===== OBJETIVO (CALCULADORA) ===== */
-function getPercentRange(reps, objetivo) {
-  let minP, maxP;
-
-  if (objetivo === "forca") {
-    if (reps <= 2) { minP = 0.9; maxP = 0.98; }
-    else if (reps <= 3) { minP = 0.88; maxP = 0.95; }
-    else if (reps <= 5) { minP = 0.80; maxP = 0.90; }
-    else { minP = 0.75; maxP = 0.85; }
-  } else if (objetivo === "hipertrofia") {
-    if (reps <= 5) { minP = 0.75; maxP = 0.85; }
-    else if (reps <= 8) { minP = 0.70; maxP = 0.80; }
-    else if (reps <= 12) { minP = 0.65; maxP = 0.75; }
-    else { minP = 0.55; maxP = 0.70; }
-  } else if (objetivo === "tecnica") {
-    if (reps <= 5) { minP = 0.50; maxP = 0.65; }
-    else if (reps <= 10) { minP = 0.45; maxP = 0.60; }
-    else { minP = 0.40; maxP = 0.55; }
-  } else {
-    if (reps === 1) { minP = 0.9; maxP = 1.0; }
-    else if (reps <= 3) { minP = 0.85; maxP = 0.95; }
-    else if (reps <= 5) { minP = 0.80; maxP = 0.90; }
-    else if (reps <= 8) { minP = 0.70; maxP = 0.80; }
-    else if (reps <= 12) { minP = 0.65; maxP = 0.75; }
-    else { minP = 0.50; maxP = 0.65; }
-  }
-
-  return { minP, maxP };
-}
-
-if (calcBtn) {
-  calcBtn.addEventListener("click", () => {
-    if (!calcExEl || !calcRepsEl || !calcResEl) return;
-
-    const ex = calcExEl.value;
-    const reps = parseInt(calcRepsEl.value || "0", 10);
-    const obj = calcObjEl ? calcObjEl.value : "";
-    const targetKgVal = calcTargetKgEl ? parseFloat(calcTargetKgEl.value || "0") : 0;
-    const weeksVal = calcWeeksEl ? parseInt(calcWeeksEl.value || "0", 10) : 0;
-
-    if (!ex) {
-      calcResEl.textContent = "Escolhe um exercício.";
-      return;
-    }
-    if (!reps || reps <= 0) {
-      calcResEl.textContent = "Indica o número de repetições.";
-      return;
-    }
-    if (!dataRm[ex]) {
-      calcResEl.textContent = "Para calcular percentagens de carga, regista primeiro o 1RM desse exercício.";
-      return;
-    }
-
-    const oneRmVal = dataRm[ex];
-    const { minP, maxP } = getPercentRange(reps, obj);
-    const minLoad = oneRmVal * minP;
-    const maxLoad = oneRmVal * maxP;
-
-    let objetivoTexto = "automático";
-    if (obj === "forca") objetivoTexto = "força";
-    if (obj === "hipertrofia") objetivoTexto = "hipertrofia";
-    if (obj === "tecnica") objetivoTexto = "técnica / volume leve";
-
-    let msg =
-      `Para ${reps} repetições em ${ex}, com objetivo ${objetivoTexto}, ` +
-      `a carga sugerida é entre ${(minP*100).toFixed(0)}% e ${(maxP*100).toFixed(0)}% do 1RM: ` +
-      `${formatKg(minLoad)} – ${formatKg(maxLoad)}. Ajusta ligeiramente para bater certo com os discos que tens.`;
-
-    if (targetKgVal && !isNaN(targetKgVal)) {
-      if (targetKgVal <= oneRmVal) {
-        msg += `\n\nO peso objetivo (${formatKg(targetKgVal)}) está abaixo ou muito próximo do teu 1RM atual. Foca-te em consolidar técnica, controlar o volume e manter consistência semanal.`;
-      } else {
-        if (weeksVal && weeksVal > 0) {
-          const incPercent = ((targetKgVal - oneRmVal) / oneRmVal) * 100;
-          const incPerWeek = incPercent / weeksVal;
-          let dificuldade;
-          if (incPerWeek <= 1) {
-            dificuldade = "uma progressão realista";
-          } else if (incPerWeek <= 2) {
-            dificuldade = "uma progressão exigente mas ainda possível";
-          } else {
-            dificuldade = "uma progressão muito agressiva e pouco realista para a maioria das pessoas";
-          }
-
-          const nivel = (profile && profile.nivel) ? profile.nivel.toLowerCase() : "";
-          let freq = "2–3 sessões semanais";
-          let seriesReps = "3–5 séries de 3–6 repetições entre 75–90% do 1RM atual";
-
-          if (nivel === "iniciante") {
-            freq = "2–3 sessões semanais focadas no movimento principal";
-            seriesReps = "3–4 séries de 5–8 repetições entre 70–80% do 1RM atual";
-          } else if (nivel === "intermedio") {
-            freq = "2–3 sessões semanais com variações do movimento principal";
-            seriesReps = "4–5 séries de 3–6 repetições entre 75–85% do 1RM atual";
-          } else if (nivel === "avancado") {
-            freq = "2–3 sessões semanais mais específicas (força + variações técnicas)";
-            seriesReps = "3–6 séries entre 2–5 repetições a 80–90% do 1RM atual";
-          }
-
-          msg += `\n\nObjetivo: chegar a ${formatKg(targetKgVal)} em cerca de ${weeksVal} semanas (${dificuldade}). ` +
-                 `Uma sugestão, tendo em conta o teu nível, é realizar ${freq} de ${ex}, com ${seriesReps}, ` +
-                 `aumentando 2,5–5 kg quando conseguires todas as séries com boa técnica e sem falhas.`;
-        } else {
-          msg += `\n\nTens como objetivo chegar a ${formatKg(targetKgVal)}. Define um prazo em semanas para obteres uma recomendação mais detalhada de volume e frequência.`;
-        }
-      }
-    }
-
-    calcResEl.textContent = msg;
-  });
-}
-
-/* ===== GRÁFICO 1RM ===== */
-function updateRmChart() {
-  if (!rmChartCanvas || !graphExerciseEl) return;
-
-  const ex = graphExerciseEl.value;
-  let labels = [];
-  let values = [];
-
-  if (ex && (rmHistory[ex] || dataRm[ex])) {
-    const hist = (rmHistory[ex] || []).slice().sort((a, b) => {
-      return (a.date || "").localeCompare(b.date || "");
-    });
-
-    hist.forEach((entry, idx) => {
-      labels.push(entry.date || "h" + (idx + 1));
-      values.push(entry.value);
-    });
-
-    if (dataRm[ex]) {
-      labels.push("Atual");
-      values.push(dataRm[ex]);
-    }
-  }
-
-  const ctx = rmChartCanvas.getContext("2d");
-
-  if (rmChart) {
-    rmChart.destroy();
-    rmChart = null;
-  }
-
-  if (!labels.length) {
-    rmChart = new Chart(ctx, {
-      type: "line",
-      data: {
-        labels: ["Sem dados"],
-        datasets: [{
-          label: "1RM (kg)",
-          data: [0],
-          tension: 0.25
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: { display: false }
-        },
-        scales: {
-          x: { display: false },
-          y: { display: false }
-        }
-      }
-    });
-    return;
-  }
-
-  const datasetLabel = MOVES_PT[ex] ? `${ex} – ${MOVES_PT[ex]} – 1RM (kg)` : ex + " – 1RM (kg)";
-
-  rmChart = new Chart(ctx, {
-    type: "line",
-    data: {
-      labels,
-      datasets: [{
-        label: datasetLabel,
-        data: values,
-        tension: 0.25
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { display: true }
-      },
-      scales: {
-        x: {
-          title: { display: true, text: "Registos" }
-        },
-        y: {
-          title: { display: true, text: "Peso (kg)" },
-          beginAtZero: false
-        }
-      }
-    }
-  });
-}
-
-if (graphExerciseEl) {
-  graphExerciseEl.addEventListener("change", updateRmChart);
-}
-
-/* ===== WOD ===== */
-function saveTreinos() {
-  localStorage.setItem(STORAGE_TREINO, JSON.stringify(treinos));
-}
-
-function calcCarga(entry) {
-  const peso = entry.peso || 0;
-  const reps = entry.reps || 0;
-  const rondas = entry.rondas || 1;
-  return peso * reps * rondas;
-}
-
-function addTreinoEntry() {
-  const date = treinoDataEl.value || new Date().toISOString().slice(0,10);
-  const ex = treinoExEl.value;
-  const tipo = treinoTipoEl.value;
-  const rondas = parseInt(treinoRondasEl.value || "1", 10);
-  const reps = parseInt(treinoRepsEl.value || "0", 10);
-  const peso = parseFloat(treinoPesoEl.value || "0");
-  const tempo = treinoTempoEl.value.trim();
-  const distKmVal = parseFloat(treinoDistEl.value || "0");
-
-  if (!ex || !reps || reps <= 0) return;
-
-  const carga = calcCarga({ peso, reps, rondas });
-  let perc1rm = null;
-  if (dataRm[ex] && dataRm[ex] > 0 && peso > 0) {
-    perc1rm = peso / dataRm[ex];
-  }
-
-  const entry = {
-    date,
-    ex,
-    tipo,
-    rondas,
-    reps,
-    peso,
-    tempo,
-    carga,
-    perc1rm,
-    distanciaKm: (!isNaN(distKmVal) && distKmVal > 0) ? distKmVal : 0
-  };
-
-  treinos.unshift(entry);
-  saveTreinos();
-  registerBackupMeta("WOD registado");
-  renderTreinos();
-}
-
-function deleteTreinoEntry(index) {
-  if (index < 0 || index >= treinos.length) return;
-  if (!confirm("Apagar este registo de WOD?")) return;
-  treinos.splice(index, 1);
-  saveTreinos();
-  registerBackupMeta("WOD removido");
-  renderTreinos();
-}
-
-function renderDailyHistory() {
-  if (!dailyHistoryBody) return;
-  dailyHistoryBody.innerHTML = "";
-
-  if (!treinos.length) return;
-
-  const sorted = treinos.slice().sort((a, b) => {
-    return (b.date || "").localeCompare(a.date || "");
-  });
-
-  sorted.forEach(t => {
-    const tr = document.createElement("tr");
-
-    const tdDate = document.createElement("td");
-    tdDate.textContent = t.date || "";
-    tr.appendChild(tdDate);
-
-    const tdEx = document.createElement("td");
-    const label = MOVES_PT[t.ex] ? `${t.ex} – ${MOVES_PT[t.ex]}` : t.ex;
-    tdEx.textContent = label || "";
-    tr.appendChild(tdEx);
-
-    const tdTipo = document.createElement("td");
-    tdTipo.textContent = t.tipo || "";
-    tr.appendChild(tdTipo);
-
-    const tdR = document.createElement("td");
-    tdR.textContent = t.rondas || "";
-    tr.appendChild(tdR);
-
-    const tdReps = document.createElement("td");
-    tdReps.textContent = t.reps || "";
-    tr.appendChild(tdReps);
-
-    const tdPeso = document.createElement("td");
-    tdPeso.textContent = t.peso ? formatKg(t.peso) : "";
-    tr.appendChild(tdPeso);
-
-    const tdPerc = document.createElement("td");
-    if (t.perc1rm) {
-      tdPerc.textContent = (t.perc1rm * 100).toFixed(0) + "%";
-    } else {
-      tdPerc.textContent = "";
-    }
-    tr.appendChild(tdPerc);
-
-    const tdTempo = document.createElement("td");
-    tdTempo.textContent = t.tempo || "";
-    tr.appendChild(tdTempo);
-
-    const tdDist = document.createElement("td");
-    tdDist.textContent = t.distanciaKm ? formatKm(t.distanciaKm) : "";
-    tr.appendChild(tdDist);
-
-    const tdCarga = document.createElement("td");
-    tdCarga.textContent = t.carga ? formatKg(t.carga) : "";
-    tr.appendChild(tdCarga);
-
-    const tdDel = document.createElement("td");
-    const btn = document.createElement("button");
-    btn.textContent = "🗑";
-    btn.className = "btn-delete";
-    btn.addEventListener("click", () => {
-      deleteTreinoEntry(treinos.indexOf(t));
-    });
-    tdDel.appendChild(btn);
-    tr.appendChild(tdDel);
-
-    dailyHistoryBody.appendChild(tr);
-  });
-}
-
-function buildSugestao(lista, totalCarga, totalSeries, blocosForca, blocosHipertrofia, blocosLeve, dia) {
-  let partes = [];
-
-  if (totalSeries === 0 || totalCarga === 0) {
-    return "Hoje o treino ficou muito leve. Se o objetivo é ganhar força e músculo, planeia pelo menos 2–3 blocos de trabalho com carga moderada a alta.";
-  }
-
-  partes.push("Bom trabalho hoje, treino concluído em " + dia + "!");
-
-  const idade = profile && profile.idade ? profile.idade : null;
-  const sexo = profile && profile.sexo ? profile.sexo : null;
-  const peso = profile && profile.peso ? profile.peso : null;
-  const altura = profile && profile.altura ? profile.altura : null;
-
-  if (blocosForca === 0 && blocosHipertrofia === 0) {
-    partes.push("O dia ficou mais leve em termos de estímulo de força e hipertrofia.");
-    partes.push("Para evoluir, tenta incluir 2–3 exercícios principais entre 70–85% do teu 1RM, com 5–10 repetições.");
-  } else if (blocosForca > 0 && blocosHipertrofia === 0) {
-    partes.push("Treino muito focado em força máxima, com séries pesadas e repetições baixas.");
-    partes.push("Para aumentar também a massa muscular, acrescenta 2–4 séries de 6–10 repetições a 65–75% do 1RM em 1–2 exercícios grandes.");
-  } else if (blocosHipertrofia > 0 && blocosForca === 0) {
-    partes.push("Treino consistente para hipertrofia, com bastante trabalho de volume.");
-    partes.push("Para reforçar a força, vale a pena incluir 2–3 séries pesadas (3–5 repetições a 80–85% do 1RM) em movimentos fundamentais.");
-  } else {
-    partes.push("Boa combinação de força e hipertrofia hoje.");
-    partes.push("Mantém a lógica de 2–3 exercícios principais mais pesados (3–5 reps a 80–85% do 1RM) e 2–3 exercícios de apoio com 6–12 reps a 65–75% do 1RM.");
-  }
-
-  if (sexo === "homem") {
-    partes.push("Como homem, toleras bem blocos pesados entre 80–85% do 1RM, desde que respeites a técnica e a recuperação.");
-  } else if (sexo === "mulher") {
-    partes.push("Como mulher, costumas recuperar melhor entre séries; não tenhas receio de trabalhar com 8–12 repetições a 70–75% do 1RM nos grandes movimentos.");
-  }
-
-  if (idade && idade >= 40) {
-    partes.push("Com a idade atual, é importante controlar o volume: dá prioridade à qualidade do movimento e garante 48–72 horas de recuperação entre dias muito pesados.");
-  }
-
-  if (peso) {
-    const cargaMediaPorSerie = totalCarga / Math.max(totalSeries, 1);
-    const rel = cargaMediaPorSerie / peso;
-
-    if (rel < 0.8) {
-      partes.push("A carga média por série ficou relativamente baixa face ao teu peso corporal; aos poucos podes aproximar os principais levantamentos de 1.0–1.5x do teu peso.");
-    } else if (rel >= 0.8 && rel <= 1.5) {
-      partes.push("A relação entre carga média por série e peso corporal está numa faixa interessante para progresso contínuo. Mantém esta consistência.");
-    } else if (rel > 1.5) {
-      partes.push("Estás a trabalhar com uma carga média por série alta relativamente ao teu peso corporal; mantém atenção à técnica e à recuperação para evitar excesso de fadiga.");
-    }
-  }
-
-  if (altura) {
-    if (altura >= 185) {
-      partes.push("Com a tua estatura, dá atenção extra à posição lombar em agachamentos e deadlifts, mantendo o core firme em todas as repetições.");
-    } else if (altura <= 165) {
-      partes.push("Com a tua estatura, tens vantagem para estabilizar cargas pesadas; usa isso para consolidar técnica sólida nos básicos antes de aumentar muito o volume.");
-    }
-  }
-
-  return partes.join(" ");
-}
-
-function getMonday(dateStr) {
-  const d = new Date(dateStr);
-  if (isNaN(d.getTime())) return null;
-  const day = d.getDay();
-  const diff = (day + 6) % 7;
-  d.setDate(d.getDate() - diff);
-  d.setHours(0, 0, 0, 0);
-  return d;
-}
-
-function renderWeeklyHistory() {
-  if (!weeklyHistoryEl) return;
-
-  if (!treinos.length) {
-    weeklyHistoryEl.textContent = "Ainda não há histórico semanal registado.";
-    return;
-  }
-
-  const semanas = {};
-  treinos.forEach(t => {
-    if (!t.date) return;
-    const mon = getMonday(t.date);
-    if (!mon) return;
-    const key = mon.toISOString().slice(0,10);
-    if (!semanas[key]) semanas[key] = { carga: 0, dist: 0 };
-    semanas[key].carga += t.carga || 0;
-    if (t.distanciaKm) semanas[key].dist += t.distanciaKm;
-  });
-
-  const keys = Object.keys(semanas).sort((a, b) => b.localeCompare(a));
-
-  if (!keys.length) {
-    weeklyHistoryEl.textContent = "Ainda não há histórico semanal registado.";
-    return;
-  }
-
-  const fmt = (d) => {
-    const dd = String(d.getDate()).padStart(2, "0");
-    const mm = String(d.getMonth() + 1).padStart(2, "0");
-    return dd + "/" + mm;
-  };
-
-  const lines = keys.slice(0, 4).map(k => {
-    const mon = new Date(k);
-    const sun = new Date(mon);
-    sun.setDate(mon.getDate() + 6);
-    const txtCarga = formatKg(semanas[k].carga);
-    const txtDist = semanas[k].dist > 0 ? " · " + formatKm(semanas[k].dist) : "";
-    return fmt(mon) + " – " + fmt(sun) + ": " + txtCarga + txtDist;
-  });
-
-  weeklyHistoryEl.innerHTML =
-    "Histórico das últimas semanas (carga total e distância):<br>" +
-    lines.join("<br>");
-}
-
-function renderTreinos() {
-  if (!treinoBody) return;
-  treinoBody.innerHTML = "";
-
-  const dia = treinoDataEl.value || new Date().toISOString().slice(0,10);
-  const lista = treinos.filter(t => t.date === dia);
-
-  if (!lista.length) {
-    if (treinoResumoEl) {
-      treinoResumoEl.textContent = "Sem WOD registado para " + dia + ".";
-    }
-    if (treinoSugestaoEl) treinoSugestaoEl.textContent = "";
-    renderWeeklyHistory();
-    renderDailyHistory();
-    renderPerformance();
-    atualizarRankingsMensais();
-    return;
-  }
-
-  let totalCarga = 0;
-  let totalSeries = 0;
-  let totalDistKm = 0;
-  let blocosForca = 0;
-  let blocosHipertrofia = 0;
-  let blocosLeve = 0;
-
-  lista.forEach(e => {
-    const tr = document.createElement("tr");
-
-    const tdDate = document.createElement("td");
-    tdDate.textContent = e.date || "";
-    tr.appendChild(tdDate);
-
-    const tdEx = document.createElement("td");
-    const label = MOVES_PT[e.ex] ? `${e.ex} – ${MOVES_PT[e.ex]}` : e.ex;
-    tdEx.textContent = label || "";
-    tr.appendChild(tdEx);
-
-    const tdTipo = document.createElement("td");
-    tdTipo.textContent = e.tipo || "";
-    tr.appendChild(tdTipo);
-
-    const tdR = document.createElement("td");
-    tdR.textContent = e.rondas || "";
-    tr.appendChild(tdR);
-
-    const tdReps = document.createElement("td");
-    tdReps.textContent = e.reps || "";
-    tr.appendChild(tdReps);
-
-    const tdPeso = document.createElement("td");
-    tdPeso.textContent = e.peso ? formatKg(e.peso) : "";
-    tr.appendChild(tdPeso);
-
-    const tdPerc = document.createElement("td");
-    if (e.perc1rm) {
-      tdPerc.textContent = (e.perc1rm * 100).toFixed(0) + "%";
-    } else {
-      tdPerc.textContent = "";
-    }
-    tr.appendChild(tdPerc);
-
-    const tdTempo = document.createElement("td");
-    tdTempo.textContent = e.tempo || "";
-    tr.appendChild(tdTempo);
-
-    const tdDist = document.createElement("td");
-    tdDist.textContent = e.distanciaKm ? formatKm(e.distanciaKm) : "";
-    tr.appendChild(tdDist);
-
-    const tdCarga = document.createElement("td");
-    tdCarga.textContent = e.carga ? formatKg(e.carga) : "";
-    tr.appendChild(tdCarga);
-
-    const tdDel = document.createElement("td");
-    const btn = document.createElement("button");
-    btn.textContent = "🗑";
-    btn.className = "btn-delete";
-    btn.addEventListener("click", () => deleteTreinoEntry(treinos.indexOf(e)));
-    tdDel.appendChild(btn);
-    tr.appendChild(tdDel);
-
-    treinoBody.appendChild(tr);
-
-    totalCarga += e.carga || 0;
-    totalSeries += (e.rondas || 0);
-    totalDistKm += e.distanciaKm || 0;
-
-    if (e.perc1rm && e.reps) {
-      const p = e.perc1rm;
-      const r = e.reps;
-      if (p >= 0.8 && r <= 5) {
-        blocosForca++;
-      } else if (p >= 0.65 && p <= 0.8 && r >= 6 && r <= 12) {
-        blocosHipertrofia++;
-      } else if (p < 0.6 || r >= 15) {
-        blocosLeve++;
-      }
-    }
-  });
-
-  if (treinoResumoEl) {
-    let resumo =
-      "Resumo do dia " + dia + ": carga total do WOD = " + formatKg(totalCarga);
-    if (totalDistKm > 0) {
-      resumo += " · distância total = " + formatKm(totalDistKm);
-    }
-    treinoResumoEl.textContent = resumo;
-  }
-
-  const sugestao = buildSugestao(
-    lista,
-    totalCarga,
-    totalSeries,
-    blocosForca,
-    blocosHipertrofia,
-    blocosLeve,
-    dia
-  );
-  if (treinoSugestaoEl) treinoSugestaoEl.textContent = sugestao;
-
-  renderWeeklyHistory();
-  renderDailyHistory();
-  renderPerformance();
-  atualizarRankingsMensais();
-}
-
-if (treinoAddBtn) {
-  treinoAddBtn.addEventListener("click", addTreinoEntry);
-}
-if (treinoDataEl) {
-  treinoDataEl.addEventListener("change", renderTreinos);
-}
-if (toggleDailyHistoryBtn && dailyHistorySection) {
-  toggleDailyHistoryBtn.addEventListener("click", () => {
-    const visible = dailyHistorySection.style.display === "block";
-    dailyHistorySection.style.display = visible ? "none" : "block";
-    if (!visible) {
-      renderDailyHistory();
-    }
-  });
-}
-
-/* ===== BACKUP ===== */
-function formatDateTime(dt) {
-  const d = new Date(dt);
-  if (isNaN(d.getTime())) return "";
-  const dd = String(d.getDate()).padStart(2, "0");
-  const mm = String(d.getMonth() + 1).padStart(2, "0");
-  const yyyy = d.getFullYear();
-  const hh = String(d.getHours()).padStart(2, "0");
-  const mi = String(d.getMinutes()).padStart(2, "0");
-  return `${dd}/${mm}/${yyyy} ${hh}:${mi}`;
-}
-
-function registerBackupMeta(evento) {
-  try {
-    const meta = JSON.parse(localStorage.getItem(STORAGE_BACKUP_META) || "{}");
-    meta.lastChange = new Date().toISOString();
-    meta.lastEvent = evento || "";
-    localStorage.setItem(STORAGE_BACKUP_META, JSON.stringify(meta));
-    updateBackupInfo();
-  } catch (e) {}
-}
-
-function updateBackupInfo() {
-  if (!backupInfoEl) return;
-  const meta = JSON.parse(localStorage.getItem(STORAGE_BACKUP_META) || "{}");
-  const lastBackup = meta.lastBackup ? formatDateTime(meta.lastBackup) : "nunca";
-  const lastChange = meta.lastChange ? formatDateTime(meta.lastChange) : "sem registo";
-  backupInfoEl.innerHTML =
-    `<div class="helper-text">
-       Último backup exportado: <strong>${lastBackup}</strong><br>
-       Última alteração de dados: <strong>${lastChange}</strong>
-     </div>`;
-}
-
-function buildBackupObject() {
-  return {
-    version: 2,
-    createdAt: new Date().toISOString(),
-    profile: profile || {},
-    dataRm: dataRm || {},
-    rmHistory: rmHistory || {},
-    treinos: treinos || [],
-    reservas: reservas || [],
-    presencas: presencas || [],
-    rankingsMensais: rankingsMensais || []
-  };
-}
-
-function downloadJson(obj, filename) {
-  const dataStr = "data:application/json;charset=utf-8," + encodeURIComponent(JSON.stringify(obj));
-  const a = document.createElement("a");
-  a.setAttribute("href", dataStr);
-  a.setAttribute("download", filename);
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-}
-
-if (exportBackupBtn) {
-  exportBackupBtn.addEventListener("click", () => {
-    const backup = buildBackupObject();
-    const now = new Date();
-    const yyyy = now.getFullYear();
-    const mm = String(now.getMonth() + 1).padStart(2, "0");
-    const dd = String(now.getDate()).padStart(2, "0");
-    const filename = `crossfit_backup_${yyyy}${mm}${dd}.json`;
-    downloadJson(backup, filename);
-
-    try {
-      const meta = JSON.parse(localStorage.getItem(STORAGE_BACKUP_META) || "{}");
-      meta.lastBackup = new Date().toISOString();
-      localStorage.setItem(STORAGE_BACKUP_META, JSON.stringify(meta));
-    } catch (e) {}
-    updateBackupInfo();
-    alert("Backup exportado. Podes agora guardar o ficheiro em Google Drive, iCloud, Ficheiros, etc.");
-  });
-}
-
-if (importBackupBtn && backupFileInput) {
-  importBackupBtn.addEventListener("click", () => {
-    backupFileInput.value = "";
-    backupFileInput.click();
-  });
-
-  backupFileInput.addEventListener("change", (e) => {
-    const file = e.target.files && e.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = function(evt) {
-      try {
-        const content = evt.target.result;
-        const data = JSON.parse(content);
-
-        if (!data || typeof data !== "object") {
-          alert("Ficheiro inválido.");
-          return;
-        }
-
-        if (!("dataRm" in data) && !("treinos" in data)) {
-          alert("Este ficheiro não parece ser um backup válido da app.");
-          return;
-        }
-
-        profile = data.profile || {};
-        dataRm = data.dataRm || {};
-        rmHistory = data.rmHistory || {};
-        treinos = data.treinos || [];
-        reservas = data.reservas || [];
-        presencas = data.presencas || [];
-        rankingsMensais = data.rankingsMensais || [];
-
-        localStorage.setItem(STORAGE_PROFILE, JSON.stringify(profile));
-        localStorage.setItem(STORAGE_RM, JSON.stringify(dataRm));
-        localStorage.setItem(STORAGE_RM_HISTORY, JSON.stringify(rmHistory));
-        localStorage.setItem(STORAGE_TREINO, JSON.stringify(treinos));
-        localStorage.setItem(STORAGE_RESERVAS, JSON.stringify(reservas));
-        localStorage.setItem(STORAGE_PRESENCAS, JSON.stringify(presencas));
-        localStorage.setItem(STORAGE_RANKINGS, JSON.stringify(rankingsMensais));
-
-        registerBackupMeta("Backup importado");
-
-        loadProfile();
-        renderRm();
-        refreshCalcExOptions();
-        refreshGraphExerciseOptions();
-        renderTreinos();
-        renderReservas();
-
-        alert("Backup importado com sucesso.");
-      } catch (err) {
-        console.error(err);
-        alert("Erro ao ler o ficheiro de backup.");
-      }
-    };
-    reader.readAsText(file);
-  });
-}
-
-/* GUIA EXERCÍCIOS */
-function renderGuiaExercicios() {
-  if (!guiaBody) return;
-  guiaBody.innerHTML = "";
-
-  const filtro = (guiaSearch?.value || "").toLowerCase().trim();
-
-  EXER_INFO.forEach(ex => {
-    const texto = (ex.en + " " + ex.pt + " " + ex.descricao).toLowerCase();
-    if (filtro && !texto.includes(filtro)) return;
-
-    const tr = document.createElement("tr");
-
-    const tdEn = document.createElement("td");
-    tdEn.textContent = ex.en;
-    tr.appendChild(tdEn);
-
-    const tdPt = document.createElement("td");
-    tdPt.textContent = ex.pt;
-    tr.appendChild(tdPt);
-
-    const tdDesc = document.createElement("td");
-    tdDesc.textContent = ex.descricao;
-    tr.appendChild(tdDesc);
-
-    guiaBody.appendChild(tr);
-  });
-}
-
-if (guiaSearch) {
-  guiaSearch.addEventListener("input", renderGuiaExercicios);
-}
-
-/* ===== PERFORMANCE (WOD / 1RM / METCON) ===== */
-function parseTimeToSeconds(str) {
-  if (!str) return null;
-  const clean = String(str).trim();
-  const parts = clean.split(":");
-  if (parts.length < 2 || parts.length > 3) return null;
-
-  const nums = parts.map(p => parseInt(p, 10));
-  if (nums.some(n => isNaN(n))) return null;
-
-  let h = 0, m = 0, s = 0;
-  if (nums.length === 2) {
-    m = nums[0];
-    s = nums[1];
-  } else {
-    h = nums[0];
-    m = nums[1];
-    s = nums[2];
-  }
-
-  if (m < 0 || s < 0 || s >= 60) return null;
-  return h * 3600 + m * 60 + s;
-}
-
-function formatSecondsToTime(totalSeconds) {
-  if (totalSeconds == null || isNaN(totalSeconds)) return "";
-  const t = Math.round(totalSeconds);
-  const h = Math.floor(t / 3600);
-  const m = Math.floor((t % 3600) / 60);
-  const s = t % 60;
-  const mm = String(m).padStart(2, "0");
-  const ss = String(s).padStart(2, "0");
-  if (h > 0) {
-    return `${h}:${mm}:${ss}`;
-  }
-  return `${m}:${ss}`;
-}
-
-function renderPerformance() {
-  /* WOD – dias com mais carga */
-  if (perfWodBody) {
-    perfWodBody.innerHTML = "";
-    if (!treinos.length) {
-      const tr = document.createElement("tr");
-      const td = document.createElement("td");
-      td.colSpan = 5;
-      td.textContent = "Ainda não existem WOD registados.";
-      tr.appendChild(td);
-      perfWodBody.appendChild(tr);
-    } else {
-      const map = {};
-      treinos.forEach(t => {
-        if (!t.date) return;
-        if (!map[t.date]) {
-          map[t.date] = {
-            cargaTotal: 0,
-            distTotalKm: 0,
-            numEx: 0,
-            melhorTempoMetconSeg: null
-          };
-        }
-        map[t.date].cargaTotal += t.carga || 0;
-        map[t.date].distTotalKm += t.distanciaKm || 0;
-        map[t.date].numEx += 1;
-
-        if (t.tipo === "metcon" && t.tempo) {
-          const sec = parseTimeToSeconds(t.tempo);
-          if (sec != null) {
-            if (map[t.date].melhorTempoMetconSeg == null || sec < map[t.date].melhorTempoMetconSeg) {
-              map[t.date].melhorTempoMetconSeg = sec;
-            }
-          }
-        }
-      });
-
-      const rows = Object.keys(map).map(date => ({
-        date,
-        cargaTotal: map[date].cargaTotal,
-        distTotalKm: map[date].distTotalKm,
-        numEx: map[date].numEx,
-        melhorTempoMetconSeg: map[date].melhorTempoMetconSeg
-      }));
-
-      rows.sort((a, b) => (b.cargaTotal || 0) - (a.cargaTotal || 0));
-
-      rows.slice(0, 10).forEach(r => {
-        const tr = document.createElement("tr");
-
-        const tdData = document.createElement("td");
-        tdData.textContent = r.date;
-        tr.appendChild(tdData);
-
-        const tdCarga = document.createElement("td");
-        tdCarga.textContent = formatKg(r.cargaTotal);
-        tr.appendChild(tdCarga);
-
-        const tdDist = document.createElement("td");
-        tdDist.textContent = r.distTotalKm ? formatKm(r.distTotalKm) : "-";
-        tr.appendChild(tdDist);
-
-        const tdNum = document.createElement("td");
-        tdNum.textContent = r.numEx.toString();
-        tr.appendChild(tdNum);
-
-        const tdTempo = document.createElement("td");
-        tdTempo.textContent = r.melhorTempoMetconSeg != null
-          ? formatSecondsToTime(r.melhorTempoMetconSeg)
-          : "-";
-        tr.appendChild(tdTempo);
-
-        perfWodBody.appendChild(tr);
-      });
-
-      if (!perfWodBody.hasChildNodes()) {
-        const tr = document.createElement("tr");
-        const td = document.createElement("td");
-        td.colSpan = 5;
-        td.textContent = "Sem dados suficientes para gerar ranking.";
-        tr.appendChild(td);
-        perfWodBody.appendChild(tr);
-      }
-    }
-  }
-
-  /* Top 1RM */
-  if (perf1rmBody) {
-    perf1rmBody.innerHTML = "";
-    const nomes = Object.keys(dataRm || {});
-    if (!nomes.length) {
-      const tr = document.createElement("tr");
-      const td = document.createElement("td");
-      td.colSpan = 3;
-      td.textContent = "Ainda não registaste nenhum 1RM.";
-      tr.appendChild(td);
-      perf1rmBody.appendChild(tr);
-    } else {
-      const pesoCorporal = profile && profile.peso ? profile.peso : null;
-      const rows = nomes.map(name => ({
-        name,
-        value: dataRm[name]
-      })).sort((a, b) => (b.value || 0) - (a.value || 0));
-
-      rows.slice(0, 10).forEach(r => {
-        const tr = document.createElement("tr");
-
-        const tdName = document.createElement("td");
-        const label = MOVES_PT[r.name] ? `${r.name} – ${MOVES_PT[r.name]}` : r.name;
-        tdName.textContent = label;
-        tr.appendChild(tdName);
-
-        const tdVal = document.createElement("td");
-        tdVal.textContent = formatKg(r.value);
-        tr.appendChild(tdVal);
-
-        const tdRel = document.createElement("td");
-        if (pesoCorporal) {
-          const rel = r.value / pesoCorporal;
-          tdRel.textContent = rel.toFixed(2) + "x";
-        } else {
-          tdRel.textContent = "-";
-        }
-        tr.appendChild(tdRel);
-
-        perf1rmBody.appendChild(tr);
-      });
-    }
-  }
-
-  /* Metcon – melhores tempos (tipo = 'metcon') */
-  if (perfMetconBody) {
-    perfMetconBody.innerHTML = "";
-    const metconMap = {};
-
-    treinos.forEach(t => {
-      if (t.tipo !== "metcon" || !t.tempo) return;
-      const sec = parseTimeToSeconds(t.tempo);
-      if (sec == null) return;
-      const key = t.ex || "Metcon";
-      const existing = metconMap[key];
-      if (!existing || sec < existing.tempoSeg) {
-        metconMap[key] = {
-          exercicio: key,
-          tempoSeg: sec,
-          tempoStr: t.tempo,
-          date: t.date || "",
-          carga: t.carga || 0,
-          distanciaKm: t.distanciaKm || 0
-        };
-      }
-    });
-
-    const rows = Object.keys(metconMap).map(k => metconMap[k]).sort((a, b) => a.tempoSeg - b.tempoSeg);
-
-    if (!rows.length) {
-      const tr = document.createElement("tr");
-      const td = document.createElement("td");
-      td.colSpan = 4;
-      td.textContent = "Ainda não registaste metcons com tempo em formato mm:ss.";
-      tr.appendChild(td);
-      perfMetconBody.appendChild(tr);
-    } else {
-      rows.slice(0, 10).forEach(r => {
-        const tr = document.createElement("tr");
-
-        const tdEx = document.createElement("td");
-        const label = MOVES_PT[r.exercicio] ? `${r.exercicio} – ${MOVES_PT[r.exercicio]}` : r.exercicio;
-        tdEx.textContent = label;
-        tr.appendChild(tdEx);
-
-        const tdTempo = document.createElement("td");
-        tdTempo.textContent = r.tempoStr;
-        tr.appendChild(tdTempo);
-
-        const tdData = document.createElement("td");
-        tdData.textContent = r.date;
-        tr.appendChild(tdData);
-
-        const tdCarga = document.createElement("td");
-        let cargaLabel = "-";
-        if (r.distanciaKm && r.distanciaKm > 0) {
-          cargaLabel = formatKm(r.distanciaKm);
-        } else if (r.carga && r.carga > 0) {
-          cargaLabel = formatKg(r.carga);
-        }
-        tdCarga.textContent = cargaLabel;
-        tr.appendChild(tdCarga);
-
-        perfMetconBody.appendChild(tr);
-      });
-    }
-  }
-}
-
-/* ===== RESERVAS & PRESENÇAS (ALUNO) ===== */
-
-function saveReservas() {
-  localStorage.setItem(STORAGE_RESERVAS, JSON.stringify(reservas));
-}
-
-function savePresencas() {
-  localStorage.setItem(STORAGE_PRESENCAS, JSON.stringify(presencas));
-}
-
-function saveRankings() {
-  localStorage.setItem(STORAGE_RANKINGS, JSON.stringify(rankingsMensais));
-}
+/* ===== RESERVAS & PRESENÇAS ===== */
 
 function gerarIdReserva() {
-  return "res_" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+  return "R" + Math.random().toString(16).slice(2);
 }
 
-function marcarPresenca(reservaId) {
-  const existe = presencas.some(p => p.reservaId === reservaId);
-  if (existe) return;
-  const now = new Date();
-  presencas.push({
-    reservaId,
-    data: now.toISOString().slice(0, 10),
-    hora: now.toTimeString().slice(0,5)
-  });
-  savePresencas();
-  renderReservas();
-  atualizarRankingsMensais();
-}
-
-function apagarReserva(id) {
-  if (!confirm("Apagar esta reserva?")) return;
-  reservas = reservas.filter(r => r.id !== id);
-  presencas = presencas.filter(p => p.reservaId !== id);
-  saveReservas();
-  savePresencas();
-  renderReservas();
-  atualizarRankingsMensais();
+function mesmoMesAno(dataStr, ano, mes) {
+  if (!dataStr) return false;
+  const [a, m] = dataStr.split("-").map(n => parseInt(n, 10));
+  return a === ano && m === mes;
 }
 
 function adicionarReserva() {
@@ -2463,61 +1741,49 @@ function adicionarReserva() {
     hora,
     tipo,
     nota,
-    inscritos: profile && profile.nome ? [profile.nome] : []
+    presenca: false
   };
 
-  reservas.unshift(novaReserva);
-  saveReservas();
+  reservas.push(novaReserva);
+  localStorage.setItem(STORAGE_RESERVAS, JSON.stringify(reservas));
+
+  reservaDataEl.value = "";
+  reservaHoraEl.value = "";
+  reservaTipoEl.value = "";
   reservaNotaEl.value = "";
-  registerBackupMeta("Reserva registada");
+
   renderReservas();
-  atualizarRankingsMensais();
 }
 
-function mesmoMesAno(dataISO, ano, mes) {
-  const d = new Date(dataISO);
-  if (isNaN(d.getTime())) return false;
-  return d.getFullYear() === ano && (d.getMonth() + 1) === mes;
+function marcarPresenca(id) {
+  const reserva = reservas.find(r => r.id === id);
+  if (!reserva) return;
+
+  const dataHoje = reserva.data || new Date().toISOString().slice(0,10);
+
+  presencas.push({
+    idReserva: reserva.id,
+    data: dataHoje,
+    tipo: reserva.tipo
+  });
+
+  reserva.presenca = true;
+  localStorage.setItem(STORAGE_RESERVAS, JSON.stringify(reservas));
+  localStorage.setItem(STORAGE_PRESENCAS, JSON.stringify(presencas));
+
+  atualizarRankingsMensais();
+  renderReservas();
+}
+
+function apagarReserva(id) {
+  reservas = reservas.filter(r => r.id !== id);
+  localStorage.setItem(STORAGE_RESERVAS, JSON.stringify(reservas));
+  renderReservas();
 }
 
 function atualizarRankingsMensais() {
-  if (!treinos || !treinos.length) {
-    rankingsMensais = [];
-    saveRankings();
-    renderReservasResumo();
-    return;
-  }
-
-  const agora = new Date();
-  const ano = agora.getFullYear();
-  const mes = agora.getMonth() + 1;
-  const chave = `${ano}-${String(mes).padStart(2,"0")}`;
-
-  let cargaTotal = 0;
-  let distTotal = 0;
-  let nTreinos = 0;
-
-  treinos.forEach(t => {
-    if (!t.date) return;
-    if (!mesmoMesAno(t.date, ano, mes)) return;
-    nTreinos++;
-    cargaTotal += t.carga || 0;
-    distTotal += t.distanciaKm || 0;
-  });
-
-  const outras = rankingsMensais.filter(r => r.mes !== chave);
-  const atual = {
-    mes: chave,
-    ano,
-    mesNumero: mes,
-    nTreinos,
-    cargaTotal,
-    distTotal
-  };
-
-  rankingsMensais = [...outras, atual];
-  saveRankings();
-  renderReservasResumo();
+  rankingsMensais = [];
+  localStorage.setItem(STORAGE_RANKINGS, JSON.stringify(rankingsMensais));
 }
 
 function renderReservasResumo() {
@@ -2550,18 +1816,9 @@ function renderReservas() {
   if (!reservasBody) return;
   reservasBody.innerHTML = "";
 
-  if (!reservas.length) {
-    const tr = document.createElement("tr");
-    const td = document.createElement("td");
-    td.colSpan = 6;
-    td.textContent = "Sem reservas registadas.";
-    tr.appendChild(td);
-    reservasBody.appendChild(tr);
-    renderReservasResumo();
-    return;
-  }
+  const ord = [...reservas].sort((a, b) => (a.data || "").localeCompare(b.data || ""));
 
-  reservas.forEach(r => {
+  ord.forEach(r => {
     const tr = document.createElement("tr");
 
     const tdData = document.createElement("td");
@@ -2572,18 +1829,17 @@ function renderReservas() {
     tdHora.textContent = r.hora || "";
     tr.appendChild(tdHora);
 
-    const tdTipo = document.createElement("td");
-    tdTipo.textContent = r.tipo || "";
-    tr.appendChild(tdTipo);
+    const tdAula = document.createElement("td");
+    tdAula.textContent = r.tipo || "";
+    tr.appendChild(tdAula);
 
     const tdNota = document.createElement("td");
     tdNota.textContent = r.nota || "";
     tr.appendChild(tdNota);
 
     const tdPres = document.createElement("td");
-    const temPresenca = presencas.some(p => p.reservaId === r.id);
-    if (temPresenca) {
-      tdPres.textContent = "Presente ✅";
+    if (r.presenca) {
+      tdPres.textContent = "✔";
     } else {
       const btnPres = document.createElement("button");
       btnPres.className = "btn-secondary";
@@ -2631,7 +1887,8 @@ document.querySelectorAll(".opt-btn").forEach(btn => {
   });
 });
 
-/* BOTÃO RESERVAS – abre/fecha card de reservas no ecrã principal */
+/* BOTÃO RESERVAS – já não usas porque o botão foi removido do header,
+   mas o código fica inofensivo porque reservasBtn será null. */
 if (reservasBtn && reservasSection) {
   reservasBtn.addEventListener("click", () => {
     const visivel = reservasSection.style.display === "block";
@@ -2642,7 +1899,8 @@ if (reservasBtn && reservasSection) {
 /* INIT */
 initSelects();
 loadProfile();
-renderRm();
+renderRmTable();
+renderRmHistory();
 refreshCalcExOptions();
 refreshGraphExerciseOptions();
 
@@ -2650,14 +1908,13 @@ if (treinoDataEl && !treinoDataEl.value) {
   treinoDataEl.value = new Date().toISOString().slice(0, 10);
 }
 renderTreinos();
-updateBackupInfo();
-renderGuiaExercicios();
-renderPerformance();
 renderReservas();
-atualizarRankingsMensais();
+renderPerformance();
+renderGuiaExercicios();
 
+/* Service worker (se já usavas) */
 if ("serviceWorker" in navigator) {
-  window.addEventListener("load", function () {
+  window.addEventListener("load", () => {
     navigator.serviceWorker.register("service-worker.js");
   });
 }
