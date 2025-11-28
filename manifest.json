@@ -2,9 +2,7 @@
   "name": "CrossBox",
   "short_name": "CrossBox",
   "start_url": "./index.html",
-  "scope": "./",
   "display": "standalone",
-  "orientation": "portrait-primary",
   "background_color": "#f2f2f2",
   "theme_color": "#f2f2f2",
   "icons": [
@@ -16,3 +14,8 @@
     }
   ]
 }
+
+
+  ]
+}
+
