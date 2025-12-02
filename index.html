@@ -457,66 +457,6 @@
       <button class="btn-primary" id="saveProfile">Guardar perfil</button>
     </div>
   </section>
- 
-<!-- RESERVAS & PRESENÇAS (ALUNO) -->
-<section class="card" id="sec-reservas" style="display:none; margin-bottom:10px;">
-  <h3 style="margin-top:0; margin-bottom:8px;">📆 Reservas & Presenças</h3>
-
-  <div class="form-row">
-    <div class="field">
-      <label>Data da aula</label>
-      <input id="reservaData" type="date" />
-    </div>
-    <div class="field">
-      <label>Hora</label>
-      <input id="reservaHora" type="time" />
-    </div>
-  </div>
-
-  <div class="form-row">
-    <div class="field">
-      <label>Tipo de aula</label>
-      <select id="reservaTipo">
-        <option value="">Selecionar</option>
-        <option value="WOD">WOD</option>
-        <option value="Open Box">Open Box</option>
-        <option value="Halterofilismo">Halterofilismo</option>
-        <option value="Mobilidade">Mobilidade</option>
-        <option value="Competição">Competição</option>
-      </select>
-    </div>
-
-    <div class="field">
-      <label>Nota (opcional)</label>
-      <input id="reservaNota" type="text" placeholder="Ex.: parceiro, foco, objetivo do dia..." />
-    </div>
-  </div>
-
-  <!-- BOTÃO -->
-  <button class="btn-primary" id="reservaAddBtn">Guardar reserva</button>
-
-  <div class="helper-text" style="margin-top:6px;">
-    Estas reservas e presenças são pessoais e ficam apenas guardadas neste dispositivo.
-  </div>
-
-  <div class="scroll" style="margin-top:10px;">
-    <table>
-      <thead>
-        <tr>
-          <th>Data</th>
-          <th>Hora</th>
-          <th>Aula</th>
-          <th>Nota</th>
-          <th>Presença</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody id="reservasBody"></tbody>
-    </table>
-  </div>
-
-  <div class="helper-text" id="reservasResumo" style="margin-top:6px;"></div>
-</section>
 
   <!-- TABS PRINCIPAIS -->
   <div class="tabs">
@@ -572,7 +512,6 @@
     </div>
 
   </section>
-
   <!-- SECÇÃO 2: OPÇÕES -->
   <section id="sec-opcoes" class="section">
 
@@ -889,10 +828,70 @@
       </div>
     </section>
 
+    <!-- RESERVAS & PRESENÇAS (AGORA DENTRO DO WOD & TOOLS) -->
+    <section id="sec-reservas" class="option-section">
+      <div class="card">
+        <h3 style="margin-top:0; margin-bottom:8px;">📆 Reservas & Presenças</h3>
+
+        <div class="form-row">
+          <div class="field">
+            <label>Data da aula</label>
+            <input id="reservaData" type="date" />
+          </div>
+          <div class="field">
+            <label>Hora</label>
+            <input id="reservaHora" type="time" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label>Tipo de aula</label>
+            <select id="reservaTipo">
+              <option value="">Selecionar</option>
+              <option value="WOD">WOD</option>
+              <option value="Open Box">Open Box</option>
+              <option value="Halterofilismo">Halterofilismo</option>
+              <option value="Mobilidade">Mobilidade</option>
+              <option value="Competição">Competição</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Nota (opcional)</label>
+            <input id="reservaNota" type="text" placeholder="Ex.: parceiro, foco, objetivo do dia..." />
+          </div>
+        </div>
+
+        <button class="btn-primary" id="reservaAddBtn">Guardar reserva</button>
+
+        <div class="helper-text" style="margin-top:6px;">
+          Estas reservas e presenças são pessoais e ficam apenas guardadas neste dispositivo.
+        </div>
+
+        <div class="scroll" style="margin-top:10px;">
+          <table>
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Hora</th>
+                <th>Aula</th>
+                <th>Nota</th>
+                <th>Presença</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="reservasBody"></tbody>
+          </table>
+        </div>
+
+        <div class="helper-text" id="reservasResumo" style="margin-top:6px;"></div>
+      </div>
+    </section>
+
   </section>
 
 </div>
-
 <script>
 /* ===== CHAVES DE ARMAZENAMENTO ===== */
 const STORAGE_PROFILE = "crossfit_profile";
@@ -1116,7 +1115,7 @@ const EXER_INFO = [
   { en: "Double Under", pt: "Saltos duplos na corda", descricao: "Saltos em que a corda passa duas vezes por baixo dos pés em cada salto." },
   { en: "Single Under", pt: "Saltos simples na corda", descricao: "Saltos em que a corda passa uma vez por baixo dos pés em cada salto." },
   { en: "Sled Push", pt: "Empurrar trenó", descricao: "Empurrar um trenó com carga ao longo de uma distância definida." },
-  { en: "Sled Pull", pt: "Puxar trenó", descricao: "Puxar um trenó com carga, com arnês ou corda, para trás ou para a frente." },
+  { en: "Sled Pull", pt: "Puxar trenó", descricao: "Puxar trenó com carga, com arnês ou corda, para trás ou para a frente." },
   { en: "Farmer Carry", pt: "Caminhada com cargas", descricao: "Caminhar segurando cargas pesadas (halteres ou kettlebells) ao lado do corpo." },
   { en: "Sprint", pt: "Sprint", descricao: "Corrida explosiva de curta distância, normalmente em máxima intensidade." },
 
@@ -2659,24 +2658,20 @@ document.querySelectorAll(".tab-btn").forEach(btn => {
     document.getElementById(target).classList.add("active");
   });
 });
-
 /* OPÇÕES (sub-seções) */
 document.querySelectorAll(".opt-btn").forEach(btn => {
   btn.addEventListener("click", () => {
     const target = btn.dataset.target;
 
-    // esconder sub-secções do WOD & Tools
-    document.querySelectorAll(".option-section").forEach(s => s.classList.remove("active"));
+    // esconder todas as sub-secções do WOD & Tools
+    document.querySelectorAll(".option-section").forEach(s => {
+      s.classList.remove("active");
+    });
 
-    // ativar a opção normal, se existir (WOD, Objetivo, Gráficos, etc.)
+    // ativar a opção correspondente (WOD, Objetivo, Gráficos, Desempenho, Guia, Backup, Reservas)
     const sec = document.getElementById(target);
     if (sec && sec.classList.contains("option-section")) {
       sec.classList.add("active");
-    }
-
-    // caso especial: botão "Reservas" dentro do WOD & Tools
-    if (target === "sec-reservas" && typeof reservasSection !== "undefined" && reservasSection) {
-      reservasSection.style.display = "block";
     }
   });
 });
@@ -2715,9 +2710,3 @@ if ("serviceWorker" in navigator) {
 
 </body>
 </html>
-
-
-
-
-
-
