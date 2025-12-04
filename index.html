@@ -861,8 +861,7 @@
           <table>
             <thead>
               <tr>
-                <th>Nome (EN)</th>
-                <th>Tradução (PT)</th>
+                <th>Exercício</th>
                 <th>Descrição</th>
               </tr>
             </thead>
@@ -2313,7 +2312,7 @@ if (importBackupBtn && backupFileInput) {
   });
 }
 
-/* GUIA EXERCÍCIOS */
+/* GUIA EXERCÍCIOS – EN + PT na mesma coluna, mais limpo para telemóvel */
 function renderGuiaExercicios() {
   if (!guiaBody) return;
   guiaBody.innerHTML = "";
@@ -2326,14 +2325,12 @@ function renderGuiaExercicios() {
 
     const tr = document.createElement("tr");
 
-    const tdEn = document.createElement("td");
-    tdEn.textContent = ex.en;
-    tr.appendChild(tdEn);
+    // Coluna 1 → EN + PT em duas linhas
+    const tdNome = document.createElement("td");
+    tdNome.innerHTML = `<strong>${ex.en}</strong><br><span>${ex.pt}</span>`;
+    tr.appendChild(tdNome);
 
-    const tdPt = document.createElement("td");
-    tdPt.textContent = ex.pt;
-    tr.appendChild(tdPt);
-
+    // Coluna 2 → descrição
     const tdDesc = document.createElement("td");
     tdDesc.textContent = ex.descricao;
     tr.appendChild(tdDesc);
@@ -2880,6 +2877,7 @@ if ("serviceWorker" in navigator) {
 
 </body>
 </html>
+
 
 
 
