@@ -1231,6 +1231,21 @@ const EXER_INFO = [
   { en: "Shrug", pt: "Encolhimento de ombros", descricao: "Elevar os ombros em direção às orelhas segurando barra ou halteres, focando trapézios." }
 ];
 
+  /* ===== MOVIMENTOS TÉCNICOS (CrossFit High-Skill) ===== */
+const TECHNICAL_MOVES = [
+  "Power Clean",
+  "Hang Clean",
+  "Squat Clean",
+  "Clean & Jerk",
+  "Power Snatch",
+  "Hang Power Snatch",
+  "Squat Snatch",
+  "Snatch Deadlift",
+  "Overhead Squat",
+  "Sots Press",
+  "Thruster"
+];
+
 /* Lista completa de exercícios em inglês (para WOD, Objetivo, Guia) */
 const ALL_EXERCISES = Array.from(new Set(EXER_INFO.map(ex => ex.en))).sort();
 
@@ -2804,6 +2819,7 @@ if ("serviceWorker" in navigator) {
 
 </body>
 </html>
+
 
 
 
