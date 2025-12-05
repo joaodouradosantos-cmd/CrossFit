@@ -556,53 +556,87 @@
   </div>
 
   <!-- SECÇÃO 1: 1RM -->
-  <section id="sec-1rm" class="section active">
+<section id="sec-1rm" class="section active">
 
-    <div class="card">
-      <div class="form-row">
-        <div class="field">
-          <label>Exercício</label>
-          <select id="exercise"></select>
-        </div>
+  <!-- CARD 1: REGISTO DE 1RM + FERRAMENTA RÁPIDA -->
+  <div class="card">
+    <h3 style="margin-top:0; margin-bottom:8px;">1RM e cálculo rápido</h3>
 
-        <div class="field">
-          <label>1RM (kg) – peso máximo numa repetição</label>
-          <input id="oneRm" type="number" step="0.5" />
-        </div>
+    <!-- REGISTO / ATUALIZAÇÃO DO 1RM (como já tinhas) -->
+    <div class="form-row">
+      <div class="field">
+        <label>Exercício</label>
+        <select id="exercise"></select>
       </div>
 
-      <button class="btn-primary" id="addBtn">Guardar / Atualizar</button>
-    </div>
-
-    <div class="card">
-      <div class="scroll">
-        <table>
-          <thead>
-            <tr>
-              <th>Exercício</th>
-              <th>1RM</th>
-              <th>25%</th>
-              <th>30%</th>
-              <th>35%</th>
-              <th>40%</th>
-              <th>50%</th>
-              <th>60%</th>
-              <th>65%</th>
-              <th>70%</th>
-              <th>75%</th>
-              <th>80%</th>
-              <th>85%</th>
-              <th>90%</th>
-              <th>95%</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody id="tableBody"></tbody>
-        </table>
+      <div class="field">
+        <label>1RM (kg) – peso máximo numa repetição</label>
+        <input id="oneRm" type="number" step="0.5" />
       </div>
     </div>
 
-  </section>
+    <button class="btn-primary" id="addBtn">Guardar / Atualizar</button>
+
+    <!-- FERRAMENTA RÁPIDA -->
+    <div class="helper-text" style="margin-top:10px; margin-bottom:4px;">
+      Ferramenta rápida para o quadro da box: escolhe o exercício, escreve a percentagem do 1RM e vê logo o peso em kg.
+      Em alternativa, podes meter o peso e ver a percentagem do 1RM.
+    </div>
+
+    <div class="form-row">
+      <div class="field">
+        <label>Exercício (com 1RM registado)</label>
+        <select id="quickExercise"></select>
+      </div>
+      <div class="field">
+        <label>Percentagem do 1RM (%)</label>
+        <input id="quickPercent" type="number" min="10" max="130" step="1" />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="field">
+        <label>Peso calculado (kg)</label>
+        <input id="quickPeso" type="text" readonly />
+      </div>
+      <div class="field">
+        <label>Ou introduz o peso (kg)</label>
+        <input id="quickPesoInput" type="number" step="0.5" min="0" />
+        <div class="helper-text" id="quickPercResult"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CARD 2: TABELA COMPLETA 1RM (como já tinhas) -->
+  <div class="card">
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Exercício</th>
+            <th>1RM</th>
+            <th>25%</th>
+            <th>30%</th>
+            <th>35%</th>
+            <th>40%</th>
+            <th>50%</th>
+            <th>60%</th>
+            <th>65%</th>
+            <th>70%</th>
+            <th>75%</th>
+            <th>80%</th>
+            <th>85%</th>
+            <th>90%</th>
+            <th>95%</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+</section>
 
   <!-- SECÇÃO 2: OPÇÕES -->
   <section id="sec-opcoes" class="section">
@@ -1364,6 +1398,12 @@ let rmHistory = JSON.parse(localStorage.getItem(STORAGE_RM_HISTORY) || "{}");
 const sel = document.getElementById("exercise");
 const rm = document.getElementById("oneRm");
 const bodyTable = document.getElementById("tableBody");
+/* Ferramenta rápida 1RM */
+const quickExerciseEl = document.getElementById("quickExercise");
+const quickPercentEl = document.getElementById("quickPercent");
+const quickPesoEl = document.getElementById("quickPeso");
+const quickPesoInputEl = document.getElementById("quickPesoInput");
+const quickPercResultEl = document.getElementById("quickPercResult");
 
 /* WOD */
 let treinos = JSON.parse(localStorage.getItem(STORAGE_TREINO) || "[]");
@@ -1536,6 +1576,80 @@ function refreshGraphExerciseOptions() {
 
   updateRmChart();
 }
+/* Exercícios disponíveis na ferramenta rápida (apenas com 1RM registado) */
+function refreshQuickExerciseOptions() {
+  if (!quickExerciseEl) return;
+
+  quickExerciseEl.innerHTML = "";
+
+  const nomes = Object.keys(dataRm || {}).sort();
+  if (!nomes.length) {
+    const opt = document.createElement("option");
+    opt.value = "";
+    opt.textContent = "Sem 1RM registado";
+    quickExerciseEl.appendChild(opt);
+    quickExerciseEl.disabled = true;
+    return;
+  }
+
+  quickExerciseEl.disabled = false;
+
+  nomes.forEach(name => {
+    const opt = document.createElement("option");
+    opt.value = name;
+    const label = MOVES_PT[name] ? `${name} – ${MOVES_PT[name]}` : name;
+    opt.textContent = label;
+    quickExerciseEl.appendChild(opt);
+  });
+}
+
+/* Cálculo: percentagem → peso */
+function updateQuickFromPercent() {
+  if (!quickExerciseEl || !quickPercentEl || !quickPesoEl) return;
+
+  const ex = quickExerciseEl.value;
+  const perc = parseFloat(quickPercentEl.value || "0");
+  if (!ex || !dataRm[ex] || !perc || perc <= 0) {
+    quickPesoEl.value = "";
+    return;
+  }
+
+  const base = dataRm[ex];
+  const peso = base * (perc / 100);
+
+  // mostra só o número (com vírgula) sem "kg"
+  quickPesoEl.value = peso.toFixed(1).replace(".", ",");
+}
+
+/* Cálculo inverso: peso → percentagem do 1RM */
+function updateQuickFromPeso() {
+  if (!quickExerciseEl || !quickPesoInputEl || !quickPercResultEl) return;
+
+  const ex = quickExerciseEl.value;
+  const peso = parseFloat(quickPesoInputEl.value || "0");
+  if (!ex || !dataRm[ex] || !peso || peso <= 0) {
+    quickPercResultEl.textContent = "";
+    return;
+  }
+
+  const base = dataRm[ex];
+  const perc = (peso / base) * 100;
+  quickPercResultEl.textContent =
+    `Este peso corresponde a cerca de ${perc.toFixed(0)}% do teu 1RM nesse exercício.`;
+}
+
+/* Eventos da ferramenta rápida */
+if (quickExerciseEl && quickPercentEl) {
+  quickExerciseEl.addEventListener("change", () => {
+    updateQuickFromPercent();
+    updateQuickFromPeso();
+  });
+  quickPercentEl.addEventListener("input", updateQuickFromPercent);
+}
+
+if (quickPesoInputEl) {
+  quickPesoInputEl.addEventListener("input", updateQuickFromPeso);
+}
 
 function deleteEx(name) {
   if (!name) return;
@@ -1603,6 +1717,7 @@ function renderRm() {
 
   refreshCalcExOptions();
   refreshGraphExerciseOptions();
+  refreshQuickExerciseOptions();
   renderPerformance();
 }
 
@@ -3208,6 +3323,7 @@ if ("serviceWorker" in navigator) {
 
 </body>
 </html>
+
 
 
 
