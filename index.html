@@ -2306,10 +2306,6 @@ function renderTreinos() {
 
   const dia = treinoDataEl.value || new Date().toISOString().slice(0,10);
   const lista = treinos.filter(t => t.date === dia);
-  // há WOD neste dia → garantir que a tabela está visível
-if (treinoScrollEl) {
-  treinoScrollEl.style.display = "block";
-}
 
   // Se não houver WOD nesse dia
   if (!lista.length) {
@@ -2317,16 +2313,29 @@ if (treinoScrollEl) {
       treinoResumoEl.textContent = "Sem WOD registado para " + dia + ".";
     }
     if (treinoSugestaoEl) treinoSugestaoEl.textContent = "";
+
     // esconder chips
     if (treinoStatsRow) {
       treinoStatsRow.style.display = "none";
     }
+
+    // esconder tabela do WOD do dia
+    if (treinoScrollEl) {
+      treinoScrollEl.style.display = "none";
+    }
+
     renderWeeklyHistory();
     renderDailyHistory();
     renderPerformance();
     atualizarRankingsMensais();
     return;
-  
+  }
+
+  // há WOD neste dia → garantir que a tabela está visível
+  if (treinoScrollEl) {
+    treinoScrollEl.style.display = "block";
+  }
+
   let totalCarga = 0;
   let totalSeries = 0;
   let totalDistKm = 0;
@@ -2413,7 +2422,7 @@ if (treinoScrollEl) {
       }
     }
 
-    // 🔹 NOVOS ACUMULADORES PARA OS CHIPS
+    // NOVOS ACUMULADORES PARA OS CHIPS
     totalVolumeReps += (e.reps || 0) * (e.rondas || 0);
 
     if (e.tempo) {
@@ -2445,7 +2454,7 @@ if (treinoScrollEl) {
   );
   if (treinoSugestaoEl) treinoSugestaoEl.textContent = sugestao;
 
-  // 🔹 ATUALIZAR OS CHIPS DE RESUMO
+  // ATUALIZAR OS CHIPS DE RESUMO
   if (treinoStatsRow) {
     treinoStatsRow.style.display = "flex";
 
