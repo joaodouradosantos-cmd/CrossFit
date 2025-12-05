@@ -1384,6 +1384,7 @@ const weeklyHistoryEl = document.getElementById("weeklyHistory");
 const toggleDailyHistoryBtn = document.getElementById("toggleDailyHistory");
 const dailyHistorySection = document.getElementById("dailyHistorySection");
 const printHistoryBtn = document.getElementById("printHistoryBtn");
+const dailyHistoryBody = document.getElementById("dailyHistoryBody");
   
   /* Chips de resumo do dia */
 const treinoStatsRow = document.getElementById("treinoStats");
@@ -2469,31 +2470,6 @@ function renderTreinos() {
   renderPerformance();
   atualizarRankingsMensais();
 }
-
-  if (treinoResumoEl) {
-    let resumo =
-      "Resumo do dia " + dia + ": carga total do WOD = " + formatKg(totalCarga);
-    if (totalDistKm > 0) {
-      resumo += " · distância total = " + formatKm(totalDistKm);
-    }
-    treinoResumoEl.textContent = resumo;
-  }
-
-  const sugestao = buildSugestao(
-    lista,
-    totalCarga,
-    totalSeries,
-    blocosForca,
-    blocosHipertrofia,
-    blocosLeve,
-    dia
-  );
-  if (treinoSugestaoEl) treinoSugestaoEl.textContent = sugestao;
-
-  renderWeeklyHistory();
-  renderDailyHistory();
-  renderPerformance();
-  atualizarRankingsMensais();
 }
 
 if (treinoAddBtn) {
@@ -3219,6 +3195,7 @@ if ("serviceWorker" in navigator) {
 
 </body>
 </html>
+
 
 
 
