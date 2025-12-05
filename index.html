@@ -1767,12 +1767,6 @@ function renderRm() {
     td1rm.textContent = oneRmText;
     tr.appendChild(td1rm);
 
-    PERC.forEach(p => {
-      const td = document.createElement("td");
-      td.textContent = formatKg(dataRm[name] * p);
-      tr.appendChild(td);
-    });
-
     const tdDelete = document.createElement("td");
     const btn = document.createElement("button");
     btn.textContent = "🗑";
@@ -3474,6 +3468,7 @@ if ("serviceWorker" in navigator) {
 
 </body>
 </html>
+
 
 
 
