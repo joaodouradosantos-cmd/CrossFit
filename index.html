@@ -2306,6 +2306,10 @@ function renderTreinos() {
 
   const dia = treinoDataEl.value || new Date().toISOString().slice(0,10);
   const lista = treinos.filter(t => t.date === dia);
+  // há WOD neste dia → garantir que a tabela está visível
+if (treinoScrollEl) {
+  treinoScrollEl.style.display = "block";
+}
 
   // Se não houver WOD nesse dia
   if (!lista.length) {
@@ -3193,27 +3197,4 @@ if ("serviceWorker" in navigator) {
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
