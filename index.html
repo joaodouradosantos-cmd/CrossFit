@@ -2625,39 +2625,23 @@ function updateWodPercentFromPeso() {
   const ex = treinoExEl.value;
   const peso = parseFloat(treinoPesoEl.value || "0");
 
-  // limpa quando não há nada
+  // limpa quando não há dados suficientes
   if (!ex || !dataRm[ex] || !peso || peso <= 0) {
     treinoPercentInfoEl.textContent = "";
+    if (treinoPercentEl) treinoPercentEl.value = "";
     return;
   }
 
   const base = dataRm[ex]; // 1RM
   const perc = (peso / base) * 100;
 
-  // se o campo de percentagem estiver vazio, podemos sugerir
-  if (treinoPercentEl && (!treinoPercentEl.value || parseFloat(treinoPercentEl.value) <= 0)) {
+  // **AGORA ATUALIZA SEMPRE** o campo da percentagem com o valor correcto
+  if (treinoPercentEl) {
     treinoPercentEl.value = perc.toFixed(0);
   }
 
   treinoPercentInfoEl.textContent =
     `Este peso corresponde a cerca de ${perc.toFixed(0)}% do teu 1RM nesse exercício.`;
-}
-
-/* Ligações de eventos no WOD */
-if (treinoPercentEl) {
-  treinoPercentEl.addEventListener("input", updateWodPesoFromPercent);
-}
-
-if (treinoPesoEl) {
-  treinoPesoEl.addEventListener("input", updateWodPercentFromPeso);
-}
-
-if (treinoExEl) {
-  treinoExEl.addEventListener("change", () => {
-    // quando mudas de exercício, recalcula tudo
-    updateWodPesoFromPercent();
-    updateWodPercentFromPeso();
-  });
 }
 
 function renderTreinos() {
@@ -3566,6 +3550,7 @@ if ("serviceWorker" in navigator) {
 
 </body>
 </html>
+
 
 
 
