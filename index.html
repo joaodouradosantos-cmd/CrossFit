@@ -2593,6 +2593,7 @@ function updateWodPesoFromPercent() {
 
   if (!ex || !dataRm[ex] || !perc || perc <= 0) {
     if (treinoPesoSugEl) treinoPesoSugEl.value = "";
+    if (treinoPesoEl) treinoPesoEl.value = "";
     if (!ex || !dataRm[ex]) {
       if (treinoPercentInfoEl && ex) {
         treinoPercentInfoEl.textContent =
@@ -2605,10 +2606,10 @@ function updateWodPesoFromPercent() {
   const base = dataRm[ex]; // 1RM
   const peso = base * (perc / 100);
 
-  // mostra sugestão no campo readonly (com vírgula)…
+  // sugestão (readonly, com vírgula)
   treinoPesoSugEl.value = peso.toFixed(1).replace(".", ",");
 
-  // …e preenche automaticamente o campo de peso real do WOD (em formato numérico)
+  // peso real que vai para o WOD (numérico)
   if (treinoPesoEl) {
     treinoPesoEl.value = peso.toFixed(1);
   }
@@ -2629,19 +2630,42 @@ function updateWodPercentFromPeso() {
   if (!ex || !dataRm[ex] || !peso || peso <= 0) {
     treinoPercentInfoEl.textContent = "";
     if (treinoPercentEl) treinoPercentEl.value = "";
+    if (treinoPesoSugEl) treinoPesoSugEl.value = "";
     return;
   }
 
   const base = dataRm[ex]; // 1RM
   const perc = (peso / base) * 100;
 
-  // **AGORA ATUALIZA SEMPRE** o campo da percentagem com o valor correcto
+  // ATUALIZA SEMPRE o campo da percentagem com o valor correto
   if (treinoPercentEl) {
     treinoPercentEl.value = perc.toFixed(0);
   }
 
+  // opcional: refletir também no campo de sugestão, para ficar tudo alinhado
+  if (treinoPesoSugEl) {
+    treinoPesoSugEl.value = peso.toFixed(1).replace(".", ",");
+  }
+
   treinoPercentInfoEl.textContent =
     `Este peso corresponde a cerca de ${perc.toFixed(0)}% do teu 1RM nesse exercício.`;
+}
+
+/* Ligações de eventos no WOD */
+if (treinoPercentEl) {
+  treinoPercentEl.addEventListener("input", updateWodPesoFromPercent);
+}
+
+if (treinoPesoEl) {
+  treinoPesoEl.addEventListener("input", updateWodPercentFromPeso);
+}
+
+if (treinoExEl) {
+  treinoExEl.addEventListener("change", () => {
+    // quando mudas de exercício, recalcula tudo
+    updateWodPesoFromPercent();
+    updateWodPercentFromPeso();
+  });
 }
 
 function renderTreinos() {
@@ -3550,6 +3574,7 @@ if ("serviceWorker" in navigator) {
 
 </body>
 </html>
+
 
 
 
