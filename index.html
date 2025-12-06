@@ -2028,8 +2028,8 @@ if (calcBtn) {
 function updateRmChart() {
   if (!rmChartCanvas || !graphExerciseEl) return;
 
-  // 🔐 Defesa: se o Chart.js não carregou (offline/CDN em falha),
-  // não tentamos desenhar nada, mas deixamos o resto da app funcionar.
+  // Se o Chart.js não estiver carregado (offline / falha de CDN),
+  // não desenhamos nada mas deixamos o resto da app funcionar.
   if (typeof Chart === "undefined") {
     console.warn("Chart.js não carregou; gráficos desativados (modo offline).");
     return;
@@ -2038,8 +2038,6 @@ function updateRmChart() {
   const ex = graphExerciseEl.value;
   let labels = [];
   let values = [];
-  // ... resto da função fica igual ...
-}
 
   if (ex && (rmHistory[ex] || dataRm[ex])) {
     const hist = (rmHistory[ex] || []).slice().sort((a, b) => {
@@ -2089,7 +2087,9 @@ function updateRmChart() {
     return;
   }
 
-  const datasetLabel = MOVES_PT[ex] ? `${ex} – ${MOVES_PT[ex]} – 1RM (kg)` : ex + " – 1RM (kg)";
+  const datasetLabel = MOVES_PT[ex]
+    ? `${ex} – ${MOVES_PT[ex]} – 1RM (kg)`
+    : ex + " – 1RM (kg)";
 
   rmChart = new Chart(ctx, {
     type: "line",
@@ -2117,10 +2117,6 @@ function updateRmChart() {
       }
     }
   });
-}
-
-if (graphExerciseEl) {
-  graphExerciseEl.addEventListener("change", updateRmChart);
 }
 
 /* ===== WOD ===== */
@@ -3690,6 +3686,7 @@ if ("serviceWorker" in navigator) {
 
 </body>
 </html>
+
 
 
 
