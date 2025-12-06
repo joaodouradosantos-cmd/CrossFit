@@ -1693,14 +1693,41 @@ function refreshCalcExOptions() {
     calcExEl.appendChild(opt);
   });
 }
-
 function refreshGraphExerciseOptions() {
   if (!graphExerciseEl) return;
+
+  // junta todos os nomes que tenham 1RM atual ou histórico
   const allNames = new Set([
     ...Object.keys(dataRm || {}),
     ...Object.keys(rmHistory || {})
   ]);
+
   const names = Array.from(allNames).sort();
+
+  graphExerciseEl.innerHTML = "";
+
+  if (!names.length) {
+    const opt = document.createElement("option");
+    opt.value = "";
+    opt.textContent = "Sem dados de 1RM";
+    graphExerciseEl.appendChild(opt);
+    graphExerciseEl.disabled = true;
+    updateRmChart();
+    return;
+  }
+
+  graphExerciseEl.disabled = false;
+
+  names.forEach(n => {
+    const opt = document.createElement("option");
+    opt.value = n;
+    opt.textContent = n;
+    graphExerciseEl.appendChild(opt);
+  });
+
+  // garante que o gráfico corresponde ao exercício selecionado
+  updateRmChart();
+}
 
   graphExerciseEl.innerHTML = "";
   if (!names.length) {
@@ -3632,7 +3659,8 @@ document.querySelectorAll(".tab-btn").forEach(btn => {
 
     const target = btn.dataset.target;
     document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
-    document.getElementById(target).classList.add("active");
+    const sec = document.getElementById(target);
+    if (sec) sec.classList.add("active");
   });
 });
 
@@ -3660,6 +3688,34 @@ if (reservasBtn && reservasSection) {
   });
 }
 
+/* Listener para atualizar o gráfico quando mudas o exercício */
+if (graphExerciseEl) {
+  graphExerciseEl.addEventListener("change", updateRmChart);
+}
+
+/* INIT */
+initSelects();
+loadProfile();
+renderRm();
+refreshCalcExOptions();
+refreshGraphExerciseOptions();
+
+if (treinoDataEl && !treinoDataEl.value) {
+  treinoDataEl.value = new Date().toISOString().slice(0, 10);
+}
+renderTreinos();
+updateBackupInfo();
+renderGuiaExercicios();
+renderPerformance();
+renderReservas();
+atualizarRankingsMensais();
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("service-worker.js");
+  });
+}
+  
 /* INIT */
 initSelects();
 loadProfile();
@@ -3686,40 +3742,5 @@ if ("serviceWorker" in navigator) {
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
