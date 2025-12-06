@@ -3338,8 +3338,7 @@ function renderPerformance() {
           distanciaKm: t.distanciaKm || 0
         };
       }
-    });
-
+    
     const rows = Object.keys(metconMap)
       .map(k => metconMap[k])
       .sort((a, b) => a.tempoSeg - b.tempoSeg);
@@ -3688,6 +3687,7 @@ if ("serviceWorker" in navigator) {
 
 </body>
 </html>
+
 
 
 
