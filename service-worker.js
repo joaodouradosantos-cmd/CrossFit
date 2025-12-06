@@ -4,7 +4,8 @@ const URLS_TO_CACHE = [
   "./",
   "./index.html",
   "./manifest.json",
-  "./imagens/crossbox_logo.png"
+  "./imagens/crossbox_logo.png",
+  "./js/chart.umd.min.js"
 ];
 
 // INSTALAÇÃO — pré-cache básico e entra logo em ação
@@ -76,7 +77,3 @@ self.addEventListener("fetch", (event) => {
     })
   );
 });
-
-
-
-
