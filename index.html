@@ -771,156 +771,157 @@
 
     <!-- WOD -->
     <section id="opt-wod" class="option-section">
-      <div class="card">
-        <h3 style="margin-top:0; margin-bottom:8px;">🟩 WOD</h3>
+  <div class="card">
+    <h3 style="margin-top:0; margin-bottom:8px;">🟩 WOD</h3>
 
-        <div class="form-row">
-          <div class="field">
-            <label>Data</label>
-            <input id="treinoData" type="date">
-          </div>
-          <div class="field">
-            <label>Exercício</label>
-            <input id="treinoExercicioSearch" type="text" placeholder="Procurar exercício..." />
-            <select id="treinoExercicio"></select>
-          </div>
-        </div>
+    <!-- Linha 1: Data + Exercício (igual) -->
+    <div class="form-row">
+      <div class="field">
+        <label>Data</label>
+        <input id="treinoData" type="date">
+      </div>
+      <div class="field">
+        <label>Exercício</label>
+        <input id="treinoExercicioSearch" type="text" placeholder="Procurar exercício..." />
+        <select id="treinoExercicio"></select>
+      </div>
+    </div>
 
-         <div class="form-row">
+    <!-- Linha 2: Rondas / Reps / Peso (tudo junto para encolher) -->
+    <div class="form-row">
       <div class="field">
         <label>Rondas / Séries</label>
         <input id="treinoRondas" type="number" min="1" />
       </div>
+      <div class="field">
+        <label>Repetições por série</label>
+        <input id="treinoReps" type="number" min="1" />
+      </div>
+      <div class="field">
+        <label>Peso (kg)</label>
+        <input id="treinoPeso" type="number" step="0.5" min="0" />
+      </div>
     </div>
 
-        <div class="form-row">
-          <div class="field">
-            <label>Repetições por série</label>
-            <input id="treinoReps" type="number" min="1" />
-          </div>
-          <div class="field">
-            <label>Peso (kg)</label>
-            <input id="treinoPeso" type="number" step="0.5" min="0" />
-          </div>
-        </div>
-        <!-- NOVO BLOCO: CÁLCULO % 1RM → KG DENTRO DO WOD -->
-          <div class="form-row">
-       <div class="field">
-         <label>Percentagem do 1RM (%) (opcional)</label>
-         <input id="treinoPercent" type="number" min="10" max="130" step="1" />
-       </div>
-     </div>
-     <div class="helper-text" id="treinoPercentInfo" style="margin-top:-4px; margin-bottom:4px;">
-     </div>
-
-        <!-- FIM DO BLOCO NOVO -->
-        <div class="form-row">
-          <div class="field">
-            <label>Tempo (opcional)</label>
-            <input id="treinoTempo" type="text" placeholder="Ex.: 12:35, 20', AMRAP 10'..." />
-          </div>
-          <div class="field">
-            <label>Distância (km – Metcon, opcional)</label>
-            <input id="treinoDist" type="number" step="0.01" min="0" />
-          </div>
-        </div>
-
-        <button class="btn-primary" id="treinoAdd">Adicionar ao WOD</button>
-        <div class="helper-text">
-          A carga de cada exercício (kg) é calculada como: peso × repetições × rondas.
-          A distância em metcon é somada à parte, em km.
+    <!-- Linha 3: %1RM + Tempo (lado a lado) -->
+    <div class="form-row">
+      <div class="field">
+        <label>Percentagem do 1RM (%) (opcional)</label>
+        <input id="treinoPercent" type="number" min="10" max="130" step="1" />
+        <div class="helper-text" id="treinoPercentInfo" style="margin-top:2px;">
+          <!-- texto preenchido pelo JS -->
         </div>
       </div>
-
-            <div class="card">
-        <h3 style="margin-top:0; margin-bottom:8px;">Registo e histórico</h3>
-
-        <!-- Resumo rápido do dia (sempre visível) -->
-        <div class="helper-text" id="treinoResumo" style="margin-bottom:4px;"></div>
-        <div class="helper-text" id="treinoSugestao" style="margin-top:0; font-weight:500;"></div>
-        <div class="helper-text" id="weeklyHistory" style="margin-top:4px;"></div>
-
-              <!-- Resumo rápido em chips -->
-<div id="treinoStats" class="stats-row" style="display:none;">
-  <div class="stat-chip">
-    <span>Carga total</span>
-    <span id="statCarga">0 kg</span>
-  </div>
-  <div class="stat-chip">
-    <span>Exercícios</span>
-    <span id="statExercicios">0</span>
-  </div>
-  <div class="stat-chip">
-    <span>Melhor tempo</span>
-    <span id="statTempo">–</span>
-  </div>
-  <div class="stat-chip">
-    <span>Volume</span>
-    <span id="statVolume">0 reps</span>
-  </div>
-</div>
-
-        <!-- WOD do dia – compacto e fácil de ler -->
-        <h4 style="margin-top:10px; margin-bottom:4px;">WOD do dia</h4>
-<div class="scroll" id="treinoScroll">
-  <table>
-    <thead>
-      <tr>
-        <th>Data</th>
-        <th>Exercício</th>
-        <th>Tipo</th>
-        <th>Rondas</th>
-        <th>Reps</th>
-        <th>Peso</th>
-        <th>% 1RM</th>
-        <th>Tempo</th>
-        <th>Distância (km)</th>
-        <th>Carga (kg)</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody id="treinoBody"></tbody>
-  </table>
-</div>
-
-
-        <!-- Botões de histórico e exportação -->
-        <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;">
-          <button class="btn-secondary" id="toggleDailyHistory">
-            Histórico diário completo
-          </button>
-
-          <button class="btn-secondary" id="printHistoryBtn">
-            Exportar histórico (PDF)
-          </button>
-        </div>
-
-        <!-- Histórico diário completo (todas as datas) -->
-        <div id="dailyHistorySection" style="display:none; margin-top:8px;">
-  <h4 style="margin-top:0; margin-bottom:4px;">Histórico detalhado (todos os dias)</h4>
-  <div class="scroll" id="dailyHistoryScroll">
-    <table>
-              <thead>
-                <tr>
-                  <th>Data</th>
-                  <th>Exercício</th>
-                  <th>Tipo</th>
-                  <th>Rondas</th>
-                  <th>Reps</th>
-                  <th>Peso</th>
-                  <th>% 1RM</th>
-                  <th>Tempo</th>
-                  <th>Distância (km)</th>
-                  <th>Carga (kg)</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody id="dailyHistoryBody"></tbody>
-            </table>
-          </div>
-        </div>
+      <div class="field">
+        <label>Tempo (opcional)</label>
+        <input id="treinoTempo" type="text" placeholder="Ex.: 12:35, 20', AMRAP 10'..." />
       </div>
-    </section>
+    </div>
+
+    <!-- Linha 4: Distância sozinha (normalmente menos usada) -->
+    <div class="form-row">
+      <div class="field">
+        <label>Distância (km – Metcon, opcional)</label>
+        <input id="treinoDist" type="number" step="0.01" min="0" />
+      </div>
+    </div>
+
+    <button class="btn-primary" id="treinoAdd">Adicionar ao WOD</button>
+    <div class="helper-text">
+      A carga de cada exercício (kg) é calculada como: peso × repetições × rondas.
+      A distância em metcon é somada à parte, em km.
+    </div>
+  </div>
+
+  <!-- CARD 2: Registo & histórico (igual, só copiado o teu código atual) -->
+  <div class="card">
+    <h3 style="margin-top:0; margin-bottom:8px;">Registo e histórico</h3>
+
+    <!-- Resumo rápido do dia -->
+    <div class="helper-text" id="treinoResumo" style="margin-bottom:4px;"></div>
+    <div class="helper-text" id="treinoSugestao" style="margin-top:0; font-weight:500;"></div>
+    <div class="helper-text" id="weeklyHistory" style="margin-top:4px;"></div>
+
+    <!-- Chips de resumo -->
+    <div id="treinoStats" class="stats-row" style="display:none;">
+      <div class="stat-chip">
+        <span>Carga total</span>
+        <span id="statCarga">0 kg</span>
+      </div>
+      <div class="stat-chip">
+        <span>Exercícios</span>
+        <span id="statExercicios">0</span>
+      </div>
+      <div class="stat-chip">
+        <span>Melhor tempo</span>
+        <span id="statTempo">–</span>
+      </div>
+      <div class="stat-chip">
+        <span>Volume</span>
+        <span id="statVolume">0 reps</span>
+      </div>
+    </div>
+
+    <!-- WOD do dia -->
+    <h4 style="margin-top:10px; margin-bottom:4px;">WOD do dia</h4>
+    <div class="scroll" id="treinoScroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Exercício</th>
+            <th>Tipo</th>
+            <th>Rondas</th>
+            <th>Reps</th>
+            <th>Peso</th>
+            <th>% 1RM</th>
+            <th>Tempo</th>
+            <th>Distância (km)</th>
+            <th>Carga (kg)</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="treinoBody"></tbody>
+      </table>
+    </div>
+
+    <!-- Botões histórico / exportação -->
+    <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;">
+      <button class="btn-secondary" id="toggleDailyHistory">
+        Histórico diário completo
+      </button>
+
+      <button class="btn-secondary" id="printHistoryBtn">
+        Exportar histórico (PDF)
+      </button>
+    </div>
+
+    <!-- Histórico diário completo -->
+    <div id="dailyHistorySection" style="display:none; margin-top:8px;">
+      <h4 style="margin-top:0; margin-bottom:4px;">Histórico detalhado (todos os dias)</h4>
+      <div class="scroll" id="dailyHistoryScroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Exercício</th>
+              <th>Tipo</th>
+              <th>Rondas</th>
+              <th>Reps</th>
+              <th>Peso</th>
+              <th>% 1RM</th>
+              <th>Tempo</th>
+              <th>Distância (km)</th>
+              <th>Carga (kg)</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="dailyHistoryBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
 
     <!-- OBJETIVO -->
     <section id="opt-calc" class="option-section">
@@ -3637,6 +3638,7 @@ if ("serviceWorker" in navigator) {
 
 </body>
 </html>
+
 
 
 
