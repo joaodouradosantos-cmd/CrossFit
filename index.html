@@ -774,22 +774,12 @@
           </div>
         </div>
 
-        <div class="form-row">
-          <div class="field">
-            <label>Tipo</label>
-            <select id="treinoTipo">
-              <option value="">Selecionar</option>
-              <option value="força">Força</option>
-              <option value="hipertrofia">Hipertrofia</option>
-              <option value="técnica">Técnica</option>
-              <option value="metcon">Metcon</option>
-            </select>
-          </div>
-          <div class="field">
-            <label>Rondas / Séries</label>
-            <input id="treinoRondas" type="number" min="1" />
-          </div>
-        </div>
+         <div class="form-row">
+      <div class="field">
+        <label>Rondas / Séries</label>
+        <input id="treinoRondas" type="number" min="1" />
+      </div>
+    </div>
 
         <div class="form-row">
           <div class="field">
@@ -803,17 +793,14 @@
         </div>
         <!-- NOVO BLOCO: CÁLCULO % 1RM → KG DENTRO DO WOD -->
           <div class="form-row">
-          <div class="field">
-            <label>Percentagem do 1RM (%) (opcional)</label>
-            <input id="treinoPercent" type="number" min="10" max="130" step="1" />
-         </div>
-          <div class="field">
-            <label>Sugestão de peso (kg)</label>
-            <input id="treinoPesoSugestao" type="text" readonly />
-         </div>
-        </div>
-           <div class="helper-text" id="treinoPercentInfo" style="margin-top:-4px; margin-bottom:4px;">
-         </div>
+       <div class="field">
+         <label>Percentagem do 1RM (%) (opcional)</label>
+         <input id="treinoPercent" type="number" min="10" max="130" step="1" />
+       </div>
+     </div>
+     <div class="helper-text" id="treinoPercentInfo" style="margin-top:-4px; margin-bottom:4px;">
+     </div>
+
         <!-- FIM DO BLOCO NOVO -->
         <div class="form-row">
           <div class="field">
@@ -1449,6 +1436,42 @@ const EXER_INFO = [
   "Hang Clean",
   "Squat Clean",
   "Clean & Jerk",
+   const METCON_MOVES = [
+  "Burpee",
+  "Burpee Box Jump-Over",
+  "Box Jump",
+  "Box Jump Over",
+  "Wall Ball",
+  "Rowing",
+  "Ski Erg",
+  "Assault Bike",
+  "Running",
+  "Sprint",
+  "Double Under",
+  "Single Under",
+  "Sled Push",
+  "Sled Pull",
+  "Farmer Carry",
+  "Sandbag Carry",
+  "Yoke Carry",
+  "Rope Climb",
+  "Devil Press",
+  "Man Maker"
+];
+function inferTipo(ex) {
+  if (!ex) return "";
+
+  if (TECHNICAL_MOVES.includes(ex)) {
+    return "técnica";
+  }
+
+  if (METCON_MOVES.includes(ex)) {
+    return "metcon";
+  }
+
+  // Por defeito, tratamos o resto como força
+  return "força";
+}
 
   // Complexos e movimentos combinados
   "Thruster",
@@ -1504,7 +1527,6 @@ const treinoPesoEl = document.getElementById("treinoPeso");
 const treinoTempoEl = document.getElementById("treinoTempo");
 const treinoDistEl = document.getElementById("treinoDist");
 const treinoPercentEl = document.getElementById("treinoPercent");
-const treinoPesoSugEl = document.getElementById("treinoPesoSugestao");
 const treinoPercentInfoEl = document.getElementById("treinoPercentInfo");
 const treinoAddBtn = document.getElementById("treinoAdd");
 const treinoBody = document.getElementById("treinoBody");
@@ -2071,7 +2093,7 @@ function calcCarga(entry) {
 function addTreinoEntry() {
   const date = treinoDataEl.value || new Date().toISOString().slice(0,10);
   const ex = treinoExEl.value;
-  const tipo = treinoTipoEl.value;
+  const tipo = inferTipo(ex);
   const rondas = parseInt(treinoRondasEl.value || "1", 10);
   const reps = parseInt(treinoRepsEl.value || "0", 10);
   const peso = parseFloat(treinoPesoEl.value || "0");
@@ -2593,7 +2615,6 @@ function updateWodPesoFromPercent() {
 
   if (!ex || !dataRm[ex] || !perc || perc <= 0) {
     if (treinoPesoSugEl) treinoPesoSugEl.value = "";
-    if (treinoPesoEl) treinoPesoEl.value = "";
     if (!ex || !dataRm[ex]) {
       if (treinoPercentInfoEl && ex) {
         treinoPercentInfoEl.textContent =
@@ -2606,10 +2627,10 @@ function updateWodPesoFromPercent() {
   const base = dataRm[ex]; // 1RM
   const peso = base * (perc / 100);
 
-  // sugestão (readonly, com vírgula)
+  // mostra sugestão no campo readonly (com vírgula)…
   treinoPesoSugEl.value = peso.toFixed(1).replace(".", ",");
 
-  // peso real que vai para o WOD (numérico)
+  // …e preenche automaticamente o campo de peso real do WOD (em formato numérico)
   if (treinoPesoEl) {
     treinoPesoEl.value = peso.toFixed(1);
   }
@@ -2619,6 +2640,7 @@ function updateWodPesoFromPercent() {
       `Sugestão: ${peso.toFixed(1).replace(".", ",")} kg (${perc.toFixed(0)}% do teu 1RM nesse exercício).`;
   }
 }
+
 
 function updateWodPercentFromPeso() {
   if (!treinoPesoEl || !treinoExEl || !treinoPercentInfoEl) return;
@@ -3574,6 +3596,7 @@ if ("serviceWorker" in navigator) {
 
 </body>
 </html>
+
 
 
 
