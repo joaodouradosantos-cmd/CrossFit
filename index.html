@@ -2565,6 +2565,7 @@ function buildSugestao(lista, totalCarga, totalSeries, blocosForca, blocosHipert
   const altura = profile && profile.altura ? profile.altura : null;
   const objetivo = profile && profile.objetivo ? profile.objetivo : null;
 
+  // Análise do tipo de blocos (força / hipertrofia / leve)
   if (blocosForca === 0 && blocosHipertrofia === 0) {
     partes.push("O dia ficou mais leve em termos de estímulo de força e hipertrofia.");
     partes.push("Para evoluir, tenta incluir 2–3 exercícios principais entre 70–85% do teu 1RM, com 5–10 repetições.");
@@ -2579,16 +2580,19 @@ function buildSugestao(lista, totalCarga, totalSeries, blocosForca, blocosHipert
     partes.push("Mantém a lógica de 2–3 exercícios principais mais pesados (3–5 reps a 80–85% do 1RM) e 2–3 exercícios de apoio com 6–12 reps a 65–75% do 1RM.");
   }
 
+  // Ajustes por sexo
   if (sexo === "homem") {
     partes.push("Como homem, toleras bem blocos pesados entre 80–85% do 1RM, desde que respeites a técnica e a recuperação.");
   } else if (sexo === "mulher") {
     partes.push("Como mulher, costumas recuperar melhor entre séries; não tenhas receio de trabalhar com 8–12 repetições a 70–75% do 1RM nos grandes movimentos.");
   }
 
+  // Ajustes por idade
   if (idade && idade >= 40) {
     partes.push("Com a idade atual, é importante controlar o volume: dá prioridade à qualidade do movimento e garante 48–72 horas de recuperação entre dias muito pesados.");
   }
 
+  // Relação carga média por série / peso corporal
   if (peso) {
     const cargaMediaPorSerie = totalCarga / Math.max(totalSeries, 1);
     const rel = cargaMediaPorSerie / peso;
@@ -2602,7 +2606,7 @@ function buildSugestao(lista, totalCarga, totalSeries, blocosForca, blocosHipert
     }
   }
 
-* 
+  // Comentário rápido por altura
   if (altura) {
     if (altura >= 185) {
       partes.push("Com a tua estatura, dá atenção extra à posição lombar em agachamentos e deadlifts, mantendo o core firme.");
@@ -2627,7 +2631,7 @@ function buildSugestao(lista, totalCarga, totalSeries, blocosForca, blocosHipert
   }
 
   return partes.join(" ");
-*
+}
 
   function getMonday(dateStr) {
   const d = new Date(dateStr);
@@ -3688,6 +3692,7 @@ if ("serviceWorker" in navigator) {
 
 </body>
 </html>
+
 
 
 
