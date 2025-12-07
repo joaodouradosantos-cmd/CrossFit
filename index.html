@@ -535,6 +535,30 @@
 .quick-1rm-col {
   flex: 1 1 220px;
 }
+    /* Linha com 3 colunas no cálculo rápido 1RM */
+.quick-1rm-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.quick-1rm-row .field-mini {
+  flex: 1 1 0;
+  min-width: 90px;
+}
+
+/* Fica mais compacto no telemóvel */
+@media (max-width: 600px) {
+  .quick-1rm-row .field-mini label {
+    font-size: 0.75rem;
+  }
+
+  .quick-1rm-row .field-mini input {
+    padding: 6px 8px;
+  }
+}
+
 
 /* Peso sugerido em destaque */
 .quick-1rm-output {
@@ -715,34 +739,39 @@
     </div>
   </div>
         <!-- FERRAMENTA RÁPIDA 1RM (estilo GUIA, tudo vertical e estável) -->
-  <div class="card">
+        <div class="card">
     <h3 style="margin-top:0; margin-bottom:8px;">Cálculo rápido (% ↔ kg)</h3>
 
     <div class="helper-text" style="margin-bottom:8px;">
       Introduz a percentagem ou o peso, e vê o valor correspondente com base no teu 1RM.
     </div>
 
+    <!-- 1.ª linha: exercício (igual) -->
     <div class="field">
       <label>Exercício</label>
       <select id="quickExercise"></select>
     </div>
 
-    <div class="field">
-      <label>Percentagem do 1RM (%)</label>
-      <input id="quickPercent" type="number" min="10" max="130" step="1" />
+    <!-- 2.ª linha: 3 colunas -->
+    <div class="quick-1rm-row">
+      <div class="field field-mini">
+        <label>% 1RM</label>
+        <input id="quickPercent" type="number" min="10" max="130" step="1" />
+      </div>
+
+      <div class="field field-mini">
+        <label>Peso (kg)</label>
+        <input id="quickPeso" type="text" readonly />
+      </div>
+
+      <div class="field field-mini">
+        <label>Peso (kg)</label>
+        <input id="quickPesoInput" type="number" step="0.5" min="0" />
+      </div>
     </div>
 
-    <div class="field">
-      <label>Peso calculado (kg)</label>
-      <input id="quickPeso" type="text" readonly />
-    </div>
-
-    <div class="field">
-      <label>Ou escreve o peso (kg)</label>
-      <input id="quickPesoInput" type="number" step="0.5" min="0" />
-      <div class="helper-text" id="quickPercResult"></div>
-    </div>
-
+    <!-- Texto que explica a percentagem ↔ peso -->
+    <div class="helper-text" id="quickPercResult"></div>
   </div>
 
   <!-- CARD 2: TABELA COMPLETA DO 1RM -->
@@ -3686,6 +3715,7 @@ if ("serviceWorker" in navigator) {
 
 </body>
 </html>
+
 
 
 
